@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Fragment1">
+    tools:context=".Graph">
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="33333" />
+        android:text="graph" />
 </LinearLayout>
