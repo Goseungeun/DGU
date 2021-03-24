@@ -34,6 +34,22 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         return items.size();
     }
 
+    public void addItem(study_license item){
+        items.add(item);
+    }
+
+    public void setItems(ArrayList<study_license> items){
+        this.items = items;
+    }
+
+    public study_license getItem(int position){
+        return items.get(position);
+    }
+
+    public void setItem(int position, study_license item){
+        items.set(position,item);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView name;
         TextView time;
@@ -54,4 +70,5 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             time.setText(item.getTime());
         }
     }
+
 }
