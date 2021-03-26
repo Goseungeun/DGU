@@ -39,7 +39,7 @@ public class Home extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home, null);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.home, container,false);
 
         //mcalendar을 선언한다.
         mcalendar=(ExpCalendarView)view.findViewById(R.id.mcalendar1);

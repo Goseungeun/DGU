@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="#00FFFFFF"
     android:orientation="vertical"
     tools:context=".Home">
+
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="94dp"></View>
+        android:layout_height="87dp"></View>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -21,45 +22,47 @@
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:background="@drawable/calendar_border"
+            android:orientation="vertical"
+            android:padding="2dp">
 
             <TextView
                 android:id="@+id/main_YYMM_Tv"
                 android:layout_width="138dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/calendar_title"
                 android:gravity="center_horizontal|center_vertical"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:text="----년-월"
-                android:textColor="@color/deepgreen" />
+                android:textColor="@color/white" />
+
 
             <sun.bob.mcalendarview.views.WeekColumnView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="12dp"
-                android:paddingBottom="12dp">
+                android:paddingBottom="12dp"
+                tools:context=".Home">
 
             </sun.bob.mcalendarview.views.WeekColumnView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#6FAAB8A6" />
 
             <sun.bob.mcalendarview.views.ExpCalendarView
                 android:id="@+id/mcalendar1"
                 android:layout_width="match_parent"
-                android:layout_height="358dp"
-                tools:context=".Home">
+                android:layout_height="307dp"
+                android:layout_marginBottom="12dp"
+                android:background="#00FFFFFF">
 
             </sun.bob.mcalendarview.views.ExpCalendarView>
 
         </LinearLayout>
     </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
 
 </LinearLayout>
