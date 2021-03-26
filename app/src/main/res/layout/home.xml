@@ -2,15 +2,64 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".Home">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"></View>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/main_YYMM_Tv"
+                android:layout_width="138dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/calendar_title"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="10dp"
+                android:text="----년-월"
+                android:textColor="#fff" />
+
+            <sun.bob.mcalendarview.views.WeekColumnView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+            </sun.bob.mcalendarview.views.WeekColumnView>
+
+            <sun.bob.mcalendarview.views.ExpCalendarView
+                android:id="@+id/mcalendar1"
+                android:layout_width="match_parent"
+                android:layout_height="358dp"
+                tools:context=".Home">
+
+            </sun.bob.mcalendarview.views.ExpCalendarView>
+
+        </LinearLayout>
+    </LinearLayout>
+
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="22222" />
+        android:text="TextView" />
+
+
 </LinearLayout>
