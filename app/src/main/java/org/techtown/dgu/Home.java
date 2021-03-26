@@ -21,6 +21,8 @@ import java.util.Locale;
 import sun.bob.mcalendarview.MCalendarView;
 import sun.bob.mcalendarview.MarkStyle;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
+import sun.bob.mcalendarview.listeners.OnExpDateClickListener;
+import sun.bob.mcalendarview.listeners.OnMonthScrollListener;
 import sun.bob.mcalendarview.views.BaseCellView;
 import sun.bob.mcalendarview.views.DefaultMarkView;
 import sun.bob.mcalendarview.views.ExpCalendarView;
@@ -32,6 +34,7 @@ import sun.bob.mcalendarview.vo.DayData;
 public class Home extends Fragment {
     private ExpCalendarView mcalendar;
     private DateData selectedDate;
+    private TextView YearMonthTv; //calendar title
 
 
     @Override
@@ -40,7 +43,21 @@ public class Home extends Fragment {
 
         //mcalendar을 선언한다.
         mcalendar=(ExpCalendarView)view.findViewById(R.id.mcalendar1);
+        //YearMontTv의 초기값을 선언한다.
+        YearMonthTv = (TextView)view.findViewById(R.id.main_YYMM_Tv);
+        YearMonthTv.setText(Calendar.getInstance().get(Calendar.YEAR) + "년 " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "월");
+        //calendar에서 달이 바뀔때 YearMonthTv값도 바뀐다.
+        mcalendar.setOnDateClickListener(new OnExpDateClickListener()).setOnMonthScrollListener(new OnMonthScrollListener() {
+            @Override
+            public void onMonthChange(int year, int month) {
+                YearMonthTv.setText(String.format("%d년 %d월", year, month));
+            }
 
+            @Override
+            public void onMonthScroll(float positionOffset) {
+//                Log.i("listener", "onMonthScroll:" + positionOffset);
+            }
+        });
 
         //==달력 내에서 날짜 선택시 백그라운드 변경 코드 ==
         // 현재시간을 받아온다. (년, 월, 일)
