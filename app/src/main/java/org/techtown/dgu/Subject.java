@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.techtown.dgu.R;
 
-import sun.bob.mcalendarview.views.BaseCellView;
-
 public class Subject extends Fragment {
     public static Subject newInstance() {
         return new Subject();

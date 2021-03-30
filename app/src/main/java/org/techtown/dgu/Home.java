@@ -28,26 +28,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import sun.bob.mcalendarview.MCalendarView;
-import sun.bob.mcalendarview.MarkStyle;
-import sun.bob.mcalendarview.adapters.CalendarAdapter;
-import sun.bob.mcalendarview.listeners.OnDateClickListener;
-import sun.bob.mcalendarview.listeners.OnExpDateClickListener;
-import sun.bob.mcalendarview.listeners.OnMonthChangeListener;
-import sun.bob.mcalendarview.listeners.OnMonthScrollListener;
-import sun.bob.mcalendarview.utils.CurrentCalendar;
-import sun.bob.mcalendarview.views.BaseCellView;
-import sun.bob.mcalendarview.views.DefaultMarkView;
-import sun.bob.mcalendarview.views.ExpCalendarView;
-import sun.bob.mcalendarview.views.MonthView;
-import sun.bob.mcalendarview.vo.DateData;
-import sun.bob.mcalendarview.vo.DayData;
-import sun.bob.mcalendarview.vo.MonthData;
+
 
 
 public class Home extends Fragment {
     private CalendarView mcalendar; //달력
     private  ViewGroup view;
+    String selectday; // 타임테이블에서 받을 예정, 달력에서 선택된 날짜
+    MainActivity activity;
+    Context context;
+
+    @Override
+    public  void onAttach(@NonNull Context context){
+        super.onAttach(context);
+        this.context=context;
+
+        //달력에서 선택한 날짜 수신에 필요한 객체들 초기화
+        activity=(MainActivity)getActivity();
+        selectday="";
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,15 +54,36 @@ public class Home extends Fragment {
         view = (ViewGroup) inflater.inflate(R.layout.home, container,false);
         mcalendar=view.findViewById(R.id.calendarView);
 
+        //날짜를 누르면 실행되는 함수
         mcalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                month+=1; // 0~11월이라서 1을 더해줘야함.
 
+                //형식 맞춰주기
+                if(month<10){
+                    selectday =""+ year + "0"+month;
+                }else{
+                    selectday =""+ year + month;
+                }
+                if(dayOfMonth<10){
+                    selectday+="0"+dayOfMonth;
+                }else{
+                    selectday+=dayOfMonth;
+                }
+
+
+                Bundle selectday_bundle=new Bundle();
+                selectday_bundle.putString("selectday",selectday);
+                activity.setDayBundle(selectday_bundle);
+
+                ((MainActivity)getActivity()).replaceFragment_addtobackstack(Timetable.newInstance());
             }
         });
 
         return view;
     }
+
 
 }
 
