@@ -7,6 +7,7 @@
     android:background="#00FFFFFF"
     android:gravity="right"
     android:orientation="vertical"
+    android:id="@+id/homelayout"
     tools:context=".Home">
 
 
@@ -30,6 +31,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/gear"
             android:tint="@color/green" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -40,46 +42,17 @@
 
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/calendar_border"
             android:orientation="vertical"
             android:padding="2dp">
 
-            <TextView
-                android:id="@+id/main_YYMM_Tv"
-                android:layout_width="138dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/calendar_title"
-                android:gravity="center_horizontal|center_vertical"
-                android:padding="8dp"
-                android:text="----년-월"
-                android:textColor="@color/white" />
-
-
-            <sun.bob.mcalendarview.views.WeekColumnView
+            <CalendarView
+                android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                tools:context=".Home">
+                android:showWeekNumber="true" />
 
-            </sun.bob.mcalendarview.views.WeekColumnView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#6FAAB8A6" />
-
-            <sun.bob.mcalendarview.views.ExpCalendarView
-                android:id="@+id/mcalendar1"
-                android:layout_width="match_parent"
-                android:layout_height="307dp"
-                android:layout_marginBottom="12dp"
-                android:background="#00FFFFFF">
-
-            </sun.bob.mcalendarview.views.ExpCalendarView>
 
         </LinearLayout>
     </LinearLayout>
