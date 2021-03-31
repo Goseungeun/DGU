@@ -71,16 +71,12 @@ public class Timetable extends Fragment {
 
         //gridview 내용 채워넣기 시작
 
+
+
         //타임테이블 옆 시간 채워넣기
-        for(int i=0;i<24;i++){
-            hour_adapter.addItem(new timetable_hour_Item(i));
-        }
-        //타임테이블 옆 시간 보이기
-        timetable_hour_name.setAdapter(hour_adapter);
-
-
         //타임테이블에 들어있는 뷰마다 시간 지정해주기
         for (int hour=0;hour<24;hour++){
+            hour_adapter.addItem(new timetable_hour_Item(hour));
             for(int min=0;min<60;min++){
                 adapter.addItem(new Timetable_Item(hour,min));
             }
@@ -88,6 +84,9 @@ public class Timetable extends Fragment {
 
         //디비에 저장된 공부한시간을 체크해서 각 Timetable_Item의 stdudy(boolean값, default: false)을 변경해줘야한다.
 
+
+        //타임테이블 옆 시간 보이기
+        timetable_hour_name.setAdapter(hour_adapter);
         //타임테이블 보이기
         timetable.setAdapter(adapter);
 
