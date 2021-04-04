@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     org.techtown.dgu.License license;
     org.techtown.dgu.MyLicense my_license;
 
+    //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
+    Bundle dayBundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +113,17 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    }
+
+    // replaceFragment에서 .addToBackStack(null)만 추가함
+    public void replaceFragment_addtobackstack(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment).addToBackStack(null).commit();
+    }
+
+    public void setDayBundle(Bundle bundle){
+        this.dayBundle=bundle;
     }
 
 }
