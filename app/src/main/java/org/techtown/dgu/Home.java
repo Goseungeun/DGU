@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +80,19 @@ public class Home extends Fragment {
                 activity.setDayBundle(selectday_bundle);
 
                 ((MainActivity)getActivity()).replaceFragment_addtobackstack(Timetable.newInstance());
+            }
+        });
+
+
+        //setting button을 누르면 실행되는 함수
+        ImageButton settingbutton = (ImageButton)view.findViewById(R.id.SettingButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+
+        settingbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
+                ((MainActivity)getActivity()).replaceFragment(new Setting());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
 
