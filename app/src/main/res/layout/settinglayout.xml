@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settinglayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp">
+    android:background="#00FFFFFF"
+    android:gravity="right"
+    android:orientation="vertical"
+    tools:context=".Setting_Fragment">
 
-    <fragment
-        android:id="@+id/setting_container"
-        android:name="org.techtown.dgu.Setting"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="74dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/SettingButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow"
+            android:tint="@color/green" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:layout_weight="0"
+            android:paddingLeft="10dp"
+            android:text="Setting"
+            android:textColor="@color/deepgreen"
+            android:textSize="25sp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="0dp">
+
+        <fragment
+            android:id="@+id/setting_container"
+            android:name="org.techtown.dgu.Setting"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
+</LinearLayout>
