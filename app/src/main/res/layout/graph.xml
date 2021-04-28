@@ -7,10 +7,19 @@
     android:orientation="vertical"
     tools:context=".Graph">
 
-
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="graph" />
+        android:text="성적그래프"
+        android:textSize="24sp" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/graph_chart"
+        android:layout_width="397dp"
+        android:layout_height="287dp"
+        android:layout_gravity="center" />
+
 </LinearLayout>
+
+
