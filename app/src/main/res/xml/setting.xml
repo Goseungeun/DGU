@@ -10,13 +10,19 @@
         <SwitchPreferenceCompat
             app:key="vibrate"
             app:title="진동 알림"
-            app:summary="마감기한 하루 전에 진동으로 알림"
+            app:summaryOn="마감기한 하루 전에 진동으로 알림을 받습니다."
+            app:summaryOff="마감기한 하루 전에 진동으로 알림을 받지 않습니다."
+            app:defaultValue="true"
+            app:enabled="true"
             app:iconSpaceReserved="false"/>
 
         <SwitchPreferenceCompat
-            app:key="massage"
+            app:key="sound"
             app:title="소리 알림"
-            app:summary="마감기한 하루 전에 소리로 알림"
+            app:summaryOn="마감기한 하루 전에 소리로 알림을 받습니다."
+            app:summaryOff="마감기한 하루 전에 소리로 알림을 받지 않습니다."
+            app:defaultValue="false"
+            app:enabled="true"
             app:iconSpaceReserved="false"/>
 
 
@@ -28,11 +34,11 @@
         app:iconSpaceReserved="false">
 
         <Preference
-            android:key="appinfo"
+            app:key="appinfo"
             app:iconSpaceReserved="false"
             app:title="어플 정보" />
         <Preference
-            android:key="developerinfo"
+            app:key="developerinfo"
             app:title="개발자 정보"
             app:iconSpaceReserved="false"/>
         <Preference

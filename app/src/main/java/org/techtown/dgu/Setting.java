@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 public class Setting extends PreferenceFragmentCompat {
     //xml 폴더 안에 있는 setting.xml의 event
@@ -48,6 +50,32 @@ public class Setting extends PreferenceFragmentCompat {
                 return false;
             }
         });
+
+        //진동과 소리중 하나만 선택할 수 있도록 만들기
+        SwitchPreferenceCompat Sound = findPreference("sound");
+        SwitchPreferenceCompat Vibrate = findPreference("vibrate");
+
+        Sound.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if(Sound.isChecked()) {
+                    Vibrate.setChecked(false);
+                }
+                return false;
+            }
+        });
+        Vibrate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if(Vibrate.isChecked()) {
+                    Sound.setChecked(false);
+                }
+                return false;
+            }
+        });
+
+
+
 
 
 
