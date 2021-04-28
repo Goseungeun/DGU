@@ -5,29 +5,34 @@
 
     <PreferenceCategory
         app:key="notifications_category"
-        app:title="알림설정">
+        app:title="알림설정"
+        app:iconSpaceReserved="false">
         <SwitchPreferenceCompat
             app:key="vibrate"
             app:title="진동 알림"
             app:summary="마감기한 하루 전에 진동으로 알림"
-            app:enabled="false"/>
+            app:enabled="false"
+            app:iconSpaceReserved="false"/>
 
         <SwitchPreferenceCompat
             app:key="massage"
             app:title="소리 알림"
             app:summary="마감기한 하루 전에 소리로 알림"
-            app:enabled="true"/>
+            app:enabled="true"
+            app:iconSpaceReserved="false"/>
 
         <Preference
             app:key="massage"
             app:title="소리 알림"
-            app:summary="마감기한 하루 전에 소리로 알림"/>
+            app:summary="마감기한 하루 전에 소리로 알림"
+            app:iconSpaceReserved="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="project_summary"
         app:title="DGU"
-        app:summary="충북대학교 소프트웨어학과 2021년 캡스톤 디자인 졸업작품 01-05팀\n제작 : 가을, 고승은, 임지현">
+        app:summary="충북대학교 소프트웨어학과 2021년 캡스톤 디자인 졸업작품 01-05팀\n제작 : 가을, 고승은, 임지현"
+        app:iconSpaceReserved="false">
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
