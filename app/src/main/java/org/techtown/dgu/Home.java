@@ -92,7 +92,7 @@ public class Home extends Fragment {
             public void onClick(View v) {
 
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                ((MainActivity)getActivity()).replaceFragment(new Setting());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+                ((MainActivity)getActivity()).replaceFragment(new Setting_Fragment());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
 
