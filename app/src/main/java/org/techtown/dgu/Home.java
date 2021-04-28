@@ -1,36 +1,15 @@
 package org.techtown.dgu;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-
 
 
 public class Home extends Fragment {
@@ -85,7 +64,7 @@ public class Home extends Fragment {
 
 
         //setting button을 누르면 실행되는 함수
-        ImageButton settingbutton = (ImageButton)view.findViewById(R.id.SettingButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+        ImageButton settingbutton = (ImageButton)view.findViewById(R.id.BackButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
         settingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
