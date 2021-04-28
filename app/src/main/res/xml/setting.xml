@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
@@ -11,21 +11,15 @@
             app:key="vibrate"
             app:title="진동 알림"
             app:summary="마감기한 하루 전에 진동으로 알림"
-            app:enabled="false"
             app:iconSpaceReserved="false"/>
 
         <SwitchPreferenceCompat
             app:key="massage"
             app:title="소리 알림"
             app:summary="마감기한 하루 전에 소리로 알림"
-            app:enabled="true"
             app:iconSpaceReserved="false"/>
 
-        <Preference
-            app:key="massage"
-            app:title="소리 알림"
-            app:summary="마감기한 하루 전에 소리로 알림"
-            app:iconSpaceReserved="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -33,6 +27,19 @@
         app:title="DGU"
         app:summary="충북대학교 소프트웨어학과 2021년 캡스톤 디자인 졸업작품 01-05팀\n제작 : 가을, 고승은, 임지현"
         app:iconSpaceReserved="false">
+
+        <Preference
+            android:key="appinfo"
+            app:iconSpaceReserved="false"
+            app:title="어플 정보" />
+        <Preference
+            android:key="developerinfo"
+            app:title="개발자 정보"
+            app:iconSpaceReserved="false"/>
+        <Preference
+            app:title="오픈소스"
+            app:iconSpaceReserved="false"/>
+
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
