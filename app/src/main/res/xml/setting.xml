@@ -25,7 +25,6 @@
     <PreferenceCategory
         app:key="project_summary"
         app:title="DGU"
-        app:summary="충북대학교 소프트웨어학과 2021년 캡스톤 디자인 졸업작품 01-05팀\n제작 : 가을, 고승은, 임지현"
         app:iconSpaceReserved="false">
 
         <Preference
