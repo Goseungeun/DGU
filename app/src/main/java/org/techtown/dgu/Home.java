@@ -1,34 +1,15 @@
 package org.techtown.dgu;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-
 
 
 public class Home extends Fragment {
@@ -78,6 +59,19 @@ public class Home extends Fragment {
                 activity.setDayBundle(selectday_bundle);
 
                 ((MainActivity)getActivity()).replaceFragment_addtobackstack(Timetable.newInstance());
+            }
+        });
+
+
+        //setting button을 누르면 실행되는 함수
+        ImageButton settingbutton = (ImageButton)view.findViewById(R.id.BackButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+
+        settingbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
+                ((MainActivity)getActivity()).replaceFragment(new Setting_Fragment());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
 

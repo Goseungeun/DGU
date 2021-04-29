@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <PreferenceCategory
+        app:key="notifications_category"
+        app:title="알림설정"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="vibrate"
+            app:title="진동 알림"
+            app:summaryOn="마감기한 하루 전에 진동으로 알림을 받습니다."
+            app:summaryOff="마감기한 하루 전에 진동으로 알림을 받지 않습니다."
+            app:defaultValue="true"
+            app:enabled="true"
+            app:iconSpaceReserved="false"/>
+
+        <SwitchPreferenceCompat
+            app:key="sound"
+            app:title="소리 알림"
+            app:summaryOn="마감기한 하루 전에 소리로 알림을 받습니다."
+            app:summaryOff="마감기한 하루 전에 소리로 알림을 받지 않습니다."
+            app:defaultValue="false"
+            app:enabled="true"
+            app:iconSpaceReserved="false"/>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="project_summary"
+        app:title="DGU"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="appinfo"
+            app:iconSpaceReserved="false"
+            app:title="어플 정보" />
+        <Preference
+            app:key="developerinfo"
+            app:title="개발자 정보"
+            app:iconSpaceReserved="false"/>
+        <Preference
+            app:title="오픈소스"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
