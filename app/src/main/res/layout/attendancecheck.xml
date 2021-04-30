@@ -1,6 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settinglayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00FFFFFF"
+    android:gravity="right"
+    android:orientation="vertical"
+    tools:context=".AttendanceCheck">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="74dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/BackButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow"
+            android:tint="@color/green" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:layout_weight="0"
+            android:paddingLeft="10dp"
+            android:text="출석체크"
+            android:textColor="@color/deepgreen"
+            android:textSize="23sp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="0dp"
+                android:layout_weight="0"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="출석 :"
+                android:textColor="@color/deepgreen"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/checkmark"
+                app:tint="#4CAF50" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="0dp"
+                android:layout_weight="0"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="지각 :"
+                android:textColor="@color/deepgreen"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/minus"
+                app:tint="#FFC107" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="0dp"
+                android:layout_weight="0"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="결석 :"
+                android:textColor="@color/deepgreen"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/xmark"
+                app:tint="#FF5722" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="0dp">
+
+        <fragment
+            android:id="@+id/setting_container"
+            android:name="org.techtown.dgu.AttendanceCheckTable"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
+</LinearLayout>
