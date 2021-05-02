@@ -282,6 +282,9 @@ public class AttendanceCheckTable extends Fragment {
                         else checklist[i][j]=(Integer)null;
 
 
+                        ///Start UPDATE
+                        //checkresult update
+                        ViewCheckResult(checkresult);
                         //imgview update
                         imgview[i][k].setImageResource(
                                 imgview_setImageResource(i,k)
@@ -289,6 +292,7 @@ public class AttendanceCheckTable extends Fragment {
                         ImageViewCompat.setImageTintList(imgview[i][k], ColorStateList.valueOf(
                                 getResources().getColor(imgview_setTint(i,k))
                         ));
+                        ///End UPDATE
                     }
                 });
         builder.setNegativeButton("Cancel",
