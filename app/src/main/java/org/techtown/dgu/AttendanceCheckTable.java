@@ -2,6 +2,7 @@ package org.techtown.dgu;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -35,6 +37,10 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttendanceCheckTable extends Fragment {
 
@@ -44,7 +50,7 @@ public class AttendanceCheckTable extends Fragment {
     private static final int DAY_A_WEEK = 7;     //한 주에 몇번 수업하는지
 
     //0:attendance, 1:late, 2:absent, null : no value
-    private Integer[][] checklist = {
+    public Integer[][] checklist = {
             {0,1,0,1,0,1,2},{1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{0,1,1,1,1,1,1},
             {1,1,1,1,1,1,1},{1,0,1,1,1,1,1},{1,2,1,1,1,1,1},{1,1,1,1,1,1,1},
             {1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{2,1,1,1,1,1,1},{1,1,1,1,1,1,1},
@@ -143,21 +149,19 @@ public class AttendanceCheckTable extends Fragment {
                     ImageViewCompat.setImageTintList(imgview[i][j], ColorStateList.valueOf(
                             getResources().getColor(imgview_setTint(i,j))
                     ));
-                    //버튼마다 다이어로그 띄우기
+
+                    ///End imagview basic setting
+
+                    ///Start dialog of imagview
+                    int finalJ = j;
+                    int finalI = i;
                     imgview[i][j].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                            builder.setTitle("출석 체크").setMessage(R.string.attendance_string);
-                            AlertDialog alertDialog = builder.create();
-
-                            alertDialog.show();
-
+                            dialog_show(finalI,finalJ);
                         }
                     });
-
-                    ///End imagview basic setting
+                    ///End dialog of imagview
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
@@ -175,8 +179,16 @@ public class AttendanceCheckTable extends Fragment {
                 }
             }
             ///End checktable write
+
+
         }
 
+
+        for(int i=0;i<table_row;i++){
+            for(int j=0;j<table_column;j++){
+
+            }
+        }
         return view;
     }
 
@@ -222,6 +234,72 @@ public class AttendanceCheckTable extends Fragment {
         else  return(R.color.xmark);
     }
 
+    //dialog
+    public void dialog_show(int i,int k){
+        int j=k-1;      //i,j : checklist의 위치 파악을 위한 값
+        //table의 0번째 column이 index라서 이렇게 계산함.
+
+
+        //list에 들어갈 값 설정
+        final List<String> ListItems = new ArrayList<>();
+        ListItems.add("출석");
+        ListItems.add("지각");
+        ListItems.add("결석");
+        ListItems.add("아직 안들음");
+        final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
+
+        //선택한 값 표시용 리스트
+        final List selectedItems = new ArrayList();
+
+        //default값 정하기
+        int defaultItem;
+            //0:attendance, 1:late, 2:absent, null : no value
+        if(checklist[i][j]==(Integer)0)defaultItem=0;
+        else if(checklist[i][j]==(Integer)1)defaultItem=1;
+        else if(checklist[i][j]==(Integer)2)defaultItem=2;
+        else defaultItem=3;
+        selectedItems.add(defaultItem);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setSingleChoiceItems(items, defaultItem,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedItems.clear();
+                        selectedItems.add(which);   //선택한 항목을 selectedItem에 집어넣는다.
+                    }
+                });
+        builder.setPositiveButton("Save",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //seletedItems.get(0) = 선택한 항목
+                        //checklist 값 바꾸기 //0:attendance, 1:late, 2:absent, null : no value
+                        int result = (int)selectedItems.get(0);
+                        if(result==0)checklist[i][j]=(Integer)0;
+                        else if(result==1)checklist[i][j]=(Integer)1;
+                        else if(result==2)checklist[i][j]=(Integer)2;
+                        else checklist[i][j]=(Integer)null;
+
+
+                        //imgview update
+                        imgview[i][k].setImageResource(
+                                imgview_setImageResource(i,k)
+                        );
+                        ImageViewCompat.setImageTintList(imgview[i][k], ColorStateList.valueOf(
+                                getResources().getColor(imgview_setTint(i,k))
+                        ));
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.show();
+    }
 
 
 
