@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DGU</string>
+    <string name="attendance_string">출석, 지각, 결석 중에 하나를 선택해 주세요</string>
 </resources>

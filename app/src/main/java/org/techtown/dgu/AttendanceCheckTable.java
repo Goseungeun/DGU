@@ -1,6 +1,7 @@
 package org.techtown.dgu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -142,9 +143,21 @@ public class AttendanceCheckTable extends Fragment {
                     ImageViewCompat.setImageTintList(imgview[i][j], ColorStateList.valueOf(
                             getResources().getColor(imgview_setTint(i,j))
                     ));
+                    //버튼마다 다이어로그 띄우기
+                    imgview[i][j].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                            builder.setTitle("출석 체크").setMessage(R.string.attendance_string);
+                            AlertDialog alertDialog = builder.create();
+
+                            alertDialog.show();
+
+                        }
+                    });
 
                     ///End imagview basic setting
-
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
@@ -163,9 +176,6 @@ public class AttendanceCheckTable extends Fragment {
             }
             ///End checktable write
         }
-
-
-
 
         return view;
     }
