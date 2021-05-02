@@ -1,6 +1,7 @@
 package org.techtown.dgu;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Insets;
@@ -30,6 +31,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 
 public class AttendanceCheckTable extends Fragment {
@@ -113,8 +116,6 @@ public class AttendanceCheckTable extends Fragment {
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
-                    //실제 스마트폰 크기 or 애뮬레이터 size를 구해서 배열 수 만큼 나누어줘 layoutparams에 저장해준다.
-                    int refwidth = getScreenWidthSize(getActivity());
                     gl.width= GridLayout.LayoutParams.MATCH_PARENT;
                     gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
 
@@ -129,7 +130,7 @@ public class AttendanceCheckTable extends Fragment {
                     );
                     imgview[i][j].setLayoutParams(imgparams);
                     imgview[i][j].setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    imgview[i][j].setPadding(10,10,10,10);
+                    imgview[i][j].setPadding(20,20,20,20);
                     imgview[i][j].setBackgroundColor(Color.WHITE);
 
 
@@ -138,13 +139,15 @@ public class AttendanceCheckTable extends Fragment {
                     imgview[i][j].setImageResource(
                             imgview_setImageResource(i,j)
                     );
+                    ImageViewCompat.setImageTintList(imgview[i][j], ColorStateList.valueOf(
+                            getResources().getColor(imgview_setTint(i,j))
+                    ));
+
                     ///End imagview basic setting
 
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
-                    //실제 스마트폰 크기 or 애뮬레이터 size를 구해서 배열 수 만큼 나누어줘 layoutparams에 저장해준다.
-                    int refwidth = getScreenWidthSize(getActivity());
                     gl.width= (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
                     gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
 
@@ -200,13 +203,15 @@ public class AttendanceCheckTable extends Fragment {
         else return(R.drawable.nothing);
     }
 
-
-    //실제 스마트폰 크기 or 애뮬레이터 width size를 구해주는 함수
-    public int getScreenWidthSize(@NonNull Activity activity){
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            return displayMetrics.widthPixels;
+    //출석,지각,결석에 맞춰서 이미지 색칠하기
+    public int imgview_setTint(int i,int k){
+        int j=k-1;
+        //0:attendance, 1:late, 2:absent, null : no value
+        if(checklist[i][j]==(Integer)0)return(R.color.checkmark);
+        else if(checklist[i][j]==(Integer)1)return(R.color.minus);
+        else  return(R.color.xmark);
     }
+
 
 
 
