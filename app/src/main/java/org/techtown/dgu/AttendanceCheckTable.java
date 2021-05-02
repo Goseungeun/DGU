@@ -37,12 +37,14 @@ public class AttendanceCheckTable extends Fragment {
     //해당 과목임을 알아볼 수 있는 아이디가 필요!
     //int는 null로 초기화 할 수 없고, Integer은 null로 초기화 가능
     private static final int WEEK = 15;           //몇주차인지
-    private static final int DAY_A_WEEK = 2;     //한 주에 몇번 수업하는지
+    private static final int DAY_A_WEEK = 7;     //한 주에 몇번 수업하는지
 
     //0:attendance, 1:late, 2:absent, null : no value
     private Integer[][] checklist = {
-            {1,1},{1,1},{1,1},{0,1},{0,1},{1,1},{1,0},{1,2},{1,1},{1,1},{1,1},{2,1},{1,1},
-            {1,null},{null,null}
+            {0,1,0,1,0,1,2},{1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{0,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1},{1,0,1,1,1,1,1},{1,2,1,1,1,1,1},{1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{2,1,1,1,1,1,1},{1,1,1,1,1,1,1},
+            {0,1,1,1,1,1,1},{1,null,1,1,1,1,1},{null,null,1,1,1,1,1}
     };
     //checklist.length하면 null도 포함해서 알려준다.
 
@@ -72,7 +74,7 @@ public class AttendanceCheckTable extends Fragment {
         ///End checkresult write
 
         table_row=WEEK;
-        table_column=DAY_A_WEEK;
+        table_column=DAY_A_WEEK+1;//index가 0번째 column
 
         imgview = new ImageView[table_row][table_column];
 
@@ -84,35 +86,77 @@ public class AttendanceCheckTable extends Fragment {
         for(int i=0;i<table_row;i++){
             //Where to put it (row)
             GridLayout.Spec rowSpec= GridLayout.spec(i);
+
             for(int j=0;j<table_column;j++){
                 //Where to put it (column)
                 GridLayout.Spec colSpec = GridLayout.spec(j);
 
-                ///Start imagview basic setting
-                imgview[i][j]=new ImageView(getActivity());
-                imgview[i][j].setLayoutParams(new ViewGroup.LayoutParams(
-                        (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()),
-                        (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics())
-                ));
-                imgview[i][j].setScaleType(ImageView.ScaleType.FIT_CENTER);
+                if(j==0){
+                    //index
+                    TextView index = new TextView(getActivity());
+                    ViewGroup.LayoutParams indexparams = new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    index.setLayoutParams(indexparams);
+                    if(i<9){
+                        index.setText("0"+(i+1)+"주차");
+                    }else{
+                        index.setText(""+(i+1)+"주차");
+                    }
 
-                //Change the image displayed in imgview according to the contents of checklist
-                //And Change the image color displayed in imgview according to the contents of checklist
-                imgview[i][j].setImageResource(
-                        imgview_setImageResource(i,j)
-                );
-                ///End imagview basic setting
+                    index.setBackgroundColor(getResources().getColor(R.color.deepgreen));
+                    index.setTextColor(Color.WHITE);
+                    index.setGravity(Gravity.CENTER);
+
+                    index.setPadding(10,10,10,10);
+
+                    GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
+
+                    //실제 스마트폰 크기 or 애뮬레이터 size를 구해서 배열 수 만큼 나누어줘 layoutparams에 저장해준다.
+                    int refwidth = getScreenWidthSize(getActivity());
+                    gl.width= GridLayout.LayoutParams.MATCH_PARENT;
+                    gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+
+                    checktable.addView(index,gl);
+                }
+                else{
+                    ///Start imagview basic setting
+                    imgview[i][j]=new ImageView(getActivity());
+                    ViewGroup.LayoutParams imgparams = new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    imgview[i][j].setLayoutParams(imgparams);
+                    imgview[i][j].setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    imgview[i][j].setPadding(10,10,10,10);
+                    imgview[i][j].setBackgroundColor(Color.WHITE);
 
 
-                GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
+                    //Change the image displayed in imgview according to the contents of checklist
+                    //And Change the image color displayed in imgview according to the contents of checklist
+                    imgview[i][j].setImageResource(
+                            imgview_setImageResource(i,j)
+                    );
+                    ///End imagview basic setting
 
-                //실제 스마트폰 크기 or 애뮬레이터 size를 구해서 배열 수 만큼 나누어줘 layoutparams에 저장해준다.
-                int refwidth = getScreenWidthSize(getActivity());
-                int refheight = getScreenHeightSize(getActivity());
-                gl.width=refwidth/table_column;
-                gl.height=refheight/table_row;
 
-                checktable.addView(imgview[i][j],gl);
+                    GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
+
+                    //실제 스마트폰 크기 or 애뮬레이터 size를 구해서 배열 수 만큼 나누어줘 layoutparams에 저장해준다.
+                    int refwidth = getScreenWidthSize(getActivity());
+                    gl.width= (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+                    gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+
+
+                    int marginsize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+                    gl.setMargins(
+                            marginsize,marginsize,marginsize,marginsize
+                    );
+
+
+                    checktable.addView(imgview[i][j],gl);
+                }
             }
             ///End checktable write
         }
@@ -147,7 +191,8 @@ public class AttendanceCheckTable extends Fragment {
     }
 
     //출석,지각,결석에 맞춰서 이미지 표시하기
-    public int imgview_setImageResource(int i, int j){
+    public int imgview_setImageResource(int i, int k){
+        int j=k-1;
         //0:attendance, 1:late, 2:absent, null : no value
         if(checklist[i][j]==(Integer)0)return(R.drawable.checkmark);
         else if(checklist[i][j]==(Integer)1)return(R.drawable.minus);
@@ -158,32 +203,9 @@ public class AttendanceCheckTable extends Fragment {
 
     //실제 스마트폰 크기 or 애뮬레이터 width size를 구해주는 함수
     public int getScreenWidthSize(@NonNull Activity activity){
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();
-            Insets insets = windowMetrics.getWindowInsets()
-                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            return windowMetrics.getBounds().width() - insets.left - insets.right;
-        } else {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             return displayMetrics.widthPixels;
-        }
-    }
-
-    //실제 스마트폰 크기 or 애뮬레이터 height size를 구해주는 함수
-    public int getScreenHeightSize(@NonNull Activity activity){
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowMetrics windowMetrics = activity.getWindowManager().getCurrentWindowMetrics();
-            Insets insets = windowMetrics.getWindowInsets()
-                    .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars());
-            return windowMetrics.getBounds().height() - insets.top - insets.bottom;
-        } else {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            return displayMetrics.heightPixels;
-        }
     }
 
 
