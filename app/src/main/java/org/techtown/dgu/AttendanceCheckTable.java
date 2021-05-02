@@ -96,7 +96,6 @@ public class AttendanceCheckTable extends Fragment {
         for(int i=0;i<table_row;i++){
             //Where to put it (row)
             GridLayout.Spec rowSpec= GridLayout.spec(i);
-
             for(int j=0;j<table_column;j++){
                 //Where to put it (column)
                 GridLayout.Spec colSpec = GridLayout.spec(j);
@@ -124,8 +123,7 @@ public class AttendanceCheckTable extends Fragment {
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
                     gl.width= GridLayout.LayoutParams.MATCH_PARENT;
-                    gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-
+                    gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
                     checktable.addView(index,gl);
                 }
                 else{
@@ -165,8 +163,8 @@ public class AttendanceCheckTable extends Fragment {
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
-                    gl.width= (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-                    gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+                    gl.width= (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
+                    gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
 
 
                     int marginsize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
@@ -304,7 +302,6 @@ public class AttendanceCheckTable extends Fragment {
                 });
         builder.show();
     }
-
 
 
 }
