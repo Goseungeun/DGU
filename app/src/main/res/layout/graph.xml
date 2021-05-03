@@ -8,11 +8,9 @@
     tools:context=".Graph">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="성적그래프"
-        android:textSize="24sp" />
+        android:layout_height="wrap_content" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/graph_chart"

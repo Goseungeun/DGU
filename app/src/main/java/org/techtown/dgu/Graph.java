@@ -92,6 +92,7 @@ public class Graph extends Fragment {
     }
 
 private void setData(){
+        //데이터 입력하기
     ArrayList<Entry> values = new ArrayList<>();
     values.add(new Entry(1f, 3.94f));
     values.add(new Entry(2f, 4.04f));
