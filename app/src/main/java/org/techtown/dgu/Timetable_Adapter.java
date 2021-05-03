@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,8 +28,9 @@ public class Timetable_Adapter extends BaseAdapter {
         Timetable_Item tt_item = items.get(position);
 
 
-        //Timetable_item을 inflate하고 convertView를 참조한다.
+        //Timetable_item을 timetable_item layout과 연결한다.
         if(convertView==null){
+
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView=inflater.inflate(R.layout.timetable_item,parent,false);
         }

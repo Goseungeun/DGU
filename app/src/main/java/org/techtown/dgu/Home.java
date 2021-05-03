@@ -58,7 +58,7 @@ public class Home extends Fragment {
                 selectday_bundle.putString("selectday",selectday);
                 activity.setDayBundle(selectday_bundle);
 
-                ((MainActivity)getActivity()).replaceFragment_addtobackstack(Timetable.newInstance());
+                ((MainActivity)getActivity()).replaceFragment(Timetable.newInstance());
             }
         });
 

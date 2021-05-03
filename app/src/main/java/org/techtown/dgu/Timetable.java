@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -90,7 +91,26 @@ public class Timetable extends Fragment {
         //타임테이블 보이기
         timetable.setAdapter(adapter);
 
+        ///Start remove scrolling function of timetable_hour_name & timetable
+        timetable.setEnabled(false);
+        timetable_hour_name.setEnabled(false);
+            //scrollbar remove
+        timetable.setVerticalScrollBarEnabled(false);
+        timetable_hour_name.setVerticalScrollBarEnabled(false);
+        ///End remove scrolling function of timetable_hour_name & timetable
 
+
+        //BackButton을 누르면 실행되는 함수
+        ImageButton backbutton = (ImageButton)view.findViewById(R.id.ttBackButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
+                ((MainActivity)getActivity()).replaceFragment(new Home());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+            }
+        });
 
         return view;
 
