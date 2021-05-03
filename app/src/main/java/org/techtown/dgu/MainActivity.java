@@ -53,31 +53,26 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.tab1:
-                        Toast.makeText(getApplicationContext(), "첫 번째 탭 선택됨", Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, subject).commit();
 
                         return true;
                     case R.id.tab2:
-                        Toast.makeText(getApplicationContext(), "두 번째 탭 선택됨", Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container,graph).commit();
 
                         return true;
                     case R.id.tab3:
-                        Toast.makeText(getApplicationContext(), "세 번째 탭 선택됨", Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, home).commit();
                         return true;
 
                     case R.id.tab4:
-                        Toast.makeText(getApplicationContext(), "네 번째 탭 선택됨", Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, license).commit();
                         return true;
 
                     case R.id.tab5:
-                        Toast.makeText(getApplicationContext(), "다섯 번째 탭 선택됨", Toast.LENGTH_LONG).show();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, my_license).commit();
                         return true;
