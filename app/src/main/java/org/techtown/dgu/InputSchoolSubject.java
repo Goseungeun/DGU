@@ -1,5 +1,8 @@
 package org.techtown.dgu;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +12,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-/*
-public class InputSchoolSubject extends AppCompatActivity {
+
+/*public class InputSchoolSubject extends Fragment {
     EditText subjectNameInput;
     EditText weekInput;
     EditText weekFrequencyInput;
@@ -45,9 +49,71 @@ public class InputSchoolSubject extends AppCompatActivity {
 
 
 
+public class InputSchoolSubject extends DialogFragment {
 
-public class InputSchoolSubject extends Fragment {
-    public static InputSchoolSubject newInstance() {
+    private MydialogListener myListener;
+
+    public interface MydialogListener {
+        public void myCallback(String subjectName);
+    }
+
+    public InputSchoolSubject() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            myListener = (MydialogListener) getTargetFragment();
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException();
+        }
+
+    }
+
+    @Override
+
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        builder.setView(inflater.inflate(R.layout.activity_subject_input, null))
+
+                .setPositiveButton("저장", new DialogInterface.OnClickListener() {
+
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {
+//입력받은 데이터 저장 부분 만들기
+                       /* EditText esubjectName = (EditText)getDialog().findViewById(R.id.subjectNameInput);
+                        String subjectName = esubjectName.getText().toString();
+
+                        myListener. myCallback(subjectName);*/
+                    }
+                });
+                 builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        return builder.create();
+
+    }
+
+
+
+
+
+
+
+
+
+
+    /*public static InputSchoolSubject newInstance() {
         return new InputSchoolSubject();
     }
 
@@ -56,6 +122,6 @@ public class InputSchoolSubject extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_subject_input, container, false);
 
-    }
+    }*/
 
 }

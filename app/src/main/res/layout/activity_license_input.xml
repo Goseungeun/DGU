@@ -35,7 +35,7 @@
                     android:id="@+id/nameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="   과  목  명   "
+                    android:text="  자 격 증 명 "
                     android:textColor="#ff222222"
                     android:textSize="16sp" />
 
@@ -46,6 +46,15 @@
                     android:layout_alignBaseline="@id/nameLabel"
                     android:maxLength="10"
                     android:inputType="textPersonName" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -55,18 +64,18 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/weekLabel"
+                    android:id="@+id/testLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="   주  차  수   "
+                    android:text="  시 험 일 자 "
                     android:textColor="#ff222222"
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/weekInput"
+                    android:id="@+id/editTextDate"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/weekLabel"
+                    android:layout_alignBaseline="@id/testLabel"
                     android:inputType="numberDecimal"
                     android:maxLength="3" />
             </LinearLayout>
@@ -78,17 +87,17 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/freLabel"
+                    android:id="@+id/progressLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="  수 업 시 수 "
+                    android:text="   총  진  도   "
                     android:textColor="#ff222222"
                     android:textSize="16sp" />
                 <EditText
-                    android:id="@+id/weekFrequencyInput"
+                    android:id="@+id/progressRateInput"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/freLabel"
+                    android:layout_alignBaseline="@id/progressLabel"
                     android:inputType="numberDecimal"
                     android:maxLength="3" />
             </LinearLayout>
@@ -96,6 +105,14 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contentsLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="저 장" />
 
     </RelativeLayout>
 
