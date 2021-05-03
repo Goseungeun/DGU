@@ -15,26 +15,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="성적그래프"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="성적 그래프"
+                android:textColor="@color/deepgreen"
                 android:textSize="24sp" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/graph_chart"
                 android:layout_width="match_parent"
                 android:layout_height="287dp"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
             </com.github.mikephil.charting.charts.LineChart>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -45,6 +53,8 @@
                         android:id="@+id/button15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="1-1" />
 
@@ -52,6 +62,8 @@
                         android:id="@+id/button16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="1-2" />
 
@@ -59,6 +71,8 @@
                         android:id="@+id/button17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="2-1" />
 
@@ -66,6 +80,8 @@
                         android:id="@+id/button18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="2-2" />
 
@@ -73,6 +89,8 @@
                         android:id="@+id/button19"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="3-1" />
 
@@ -80,6 +98,8 @@
                         android:id="@+id/button20"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="3-2" />
 
@@ -87,6 +107,8 @@
                         android:id="@+id/button21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="4-1" />
 
@@ -94,6 +116,8 @@
                         android:id="@+id/button22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="4-2" />
 
@@ -101,6 +125,8 @@
                         android:id="@+id/button23"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:text="기타학기" />
                 </LinearLayout>
@@ -108,7 +134,9 @@
 
             <FrameLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <fragment
                     android:id="@+id/setting_container"
