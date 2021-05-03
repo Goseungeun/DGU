@@ -96,6 +96,18 @@
         </LinearLayout>
     </HorizontalScrollView>
 
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+
+        <fragment
+            android:id="@+id/setting_container"
+            android:name="org.techtown.dgu.GraphTable"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
+
 </LinearLayout>
 
 
