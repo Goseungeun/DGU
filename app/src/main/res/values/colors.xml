@@ -12,4 +12,7 @@
     <color name="background">#EFECDC</color>
     <color name="yellow">#E7E19C</color>
     <color name="menugreen">#AAB8A6</color>
+    <color name="checkmark">#4CAF50</color>
+    <color name="minus">#FFC107</color>
+    <color name="xmark">#FF5722</color>
 </resources>

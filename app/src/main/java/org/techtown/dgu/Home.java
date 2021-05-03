@@ -64,7 +64,7 @@ public class Home extends Fragment {
 
 
         //setting button을 누르면 실행되는 함수
-        ImageButton settingbutton = (ImageButton)view.findViewById(R.id.BackButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+        ImageButton settingbutton = (ImageButton)view.findViewById(R.id.SettingButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
         settingbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +75,18 @@ public class Home extends Fragment {
             }
         });
 
+        //AttendanceCheck TESTbutton
+        ImageButton testbutton = (ImageButton)view.findViewById(R.id.TESTButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+
+        testbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
+                ((MainActivity)getActivity()).replaceFragment(new AttendanceCheck());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+            }
+        });
+        //
         return view;
     }
 
