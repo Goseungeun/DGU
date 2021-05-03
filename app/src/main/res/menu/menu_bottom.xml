@@ -6,30 +6,30 @@
         android:id="@+id/tab1"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_day"
+        android:icon="@drawable/subject"
         android:title="과목" />
     <item
         android:id="@+id/tab2"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/graph"
         android:title="그래프" />
     <item
         android:id="@+id/tab3"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_map"
+        android:icon="@drawable/home"
         android:title="홈" />
     <item
         android:id="@+id/tab4"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_map"
+        android:icon="@drawable/license"
         android:title="자격증" />
     <item
         android:id="@+id/tab5"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@android:drawable/ic_dialog_map"
-        android:title="내 자격증" />
+        android:icon="@drawable/mylicense"
+        android:title="취득 자격증" />
 </menu>
