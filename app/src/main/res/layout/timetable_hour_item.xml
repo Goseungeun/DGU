@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:minHeight="20dp"
+        android:minHeight="16dp"
         android:background="@color/white"
         android:text="시"
         android:textSize="10sp"
