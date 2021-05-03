@@ -1,18 +1,10 @@
 package org.techtown.dgu;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,15 +12,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.techtown.dgu.R;
-
 public class MainActivity extends AppCompatActivity {
 
     org.techtown.dgu.Subject subject;
     org.techtown.dgu.Graph graph;
     org.techtown.dgu.Home home;
     org.techtown.dgu.License license;
-    org.techtown.dgu.MyLicense my_license;
+    Getlicense my_license;
 
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
     Bundle dayBundle;
@@ -42,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         graph = new org.techtown.dgu.Graph();
         home = new org.techtown.dgu.Home();
         license = new org.techtown.dgu.License();
-        my_license = new org.techtown.dgu.MyLicense();
+        my_license = new Getlicense();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
 
