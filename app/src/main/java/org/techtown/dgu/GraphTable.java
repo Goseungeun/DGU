@@ -102,6 +102,7 @@ public class GraphTable extends Fragment {
                     subject_name[i].setTextColor(getResources().getColor(R.color.deepgreen));
                     subject_name[i].setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
                     subject_name[i].setBackgroundColor(Color.WHITE);
+                    subject_name[i].setPadding(10,0,0,10);
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
