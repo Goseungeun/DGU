@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,94 +8,145 @@
     android:orientation="vertical"
     tools:context=".Graph">
 
-    <TextView
-        android:id="@+id/textView4"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="성적그래프"
-        android:textSize="24sp" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/graph_chart"
-        android:layout_width="397dp"
-        android:layout_height="287dp"
-        android:layout_gravity="center" >
-
-    </com.github.mikephil.charting.charts.LineChart>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/button15"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1-1" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="성적 그래프"
+                android:textColor="@color/deepgreen"
+                android:textSize="24sp" />
 
-            <Button
-                android:id="@+id/button16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1-2" />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graph_chart"
+                android:layout_width="match_parent"
+                android:layout_height="287dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
-            <Button
-                android:id="@+id/button17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="2-1" />
+            </com.github.mikephil.charting.charts.LineChart>
 
-            <Button
-                android:id="@+id/button18"
-                android:layout_width="wrap_content"
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="2-2" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
-            <Button
-                android:id="@+id/button19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3-1" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3-2" />
+                    <Button
+                        android:id="@+id/button1_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="1-1" />
 
-            <Button
-                android:id="@+id/button21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="4-1" />
+                    <Button
+                        android:id="@+id/button1_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="1-2" />
 
-            <Button
-                android:id="@+id/button22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="4-2" />
+                    <Button
+                        android:id="@+id/button2_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="2-1" />
 
-            <Button
-                android:id="@+id/button23"
-                android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/button2_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="2-2" />
+
+                    <Button
+                        android:id="@+id/button3_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="3-1" />
+
+                    <Button
+                        android:id="@+id/button3_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="3-2" />
+
+                    <Button
+                        android:id="@+id/button4_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="4-1" />
+
+                    <Button
+                        android:id="@+id/button4_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="4-2" />
+
+                    <Button
+                        android:id="@+id/button_etc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="기타학기" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="기타학기" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <fragment
+                    android:id="@+id/setting_container"
+                    android:name="org.techtown.dgu.GraphTable"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </FrameLayout>
         </LinearLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 
 </LinearLayout>
 

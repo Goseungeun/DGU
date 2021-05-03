@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -60,6 +61,8 @@ public class Graph extends Fragment {
         chart.setDrawGridBackground(false);
         chart.setBackgroundColor(Color.WHITE);
         chart.setViewPortOffsets(10f,10f,10f,10f);
+        chart.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.calendar_border));
+        chart.setPadding(10,10,10,10);
 
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
@@ -92,6 +95,7 @@ public class Graph extends Fragment {
     }
 
 private void setData(){
+        //데이터 입력하기
     ArrayList<Entry> values = new ArrayList<>();
     values.add(new Entry(1f, 3.94f));
     values.add(new Entry(2f, 4.04f));

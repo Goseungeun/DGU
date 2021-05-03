@@ -46,6 +46,12 @@ public class License extends Fragment {
 
         adapter.addItem(new study_license("토익","01:24:37"));
         adapter.addItem(new study_license("정보처리기사","03:56:10"));
+        adapter.addItem(new study_license("정보처리기사","03:56:10"));
+        adapter.addItem(new study_license("정보처리기사","03:56:10"));
+        adapter.addItem(new study_license("정보처리기사","03:56:10"));
+        adapter.addItem(new study_license("정보처리기사","03:56:10"));
+        adapter.addItem(new study_license("정보처리기사","03:56:10"));
+        adapter.addItem(new study_license("정보처리기사","03:56:10"));
 
         license_recycler.setAdapter(adapter);
     }
