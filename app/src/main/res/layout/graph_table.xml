@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_marginTop="10dp"
     android:orientation="vertical">
@@ -39,8 +39,8 @@
             android:paddingTop="5dp"
             android:paddingRight="15dp"
             android:paddingBottom="5dp"
-            android:textColor="@color/deepgreen"
-            android:text="과목 불러오기" />
+            android:text="과목 불러오기"
+            android:textColor="@color/deepgreen" />
 
     </LinearLayout>
 
@@ -90,84 +90,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.gridlayout.widget.GridLayout
-            android:id="@+id/g_table"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/green"
-            android:horizontalSpacing="1dp"
-            android:verticalSpacing="1dp"
-            app:columnCount="3"
-            app:rowCount="10">
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/deepgreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="과목 이름"
-                android:textColor="@color/white"
-                app:layout_column="0"
-                app:layout_columnWeight="1"
-                app:layout_row="0" />
-
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/deepgreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="학점"
-                android:textColor="@color/white"
-                app:layout_column="1"
-                app:layout_columnWeight="1"
-                app:layout_row="0" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/deepgreen"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="성적"
-                android:textColor="@color/white"
-                app:layout_column="2"
-                app:layout_columnWeight="1"
-                app:layout_row="0" />
-        </androidx.gridlayout.widget.GridLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <View
-                android:id="@+id/view2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/save"
-                android:layout_width="wrap_content"
+            <GridLayout
+                android:id="@+id/g_table"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/calendar_border"
-                android:paddingLeft="15dp"
-                android:paddingTop="5dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="5dp"
-                android:text="저장"
-                android:textColor="@color/deepgreen" />
+                android:background="@color/green"
+                android:horizontalSpacing="1dp"
+                android:verticalSpacing="1dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/calendar_border"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="5dp"
+                    android:text="저장"
+                    android:textColor="@color/deepgreen" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
