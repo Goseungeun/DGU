@@ -91,6 +91,15 @@ public class Timetable extends Fragment {
         //타임테이블 보이기
         timetable.setAdapter(adapter);
 
+        ///Start remove scrolling function of timetable_hour_name & timetable
+        timetable.setEnabled(false);
+        timetable_hour_name.setEnabled(false);
+            //scrollbar remove
+        timetable.setVerticalScrollBarEnabled(false);
+        timetable_hour_name.setVerticalScrollBarEnabled(false);
+        ///End remove scrolling function of timetable_hour_name & timetable
+
+
         //BackButton을 누르면 실행되는 함수
         ImageButton backbutton = (ImageButton)view.findViewById(R.id.ttBackButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
