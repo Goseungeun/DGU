@@ -39,7 +39,6 @@ public class datePickerActivity extends AppCompatActivity {
         finish();
     }
 
-
     DatePicker.OnDateChangedListener mOnDateChangedListener = new DatePicker.OnDateChangedListener(){
         @Override
         public void onDateChanged(DatePicker datePicker, int yy, int mm, int dd) {

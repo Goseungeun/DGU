@@ -35,7 +35,7 @@ public class Subject extends Fragment {
             private void openDialog() {
                 DialogFragment InputSchoolSubject = new InputSchoolSubject();
                // InputSchoolSubject.setTargetFragment(Subject.this, 0);
-                InputSchoolSubject.show(getFragmentManager(), "Search Filter");
+                InputSchoolSubject.show(getFragmentManager(), "Subject Input");
             }
         });
 
