@@ -16,6 +16,8 @@ public class GraphTable extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.graph_table, container,false);
 
+
+
         return view;
     }
 }
