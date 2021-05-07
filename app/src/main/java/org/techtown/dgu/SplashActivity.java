@@ -17,7 +17,8 @@ public class SplashActivity extends Activity {
 
 
         LottieAnimationView lottie_animation =(LottieAnimationView) findViewById(R.id.animation_view);
-        lottie_animation.playAnimation();
+
+
 
 
         new Handler().postDelayed(new Runnable() {
@@ -27,6 +28,6 @@ public class SplashActivity extends Activity {
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }
-        },1800);//1000=1초
+        },1200);//1000=1초
     }
 }
