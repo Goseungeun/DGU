@@ -1,7 +1,17 @@
 package org.techtown.dgu;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +85,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+     /*   // 날짜를 출력하는 텍스트뷰에 오늘 날짜 설정.
+        TextView tv = findViewById(R.id.editTextDate);
+        Calendar cal = Calendar.getInstance();
+        tv.setText(cal.get(Calendar.YEAR) +"-"+ (cal.get(Calendar.MONTH)+1) +"-"+ cal.get(Calendar.DATE));*/
+
     }
+/*
+//license_input 날짜 입력
+    DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+                    // Date Picker에서 선택한 날짜를 TextView에 설정
+                    TextView tv = findViewById(R.id.editTextDate);
+                    tv.setText(String.format("%d-%d-%d", yy,mm+1,dd));
+                }
+            };
+
+    public void mOnClick_DatePick(View view){
+        // DATE Picker가 처음 떴을 때, 오늘 날짜가 보이도록 설정.
+        Calendar cal = Calendar.getInstance();
+        new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+    }
+*/
+
+
 
 //    @Nullable
 /*    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

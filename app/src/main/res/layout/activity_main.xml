@@ -23,7 +23,7 @@
         android:layout_margin="0dp"
         app:itemBackground="@color/background"
         app:itemIconTint="@drawable/item_color"
-        app:itemTextColor="@color/black"
+        app:itemTextColor="@drawable/item_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toLeftOf="parent"

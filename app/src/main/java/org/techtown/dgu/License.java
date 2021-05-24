@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,18 @@ public class License extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
 
         initUI(rootView);
-
+        Button button1 = (Button)rootView.findViewById(R.id.button2); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+            private void openDialog() {
+                DialogFragment InputLicense = new InputLicense();
+                // InputSchoolSubject.setTargetFragment(Subject.this, 0);
+                InputLicense.show(getFragmentManager(), "License Input");
+            }
+        });
         return rootView;
     }
 
