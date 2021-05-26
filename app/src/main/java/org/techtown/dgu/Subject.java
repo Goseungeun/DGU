@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,18 +27,30 @@ public class Subject extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
-        Button button1 = (Button) view.findViewById(R.id.button); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+
+        Button subjectInput = (Button) view.findViewById(R.id.subjectInputButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+        subjectInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+            private void openDialog() {
+                DialogFragment InputSchoolSubject = new InputSchoolSubject();
+                // InputSchoolSubject.setTargetFragment(Subject.this, 0);
+                InputSchoolSubject.show(getFragmentManager(), "Subject Input");
+            }
+        });
+
         ctx=getContext();
 
-
-        button1.setOnClickListener(new View.OnClickListener() {
+        /*subjectInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
                 ((MainActivity) getActivity()).replaceFragment(InputSchoolSubject.newInstance());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
-        });
+        });*/
 
         subDataList = new ArrayList<studysub>();
 
