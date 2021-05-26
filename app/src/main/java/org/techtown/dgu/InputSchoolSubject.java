@@ -58,6 +58,7 @@ public class InputSchoolSubject extends DialogFragment {
     }
 
     public InputSchoolSubject() {
+
     }
 
     @Override
@@ -87,7 +88,7 @@ public class InputSchoolSubject extends DialogFragment {
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {
-//입력받은 데이터 저장 부분 만들기
+                        //입력받은 데이터 저장 부분 만들기
                        /* EditText esubjectName = (EditText)getDialog().findViewById(R.id.subjectNameInput);
                         String subjectName = esubjectName.getText().toString();
 
@@ -101,17 +102,7 @@ public class InputSchoolSubject extends DialogFragment {
                     }
                 });
         return builder.create();
-
     }
-
-
-
-
-
-
-
-
-
 
     /*public static InputSchoolSubject newInstance() {
         return new InputSchoolSubject();

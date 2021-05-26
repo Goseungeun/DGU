@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/myLicenseInputButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+취득자격증 추가하기"
