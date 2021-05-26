@@ -59,8 +59,8 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         public ViewHolder(View itemView){
             super(itemView);
 
-            name = itemView.findViewById(R.id.license_name);
-            time = itemView.findViewById(R.id.license_time);
+            name = itemView.findViewById(R.id.licensename);
+            time = itemView.findViewById(R.id.licensetime);
             startbutton = itemView.findViewById(R.id.startbutton);
             progress = itemView.findViewById(R.id.progress);
         }

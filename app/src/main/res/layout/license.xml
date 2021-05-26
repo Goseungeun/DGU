@@ -36,14 +36,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/license_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+ 자격증 추가하기"
-                android:textSize="24sp" />
+                android:text="+자격증 추가하기" />
+
         </LinearLayout>
     </ScrollView>
 
