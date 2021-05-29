@@ -37,17 +37,20 @@ import static java.lang.Integer.parseInt;
 public class GraphTable extends Fragment {
     private ViewGroup view;
 
-    private GridLayout table;                                   //graph table
-    private final static int COLUMN = 3;                        //graph table column
-    private final static int ROW=10;                            //graph table row
-    private final static int SEMESTER_NUM=9;                    //학기 개수
-    private EditText[] subject_name=new EditText[ROW];          //column 기준 0 = 과목이름
-    private EditText[] credit=new EditText[ROW];                //column 기준 1 = 학점
-    private TextView[] score=new TextView[ROW];                 //column 기준 2 = 성적
-    private String[] scorelist=new String[ROW];                 //성적에 들어갈 값들
-    private TextView Tv_semester;                               //학기를 나타내 주는 Textview
-    private TextView save;                                      //저장버튼
-    private int cur_semester_index;                             //현재 표시해야할 semester의 index값이 무엇인지.
+    private GridLayout table;                                                       //graph table
+    private final static int COLUMN = 3;                                            //graph table column
+    private final static int ROW=10;                                                //graph table row
+    private final static int SEMESTER_NUM=9;                                        //학기 개수
+    private EditText[] subject_name=new EditText[ROW];                              //column 기준 0 = 과목이름
+    private EditText[] credit=new EditText[ROW];                                    //column 기준 1 = 학점
+    private TextView[] score=new TextView[ROW];                                     //column 기준 2 = 성적
+    private String[] scorelist=new String[ROW];                                     //성적에 들어갈 값들
+    private TextView Tv_semester;                                                   //학기를 나타내 주는 Textview
+    private TextView Tv_semester_score;                                             //학기 평균 학점을 나타내 주는 Textview
+    private double[] semester_score_list=new double[SEMESTER_NUM];                  //각 학기별 평균 학점을 저장할 doubldlist
+    private TextView Tv_total_score;                                                //전체 평균학점을 나타내 주는 Textview
+    private TextView save;                                                          //저장버튼
+    private int cur_semester_index;                                                 //현재 표시해야할 semester의 index값이 무엇인지.
 
     //학기 버튼 (가로스크롤바)
     private Button[] semester = new Button[SEMESTER_NUM];
@@ -68,6 +71,9 @@ public class GraphTable extends Fragment {
         table.setColumnCount(COLUMN);
         table.setRowCount(ROW+1);
 
+        Tv_semester_score=view.findViewById(R.id.semester_score);
+        Tv_total_score=view.findViewById(R.id.total_score);
+
         //현재 표시해야할 semester의 index값 초기화
         //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
         cur_semester_index=0;
@@ -85,7 +91,25 @@ public class GraphTable extends Fragment {
         //학기 버튼 연결
         semesterButtonConnection();
 
-        //저장 버튼 연결
+        //각 학기별 평균 학점을 저장할 doubldlist 초기화
+        init_semester_score_list();
+
+        //저장 버튼 연결 (학기 평균 학점, 전체 평균 학점 계산하기 들어있음)
+        saveButtonAction();
+
+
+        return view;
+
+    }
+
+    //각 학기별 평균 학점을 저장할 doubldlist 초기화
+    private void init_semester_score_list() {
+        for(int i=0;i<semester_score_list.length;i++){
+            semester_score_list[i]=table_dbs[i].CalculateGPA();
+        }
+    }
+
+    private void saveButtonAction() {
         save = view.findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
 
@@ -147,11 +171,35 @@ public class GraphTable extends Fragment {
 
                 //db에 들어간대로 테이블에 업데이트 해주기
                 table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
+
+                //평균학점 계산하기
+                CalculateGPA();
             }
         });
+    }
 
-        return view;
+    private void CalculateGPA() {
 
+        //학기 평균 학점 계산하기
+        semester_score_list[cur_semester_index] = table_dbs[cur_semester_index].CalculateGPA();
+
+        //학기 평균 학점 보여주기
+        Tv_semester_score.setText("학기 평균 학점 : "+Math.round(semester_score_list[cur_semester_index]*100)/100.0+"점");
+
+        //전체 평균 학점 계산하기
+        double total_score=0.0;
+
+        double sum_of_m_credit_times_m_score=0.0;
+        double sum_of_m_credit=0.0;
+        for(int i=0;i<table_dbs.length;i++){
+            sum_of_m_credit_times_m_score+=table_dbs[i].sum_Of_m_credit_times_m_score();
+            sum_of_m_credit+=table_dbs[i].sum_Of_m_credit();
+        }
+        if(sum_of_m_credit!=0.0&&sum_of_m_credit_times_m_score!=0.0){
+            total_score=sum_of_m_credit_times_m_score/sum_of_m_credit;
+        }
+        //전체 평균 학점 보여주기
+        Tv_total_score.setText("전체 평균 학점 : "+Math.round(total_score*100)/100.0+"점");
     }
 
 
@@ -291,12 +339,14 @@ public class GraphTable extends Fragment {
 
         //table에 내용채워넣기
         if(!table_dbs[cur_semester_index].IsEmpty()) {table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);}
+
+        //평균학점 내용 채워넣기
+        CalculateGPA();
     }
 
     //학기 버튼 연결
     private void semesterButtonConnection() {
         for (int i=0;i<semesterButtonIDs.length;i++){
-
 
             //학기 버튼을 누르면 table 채워지도록
             int finalI = i;
@@ -319,6 +369,9 @@ public class GraphTable extends Fragment {
 
                     //학기 버튼에 따라 디비 불러오기
                     table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
+
+                    //학기 버튼에 따라 평균학점들 달라지게
+                    CalculateGPA();
                 }
             });
         }

@@ -77,7 +77,6 @@ public class GraphTable_DB extends SQLiteOpenHelper {
     public void UpdateGraphTable_RowIDChange(int OldRowID, int NewRowID){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE GraphTable SET RowID='"+NewRowID+"' WHERE RowID = '"+OldRowID+"'");
-
     }
 
     //이미 존재하는 행인지 아닌지 판단. (존재하는 행이 있다면 true, 없다면 false)
@@ -93,7 +92,6 @@ public class GraphTable_DB extends SQLiteOpenHelper {
             cursor.close();
             return true;
         }
-
     }
 
     //table 내용 보여주기
@@ -116,7 +114,6 @@ public class GraphTable_DB extends SQLiteOpenHelper {
                 score[i].setText(cursor.getString(cursor.getColumnIndex("score")));
                 i++;
             }
-
         }
         cursor.close();
     }
@@ -129,6 +126,76 @@ public class GraphTable_DB extends SQLiteOpenHelper {
 
         if(cursor.getCount()!=0){cursor.close();return false;}
         else{cursor.close();return true;}
+    }
 
+    //학기 평균 학점계산하기
+    public double CalculateGPA(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT credit,score FROM GraphTable where score !='NP' and score !='P' and score !='F'",null);
+
+        double GPA=0.00;
+        if(cursor.getCount()!=0){
+            //table안에 내용이 들어있다면 내부수행
+            //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
+            GPA=sum_Of_m_credit_times_m_score()/sum_Of_m_credit();
+        }
+
+        cursor.close();
+        return GPA;
+    }
+
+    //m_credit과 m_score을 곱한값들을 다 더해서
+    public double sum_Of_m_credit() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT credit,score FROM GraphTable where score !='NP' and score !='P' and score !='F'",null);
+        double m_credit;
+        double result=0.0;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= cursor.getInt(cursor.getColumnIndex("credit"));
+                result += m_credit;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+    //sum_credit으로 나눠준다.
+    public double sum_Of_m_credit_times_m_score() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT credit,score FROM GraphTable where score !='NP' and score !='P' and score !='F'",null);
+        double m_credit, m_score;
+        double result=0.0;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= cursor.getInt(cursor.getColumnIndex("credit"));
+                m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("score")));
+                result += m_credit*m_score;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+    private double m_score_Calculate(String score) {
+        //score의 NP, P, F는 0.0점으로 계산.
+        switch(score){
+            case "A+" :
+                return 4.5;
+            case "A0" :
+                return 4.0;
+            case "B+" :
+                return 3.5;
+            case "B0" :
+                return 3.0;
+            case "C+" :
+                return 2.5;
+            case "C0" :
+                return 2.0;
+            case "D+" :
+                return 1.5;
+            default :
+                return 1.0;     //D0
+        }
     }
 }
