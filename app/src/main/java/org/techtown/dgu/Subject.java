@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class Subject extends Fragment {
+
     ArrayList<studysub> subDataList;
+
     Context ctx;
+
 
     public static Subject newInstance() {
         return new Subject();
@@ -34,10 +38,10 @@ public class Subject extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                ((MainActivity) getActivity()).replaceFragment(InputSchoolSubject.newInstance());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
-            }
+                DialogFragment InputSchoolSubject = new InputSchoolSubject();
+                InputSchoolSubject.show(getFragmentManager(), "Subject Input");   }
         });
+
 
         subDataList = new ArrayList<studysub>();
 
@@ -54,19 +58,6 @@ public class Subject extends Fragment {
         subDataModel.setTestList(stList);
 
         subDataList.add(subDataModel);      //과목들 추가
-      /*
-                openDialog();
-            }
-            private void openDialog() {
-                DialogFragment InputSchoolSubject = new InputSchoolSubject();
-               // InputSchoolSubject.setTargetFragment(Subject.this, 0);
-                InputSchoolSubject.show(getFragmentManager(), "Subject Input");
-            }
-        });
-
-        //  return view;
-        
-        */
 
         studysub subDataModel1 = new studysub();
         subDataModel1.setSubname("캡스톤디자인");

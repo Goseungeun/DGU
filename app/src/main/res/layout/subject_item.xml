@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
@@ -76,7 +77,9 @@
             android:id="@+id/hwrecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/hw_item" />
 
         <TextView
             android:id="@+id/addtest"
@@ -87,6 +90,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/testrecycler"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/test_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal" />

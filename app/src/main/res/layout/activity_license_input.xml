@@ -102,6 +102,14 @@
                     android:maxLength="3" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/subjectbtn_ok"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="과목추가"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
 
         </LinearLayout>
 
