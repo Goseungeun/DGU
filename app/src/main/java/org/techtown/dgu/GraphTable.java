@@ -88,12 +88,19 @@ public class GraphTable extends Fragment {
         //저장 버튼 연결
         save = view.findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
+
+            //delete를 했는지 안했는지 표시해주는 상태 값 (0:안함 , 1: 한번이상 함)
+            int state_delete = 0;
             @Override
             public void onClick(View v) {
-                //db 삭제로 인해 변경될 row값
 
-                //delete를 했는지 안했는지 표시해주는 상태 값 (0:안함 , 1: 한번이상 함)
-                int state_delete = 0;
+                //delete를 처음한 행의 번호를 반환
+                int [] rowindex_delete =new int [ROW];
+                for(int i=0;i<ROW;i++){
+                    rowindex_delete[i]=-1;
+                }
+
+                int j=0;
                 for(int i =0;i<ROW;i++){
 
                     if(!subject_name[i].getText().toString().equals("") && !credit[i].getText().toString().equals("") && !score[i].getText().toString().equals("")){
@@ -126,17 +133,20 @@ public class GraphTable extends Fragment {
                         if(table_dbs[cur_semester_index].FindAlreadyExistsRowID(i)){
                             //delete
                             table_dbs[cur_semester_index].DeleteGraphTable(i);
+                            rowindex_delete[j]=i;
+                            j++;
                             state_delete=1;
                         }
-
-                        //db에 들어간대로 테이블에 업데이트 해주기
-                        table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
                     }
                 }
                 //delete를 한번이라도 했다면 RowID를 재정렬해줘야한다.
                 if(state_delete==1){
-                    table_dbs[cur_semester_index].UpdateGraphTable_RowID();
+                    table_dbs[cur_semester_index].UpdateGraphTable_RowID(rowindex_delete[0]);
+                    state_delete=0;
                 }
+
+                //db에 들어간대로 테이블에 업데이트 해주기
+                table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
             }
         });
 
@@ -332,6 +342,7 @@ public class GraphTable extends Fragment {
         ListItems.add("F");
         ListItems.add("P");
         ListItems.add("NP");
+        ListItems.add("값 없음");
         final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
 
         //선택한 값 표시용 리스트

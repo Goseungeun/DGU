@@ -56,21 +56,22 @@ public class GraphTable_DB extends SQLiteOpenHelper {
     }
 
     //delete로 인한 재정렬문
-    public void UpdateGraphTable_RowID(){
+    public void UpdateGraphTable_RowID(int deletedRowID){
         SQLiteDatabase db = getWritableDatabase();
-        int NewRowID = 0;
-        int OldRowID = 1;
+        int NewRowID = deletedRowID;
+        int OldRowID = deletedRowID+1;
 
-        Cursor cursor = db.rawQuery("select count(*) from GraphTable",null);
+        Cursor cursor = db.rawQuery("select RowID from GraphTable where RowID > '"+NewRowID+"'",null);
         if(cursor.getCount()!=0){
-
             while (cursor.moveToNext()){
-                UpdateGraphTable_RowIDChange(OldRowID,NewRowID);
-                OldRowID++;
-                NewRowID++;
-            }
+                    UpdateGraphTable_RowIDChange(OldRowID,NewRowID);
+                    OldRowID++;
+                    NewRowID++;
+           }
         }
+        cursor.close();
     }
+
 
     //delete로 인한 재정렬문 안에 들어가는 함수 (graphtabledml RowID를 수정한다.)
     public void UpdateGraphTable_RowIDChange(int OldRowID, int NewRowID){
@@ -86,8 +87,13 @@ public class GraphTable_DB extends SQLiteOpenHelper {
 
         if(cursor.getCount()==0){
             //RowID ='"+_RowID+"'인게 없다면,
+            cursor.close();
             return false;
-        }else{return true;}
+        }else{
+            cursor.close();
+            return true;
+        }
+
     }
 
     //table 내용 보여주기
@@ -112,6 +118,7 @@ public class GraphTable_DB extends SQLiteOpenHelper {
             }
 
         }
+        cursor.close();
     }
 
     //graphtable이 비어있는지 판단 ( true : 비어있음 , false : 비어있지 않음)
@@ -120,7 +127,8 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM GraphTable",null);
 
-        if(cursor.getCount()!=0){return false;}
-        else{return true;}
+        if(cursor.getCount()!=0){cursor.close();return false;}
+        else{cursor.close();return true;}
+
     }
 }
