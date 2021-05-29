@@ -7,14 +7,18 @@ import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,20 +31,33 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.getInteger;
+import static java.lang.Integer.parseInt;
+
 public class GraphTable extends Fragment {
     private ViewGroup view;
 
     private GridLayout table;                                   //graph table
     private final static int COLUMN = 3;                        //graph table column
     private final static int ROW=10;                            //graph table row
+    private final static int SEMESTER_NUM=9;                    //학기 개수
     private EditText[] subject_name=new EditText[ROW];          //column 기준 0 = 과목이름
     private EditText[] credit=new EditText[ROW];                //column 기준 1 = 학점
     private TextView[] score=new TextView[ROW];                 //column 기준 2 = 성적
+    private String[] scorelist=new String[ROW];                 //성적에 들어갈 값들
+    private TextView Tv_semester;                               //학기를 나타내 주는 Textview
+    private TextView save;                                      //저장버튼
+    private int cur_semester_index;                             //현재 표시해야할 semester의 index값이 무엇인지.
 
-    //DB에서 받아야 할 값
-    private String[] scorelist={
-            "A+","A0","B+","B0","C+","C0","D+","D0","F","P"
-    };//"A+","A0","B+","B0","C+","C0","D+","D0","F","P","NP","" 이렇게 12개의 값이 있음
+    //학기 버튼 (가로스크롤바)
+    private Button[] semester = new Button[SEMESTER_NUM];
+    Integer[] semesterButtonIDs = {
+            R.id.button1_1, R.id.button1_2 , R.id.button2_1, R.id.button2_2,
+            R.id.button3_1, R.id.button3_2, R.id.button4_1, R.id.button4_2, R.id.button_etc
+    };
+
+    //DB
+    GraphTable_DB[] table_dbs=new GraphTable_DB[SEMESTER_NUM];
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -51,6 +68,92 @@ public class GraphTable extends Fragment {
         table.setColumnCount(COLUMN);
         table.setRowCount(ROW+1);
 
+        //현재 표시해야할 semester의 index값 초기화
+        //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
+        cur_semester_index=0;
+        for (int i=0;i<semesterButtonIDs.length;i++){semester[i]=view.findViewById(semesterButtonIDs[i]);}
+
+        //table_db생성
+        createTableDBs();
+
+        //table 초기화
+        init_table(table);
+
+        //학기를 나타내 주는 textview 연결
+        Tv_semester = view.findViewById(R.id.tv_semester);
+
+        //학기 버튼 연결
+        semesterButtonConnection();
+
+        //저장 버튼 연결
+        save = view.findViewById(R.id.save);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //db 삭제로 인해 변경될 row값
+
+                //delete를 했는지 안했는지 표시해주는 상태 값 (0:안함 , 1: 한번이상 함)
+                int state_delete = 0;
+                for(int i =0;i<ROW;i++){
+
+                    if(!subject_name[i].getText().toString().equals("") && !credit[i].getText().toString().equals("") && !score[i].getText().toString().equals("")){
+                        //하나라도 비어있으면 DB에 넣지 않는다.
+                        Toast.makeText(getActivity(),""+i, Toast.LENGTH_SHORT).show();
+                        //공백 삭제용
+                        String _subject_name =subject_name[i].getText().toString();
+                        _subject_name = _subject_name.replace(" ", "");
+
+                        String _credit = credit[i].getText().toString().trim();
+                        _credit = _credit.replace(" ", "");
+                        int integer_credit = Integer.parseInt(_credit);
+
+
+                        //이미 디비상에서 존재하는 행이 있었다면,
+                        if(table_dbs[cur_semester_index].FindAlreadyExistsRowID(i)){
+                            Toast.makeText(getActivity(),"update"+i, Toast.LENGTH_SHORT).show();
+                            //update
+                            table_dbs[cur_semester_index].UpdateGraphTable(i,""+_subject_name,integer_credit+0, ""+score[i].getText().toString());
+                        }else{
+                            Toast.makeText(getActivity(),"insert"+i, Toast.LENGTH_SHORT).show();
+                            //insert
+                            table_dbs[cur_semester_index].InsertGraphTable(i,""+_subject_name,integer_credit+0,""+score[i].getText().toString());
+                        }
+
+                    }else{
+                        //하나라도 비어있으면 DB에서 삭제한다.
+
+                        //이미 디비상에서 존재하는 행이 있었다면,
+                        if(table_dbs[cur_semester_index].FindAlreadyExistsRowID(i)){
+                            //delete
+                            table_dbs[cur_semester_index].DeleteGraphTable(i);
+                            state_delete=1;
+                        }
+
+                        //db에 들어간대로 테이블에 업데이트 해주기
+                        table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
+                    }
+                }
+                //delete를 한번이라도 했다면 RowID를 재정렬해줘야한다.
+                if(state_delete==1){
+                    table_dbs[cur_semester_index].UpdateGraphTable_RowID();
+                }
+            }
+        });
+
+        return view;
+
+    }
+
+
+    //table_dbs 생성하는 함수
+    private void createTableDBs() {
+        for(int i=0;i<SEMESTER_NUM;i++){
+            table_dbs[i]=new GraphTable_DB(getContext(), semester[i].getText().toString());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void init_table(GridLayout table) {
         //column기준 0:과목이름, 1: 학점, 2:성적
         //0과 1은 edittext , 2는 textview로 구현할꺼임
 
@@ -103,6 +206,8 @@ public class GraphTable extends Fragment {
                     subject_name[i].setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
                     subject_name[i].setBackgroundColor(Color.WHITE);
                     subject_name[i].setPadding(10,0,0,10);
+                    subject_name[i].setText("");
+
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
@@ -126,6 +231,8 @@ public class GraphTable extends Fragment {
                     credit[i].setBackgroundColor(Color.WHITE);
                     credit[i].setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
                     credit[i].setGravity(Gravity.CENTER);
+                    credit[i].setInputType(InputType.TYPE_CLASS_NUMBER);
+                    credit[i].setText("");
 
                     GridLayout.LayoutParams gl = new GridLayout.LayoutParams(rowSpec,colSpec);
 
@@ -133,8 +240,6 @@ public class GraphTable extends Fragment {
                     gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
                     gl.setMargins(2,2,2,2);
                     table.addView(credit[i],gl);
-
-
                 }
             }
             else{
@@ -151,6 +256,7 @@ public class GraphTable extends Fragment {
                     score[i].setText(scorelist[i]);
                     score[i].setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
                     score[i].setGravity(Gravity.CENTER);
+                    score[i].setText("");
 
                     ///Start dialog of score[i]
                     int finalI = i;
@@ -168,17 +274,47 @@ public class GraphTable extends Fragment {
                     gl.height=(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
                     gl.setMargins(2,2,2,2);
                     table.addView(score[i],gl);
-
-
-
                 }
             }
 
         }
 
-        return view;
-
+        //table에 내용채워넣기
+        if(!table_dbs[cur_semester_index].IsEmpty()) {table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);}
     }
+
+    //학기 버튼 연결
+    private void semesterButtonConnection() {
+        for (int i=0;i<semesterButtonIDs.length;i++){
+
+
+            //학기 버튼을 누르면 table 채워지도록
+            int finalI = i;
+            semester[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //현재 표시해야할 semester의 index값
+                    //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
+                    cur_semester_index=finalI;
+
+                    //학기 버튼에 따라 몇학년 몇학기인지 표시하기
+                    String semester_name;
+                    if(finalI==8){
+                        //기타학기인 경우
+                        semester_name="기타 학기";
+                    }else{
+                        semester_name= (String) ""+semester[finalI].getText().charAt(0)+"학년 "+semester[finalI].getText().charAt(2)+"학기";
+                    }
+                    Tv_semester.setText(semester_name);
+
+                    //학기 버튼에 따라 디비 불러오기
+                    table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
+                }
+            });
+        }
+    }
+
+
     //dialog
     public void dialog_show(int i){
         //i : row값
