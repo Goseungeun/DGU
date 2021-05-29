@@ -17,9 +17,12 @@ import java.util.ArrayList;
 
 public class Subject extends Fragment {
 
-    ArrayList<studysub> subDataList;
-
     Context ctx;
+
+    private RecyclerView subrecyclerview;
+    private Subject_DB mSubject_DB;
+    ArrayList<studysub> subDataList;
+    private studysubAdapter mAdapter;
 
 
     public static Subject newInstance() {
@@ -30,10 +33,16 @@ public class Subject extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
-        Button button1 = (Button) view.findViewById(R.id.button); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
-        ctx=getContext();
+
+        /*mSubject_DB= new Subject_DB(this.getContext());
+        RecyclerView subrecyclerview = (RecyclerView)view.findViewById(R.id.subrecycler);
+        studysubAdapter adapter = new studysubAdapter(this.getContext(),subDataList);
+        subrecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
+        subrecyclerview.setAdapter(adapter);
+        subDataList=new ArrayList<>();*/
 
 
+        Button button1 = (Button) view.findViewById(R.id.subjectInputButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +50,7 @@ public class Subject extends Fragment {
                 DialogFragment InputSchoolSubject = new InputSchoolSubject();
                 InputSchoolSubject.show(getFragmentManager(), "Subject Input");   }
         });
-
+        ctx=getContext();
 
         subDataList = new ArrayList<studysub>();
 
@@ -58,6 +67,19 @@ public class Subject extends Fragment {
         subDataModel.setTestList(stList);
 
         subDataList.add(subDataModel);      //과목들 추가
+      /*
+                openDialog();
+            }
+            private void openDialog() {
+                DialogFragment InputSchoolSubject = new InputSchoolSubject();
+               // InputSchoolSubject.setTargetFragment(Subject.this, 0);
+                InputSchoolSubject.show(getFragmentManager(), "Subject Input");
+            }
+        });
+
+        //  return view;
+
+        */
 
         studysub subDataModel1 = new studysub();
         subDataModel1.setSubname("캡스톤디자인");

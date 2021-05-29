@@ -52,8 +52,16 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
         final String subname = subList.get(i).getSubname();
         final String subtime = subList.get(i).getSubtime();
 
+        ArrayList hwList = subList.get(i).getHwList();
+        ArrayList testList = subList.get(i).getTestList();
         StudysubviewHolder.subjectname.setText(subname);
         StudysubviewHolder.subjecttime.setText(subtime);
+        homeworkAdapter homeworkListDataAdapter = new homeworkAdapter(mContext, hwList);
+        subtestAdapter subjecttestListDataAdapter = new subtestAdapter(mContext,testList);
+        StudysubviewHolder.hwrecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        StudysubviewHolder.hwrecycler.setAdapter(homeworkListDataAdapter);
+        StudysubviewHolder.testrecycler.setLayoutManager(new LinearLayoutManager(mContext));
+        StudysubviewHolder.testrecycler.setAdapter(subjecttestListDataAdapter
 
     }
     @Override
@@ -118,6 +126,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                                         studysub.setWeek(week);
                                         studysub.setWeekFre(weekFre);
                                         notifyItemChanged(curPos,studysub);
+                                        dialog.dismiss();
                                         Toast.makeText(mContext,"과목 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
 
 

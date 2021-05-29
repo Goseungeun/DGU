@@ -38,14 +38,13 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/subrecycler"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/subject_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                tools:listitem="@layout/subject_item" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/subjectInputButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+ 과목추가하기"
