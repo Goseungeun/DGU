@@ -6,17 +6,19 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true" >
+
   <LinearLayout
       android:layout_width="match_parent"
-    android:layout_height="match_parent">
+      android:layout_height="46dp">
 
     <TextView
         android:id="@+id/subtestname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_weight="1"
+        android:layout_weight="3"
+        android:gravity="center_vertical"
         android:text="시험 이름"
         android:textSize="18sp" />
 
@@ -28,5 +30,5 @@
         android:layout_marginRight="20dp"
         android:text="D-Day"
         android:textSize="18sp" />
-</LinearLayout>
+  </LinearLayout>
 </androidx.cardview.widget.CardView>

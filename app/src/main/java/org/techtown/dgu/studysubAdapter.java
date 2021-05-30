@@ -94,13 +94,17 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                     int curPos=getAdapterPosition(); //현재 리스트 클릭한 아이템 위치
                     studysub studysub=subList.get(curPos);
 
-                    String[] strChoiceItems={"수정하기","삭제하기"};
+                    String[] strChoiceItems={"출석체크","과목 수정하기","과목 삭제하기"};
                     AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
                     builder.setTitle("원하는 작업을 선택 해주세요");
                     builder.setItems(strChoiceItems, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position) {
                             if(position==0){
+                                ((MainActivity)view.getContext()).replaceFragment(new AttendanceCheck());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+
+                            }
+                            else if(position==1){
                                 //수정하기
                                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.activity_subject_input);
@@ -129,13 +133,12 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                                         dialog.dismiss();
                                         Toast.makeText(mContext,"과목 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
 
-
                                     }
                                 });
 
                                 dialog.show();
                             }
-                            else if(position==1){
+                            else if(position==2){
                                 //delete table
                                 String subname=studysub.getSubname();
                                 mSubject_DB.DeleteTodo(subname);

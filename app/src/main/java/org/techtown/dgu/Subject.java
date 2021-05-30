@@ -78,13 +78,15 @@ public class Subject extends Fragment {
         studysub subDataModel1 = new studysub();
         subDataModel1.setSubname("캡스톤디자인");
         subDataModel1.setSubtime("3:00:03");
+
         ArrayList<homework> hwList1 = new ArrayList<homework>();
         ArrayList<subtest> stList1 = new ArrayList<subtest>();
         hwList1.add(new homework("과제 1","D-2"));     //과제 데이터
+        hwList1.add(new homework("과제 2","D-3"));
         stList1.add(new subtest("시험1","D-14"));  //시험 데이터
 
-        subDataModel1.setHwList(hwList);         //과목에 과제와 시험 넣기
-        subDataModel1.setTestList(stList);
+        subDataModel1.setHwList(hwList1);         //과목에 과제와 시험 넣기
+        subDataModel1.setTestList(stList1);
 
         subDataList.add(subDataModel1);
 
