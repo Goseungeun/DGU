@@ -61,7 +61,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
         StudysubviewHolder.hwrecycler.setLayoutManager(new LinearLayoutManager(mContext));
         StudysubviewHolder.hwrecycler.setAdapter(homeworkListDataAdapter);
         StudysubviewHolder.testrecycler.setLayoutManager(new LinearLayoutManager(mContext));
-        StudysubviewHolder.testrecycler.setAdapter(subjecttestListDataAdapter
+        StudysubviewHolder.testrecycler.setAdapter(subjecttestListDataAdapter);
 
     }
     @Override
@@ -109,7 +109,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                                 EditText weekInput=dialog.findViewById(R.id.weekInput);
                                 EditText weekFrequencyInput=dialog.findViewById(R.id.weekFrequencyInput);
 
-                                Button subjectbtn_ok=dialog.findViewById(R.id.subjectbtn_ok);
+                                Button subjectbtn_ok=dialog.findViewById(R.id.subjectInputButton);
                                 subjectbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override
                                     public void onClick(View v){

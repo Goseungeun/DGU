@@ -34,12 +34,6 @@ public class Subject extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
 
-        /*mSubject_DB= new Subject_DB(this.getContext());
-        RecyclerView subrecyclerview = (RecyclerView)view.findViewById(R.id.subrecycler);
-        studysubAdapter adapter = new studysubAdapter(this.getContext(),subDataList);
-        subrecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
-        subrecyclerview.setAdapter(adapter);
-        subDataList=new ArrayList<>();*/
 
 
         Button button1 = (Button) view.findViewById(R.id.subjectInputButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
@@ -94,11 +88,20 @@ public class Subject extends Fragment {
 
         subDataList.add(subDataModel1);
 
-        //리싸이클러뷰 설정
+
+
+        mSubject_DB= new Subject_DB(this.getContext());
+        subrecyclerview = (RecyclerView)view.findViewById(R.id.subrecycler);
+        mAdapter = new studysubAdapter(getContext(),subDataList);
+        subrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        subrecyclerview.setAdapter(mAdapter);
+
+
+      /*  //리싸이클러뷰 설정
         RecyclerView subrecyclerview = (RecyclerView)view.findViewById(R.id.subrecycler);
         studysubAdapter adapter = new studysubAdapter(getContext(),subDataList);
         subrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        subrecyclerview.setAdapter(adapter);
+        subrecyclerview.setAdapter(adapter);*/
 
         return view;
 
