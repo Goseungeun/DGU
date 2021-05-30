@@ -59,8 +59,8 @@ public class GraphTable extends Fragment {
             R.id.button3_1, R.id.button3_2, R.id.button4_1, R.id.button4_2, R.id.button_etc
     };
 
-    //DB
-    GraphTable_DB[] table_dbs=new GraphTable_DB[SEMESTER_NUM];
+    GraphTable_DB table_dbs;      //DB
+    private String[] semesterName = new String[SEMESTER_NUM];                         //학기 이름(db table 이름)
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -77,7 +77,10 @@ public class GraphTable extends Fragment {
         //현재 표시해야할 semester의 index값 초기화
         //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
         cur_semester_index=0;
-        for (int i=0;i<semesterButtonIDs.length;i++){semester[i]=view.findViewById(semesterButtonIDs[i]);}
+        for (int i=0;i<semesterButtonIDs.length;i++){
+            semester[i]=view.findViewById(semesterButtonIDs[i]);
+            semesterName[i]=semester[i].getText().toString();
+        }
 
         //table_db생성
         createTableDBs();
@@ -105,7 +108,7 @@ public class GraphTable extends Fragment {
     //각 학기별 평균 학점을 저장할 doubldlist 초기화
     private void init_semester_score_list() {
         for(int i=0;i<semester_score_list.length;i++){
-            semester_score_list[i]=table_dbs[i].CalculateGPA();
+            semester_score_list[i]=table_dbs.CalculateGPA(semesterName[i]);
         }
     }
 
@@ -140,23 +143,23 @@ public class GraphTable extends Fragment {
 
 
                         //이미 디비상에서 존재하는 행이 있었다면,
-                        if(table_dbs[cur_semester_index].FindAlreadyExistsRowID(i)){
+                        if(table_dbs.FindAlreadyExistsRowID(""+semesterName[cur_semester_index],i)){
                             Toast.makeText(getActivity(),"update"+i, Toast.LENGTH_SHORT).show();
                             //update
-                            table_dbs[cur_semester_index].UpdateGraphTable(i,""+_subject_name,integer_credit+0, ""+score[i].getText().toString());
+                            table_dbs.UpdateGraphTable(""+semesterName[cur_semester_index],i,""+_subject_name,integer_credit+0, ""+score[i].getText().toString());
                         }else{
                             Toast.makeText(getActivity(),"insert"+i, Toast.LENGTH_SHORT).show();
                             //insert
-                            table_dbs[cur_semester_index].InsertGraphTable(i,""+_subject_name,integer_credit+0,""+score[i].getText().toString());
+                            table_dbs.InsertGraphTable(""+semesterName[cur_semester_index],i,""+_subject_name,integer_credit+0,""+score[i].getText().toString());
                         }
 
                     }else{
                         //하나라도 비어있으면 DB에서 삭제한다.
 
                         //이미 디비상에서 존재하는 행이 있었다면,
-                        if(table_dbs[cur_semester_index].FindAlreadyExistsRowID(i)){
+                        if(table_dbs.FindAlreadyExistsRowID(semesterName[cur_semester_index],i)){
                             //delete
-                            table_dbs[cur_semester_index].DeleteGraphTable(i);
+                            table_dbs.DeleteGraphTable(semesterName[cur_semester_index],i);
                             rowindex_delete[j]=i;
                             j++;
                             state_delete=1;
@@ -165,12 +168,12 @@ public class GraphTable extends Fragment {
                 }
                 //delete를 한번이라도 했다면 RowID를 재정렬해줘야한다.
                 if(state_delete==1){
-                    table_dbs[cur_semester_index].UpdateGraphTable_RowID(rowindex_delete[0]);
+                    table_dbs.UpdateGraphTable_RowID(semesterName[cur_semester_index],rowindex_delete[0]);
                     state_delete=0;
                 }
 
                 //db에 들어간대로 테이블에 업데이트 해주기
-                table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
+                table_dbs.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
 
                 //평균학점 계산하기
                 CalculateGPA();
@@ -181,7 +184,7 @@ public class GraphTable extends Fragment {
     private void CalculateGPA() {
 
         //학기 평균 학점 계산하기
-        semester_score_list[cur_semester_index] = table_dbs[cur_semester_index].CalculateGPA();
+        semester_score_list[cur_semester_index] = table_dbs.CalculateGPA(semesterName[cur_semester_index]);
 
         //학기 평균 학점 보여주기
         Tv_semester_score.setText("학기 평균 학점 : "+Math.round(semester_score_list[cur_semester_index]*100)/100.0+"점");
@@ -191,9 +194,9 @@ public class GraphTable extends Fragment {
 
         double sum_of_m_credit_times_m_score=0.0;
         double sum_of_m_credit=0.0;
-        for(int i=0;i<table_dbs.length;i++){
-            sum_of_m_credit_times_m_score+=table_dbs[i].sum_Of_m_credit_times_m_score();
-            sum_of_m_credit+=table_dbs[i].sum_Of_m_credit();
+        for(int i=0;i<semesterName.length;i++){
+            sum_of_m_credit_times_m_score+=table_dbs.sum_Of_m_credit_times_m_score(semesterName[i]);
+            sum_of_m_credit+=table_dbs.sum_Of_m_credit(semesterName[i]);
         }
         if(sum_of_m_credit!=0.0&&sum_of_m_credit_times_m_score!=0.0){
             total_score=sum_of_m_credit_times_m_score/sum_of_m_credit;
@@ -205,9 +208,7 @@ public class GraphTable extends Fragment {
 
     //table_dbs 생성하는 함수
     private void createTableDBs() {
-        for(int i=0;i<SEMESTER_NUM;i++){
-            table_dbs[i]=new GraphTable_DB(getContext(), semester[i].getText().toString());
-        }
+        table_dbs=new GraphTable_DB(getContext(),semesterName);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -338,7 +339,7 @@ public class GraphTable extends Fragment {
         }
 
         //table에 내용채워넣기
-        if(!table_dbs[cur_semester_index].IsEmpty()) {table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);}
+        if(!table_dbs.IsEmpty(semesterName[cur_semester_index])) {table_dbs.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);}
 
         //평균학점 내용 채워넣기
         CalculateGPA();
@@ -368,7 +369,7 @@ public class GraphTable extends Fragment {
                     Tv_semester.setText(semester_name);
 
                     //학기 버튼에 따라 디비 불러오기
-                    table_dbs[cur_semester_index].ViewGraphTable(subject_name,credit,score);
+                    table_dbs.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
 
                     //학기 버튼에 따라 평균학점들 달라지게
                     CalculateGPA();
