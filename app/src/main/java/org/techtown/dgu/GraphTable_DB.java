@@ -16,10 +16,16 @@ public class GraphTable_DB extends SQLiteOpenHelper {
     private static final int DB_VERSION=1;
     private static final String DB_NAME = "GraphTable_DB";
     private String[] tbName;
+    //GraphScore_DB score_db;
 
     public GraphTable_DB(@Nullable Context context, @Nullable String[] _tbName) {
         super(context, DB_NAME, null, DB_VERSION);
+        //score_db = new GraphScore_DB(context);
         this.tbName=_tbName;
+    }
+
+    public GraphTable_DB(@Nullable Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
@@ -31,10 +37,6 @@ public class GraphTable_DB extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE IF NOT EXISTS '"+tbName[i]+"'(RowID INTEGER NOT NULL, name TEXT NOT NULL, credit INTEGER NOT NULL, score TEXT NOT NULL)");
         }
     }
-
-
-    //기존에 생성되어 있던 디비 오픈
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -51,7 +53,6 @@ public class GraphTable_DB extends SQLiteOpenHelper {
     public void UpdateGraphTable(String _tbname,int _RowID, String _name ,int _credit,String _score){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE '"+_tbname+"' SET name='"+_name+"', credit='"+_credit+"',score='"+_score+"' WHERE RowID = '"+_RowID+"'");
-
     }
 
     //delete문 (graphtable 한줄을 삭제한다.)
@@ -136,30 +137,38 @@ public class GraphTable_DB extends SQLiteOpenHelper {
     }
 
     //학기 평균 학점계산하기
-    public double CalculateGPA(String _tbname){
+    public float CalculateGPA(String _tbname){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT credit,score FROM '"+_tbname+"' where score !='NP' and score !='P' and score !='F'",null);
 
-        double GPA=0.00;
+        float GPA=0f;
         if(cursor.getCount()!=0){
             //table안에 내용이 들어있다면 내부수행
             //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
-            GPA=sum_Of_m_credit_times_m_score(_tbname)/sum_Of_m_credit(_tbname);
+            GPA=(float)(sum_Of_m_credit_times_m_score(""+_tbname)/sum_Of_m_credit(""+_tbname));
         }
 
+        /*if(score_db.FindAlreadyExistsSemesterName(""+_tbname)){
+            //이미 존재하는 행
+            //update문
+            score_db.UpdateGraphScore(""+_tbname,GPA+0f);
+        }else{
+            //insert문
+            score_db.InsertGraphScore(""+_tbname,GPA+0f);
+        }*/
         cursor.close();
         return GPA;
     }
 
     //m_credit과 m_score을 곱한값들을 다 더해서
-    public double sum_Of_m_credit(String _tbname) {
+    public float sum_Of_m_credit(String _tbname) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT credit,score FROM '"+_tbname+"' where score !='NP' and score !='P' and score !='F'",null);
-        double m_credit;
-        double result=0.0;
+        float m_credit;
+        float result=0f;
         if(cursor.getCount()!=0){
             while(cursor.moveToNext()){
-                m_credit= cursor.getInt(cursor.getColumnIndex("credit"));
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("credit"));
                 result += m_credit;
             }
         }
@@ -171,11 +180,11 @@ public class GraphTable_DB extends SQLiteOpenHelper {
     public double sum_Of_m_credit_times_m_score(String _tbname) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT credit,score FROM '"+_tbname+"' where score !='NP' and score !='P' and score !='F'",null);
-        double m_credit, m_score;
-        double result=0.0;
+        float m_credit, m_score;
+        float result=0f;
         if(cursor.getCount()!=0){
             while(cursor.moveToNext()){
-                m_credit= cursor.getInt(cursor.getColumnIndex("credit"));
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("credit"));
                 m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("score")));
                 result += m_credit*m_score;
             }
@@ -184,25 +193,25 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         return result;
     }
 
-    private double m_score_Calculate(String score) {
+    private float m_score_Calculate(String score) {
         //score의 NP, P, F는 0.0점으로 계산.
         switch(score){
             case "A+" :
-                return 4.5;
+                return 4.5f;
             case "A0" :
-                return 4.0;
+                return 4.0f;
             case "B+" :
-                return 3.5;
+                return 3.5f;
             case "B0" :
-                return 3.0;
+                return 3.0f;
             case "C+" :
-                return 2.5;
+                return 2.5f;
             case "C0" :
-                return 2.0;
+                return 2.0f;
             case "D+" :
-                return 1.5;
+                return 1.5f;
             default :
-                return 1.0;     //D0
+                return 1.0f;     //D0
         }
     }
 }
