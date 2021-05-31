@@ -70,6 +70,7 @@ public class InputSchoolSubject extends DialogFragment {
     }
 
     public InputSchoolSubject() {
+
     }
 
     @Override
@@ -102,11 +103,8 @@ public class InputSchoolSubject extends DialogFragment {
 
                     public void onClick(DialogInterface dialog, int which) {
                         //입력받은 데이터 저장 부분 만들기
-                    /*    EditText esubjectName = (EditText)getDialog().findViewById(R.id.subjectNameInput);
-                        String subjectName = esubjectName.getText().toString();
 
-                        myListener. myCallback(subjectName);*/
-
+               
                         EditText subjectNameInput=(EditText)getDialog().findViewById(R.id.subjectNameInput);
                         EditText weekInput=(EditText)getDialog().findViewById(R.id.weekInput);
                         EditText weekFrequencyInput=(EditText)getDialog().findViewById(R.id.weekFrequencyInput);
@@ -138,17 +136,7 @@ public class InputSchoolSubject extends DialogFragment {
                     }
                 });
         return builder.create();
-
     }
-
-
-
-
-
-
-
-
-
 
     /*public static InputSchoolSubject newInstance() {
         return new InputSchoolSubject();

@@ -35,6 +35,19 @@ public class Subject extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
 
+        Button subjectInput = (Button) view.findViewById(R.id.subjectInputButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+        subjectInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+            private void openDialog() {
+                DialogFragment InputSchoolSubject = new InputSchoolSubject();
+                // InputSchoolSubject.setTargetFragment(Subject.this, 0);
+                InputSchoolSubject.show(getFragmentManager(), "Subject Input");
+            }
+        });
+
 
 
         //load recent DB
@@ -51,6 +64,7 @@ public class Subject extends Fragment {
 
         });
         ctx=getContext();
+
 
         subDataList = new ArrayList<studysub>();
 
