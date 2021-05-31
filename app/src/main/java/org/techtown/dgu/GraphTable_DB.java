@@ -267,4 +267,29 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         return result;
     }
 
+    //graphtable의 row 수 구하기
+    public int Output_GraphTableRow(String _tbname){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM '"+_tbname+"'",null);
+        int result = cursor.getCount();
+
+        cursor.close();
+        return result;
+    }
+
+    //(과목명) 이미 존재하는 행인지 아닌지 판단. (존재하는 행이 있다면 true, 없다면 false)
+    public boolean FindAlreadyExistsSubjectName(String _tbname,String _name){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM '"+_tbname+"' where name ='"+_name+"'",null);
+
+        if(cursor.getCount()==0){
+            //RowID ='"+_RowID+"'인게 없다면,
+            cursor.close();
+            return false;
+        }else{
+            cursor.close();
+            return true;
+        }
+    }
+
 }
