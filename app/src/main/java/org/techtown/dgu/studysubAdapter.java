@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,6 +170,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                                 hwrecycler.setAdapter(mHomeworkAdapter);
                                 hwrecycler.smoothScrollToPosition(0);
 
+
                                 dialog.dismiss();
                                 Toast.makeText(mContext,"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
 
@@ -245,7 +247,11 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position) {
                             if(position==0){
-                                ((MainActivity)view.getContext()).replaceFragment(new AttendanceCheck());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+                                AttendanceCheck attendanceCheck = new AttendanceCheck();
+
+                                String name = studysub.getSubname();
+                                attendanceCheck.setSubName(name);
+                                ((MainActivity)view.getContext()).replaceFragment(attendanceCheck);    // 새로 불러올 Fragment의 Instance를 Main으로 전달
 
                             }
                             else if(position==1){
