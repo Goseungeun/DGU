@@ -85,33 +85,33 @@ public class Subject_DB extends SQLiteOpenHelper {
 
 
         //AttendanceCheck Table을 만든다
-        //value : attendanceCheck 값을 받을 예정  => 0:attendance, 1:late, 2:absent, null : no value
+        //value : attendanceCheck 값을 받을 예정  => 0:attendance, 1:late, 2:absent, -1 : no value
         db.execSQL("CREATE TABLE IF NOT EXISTS '"+_subname+"'(id INTEGER PRIMARY KEY AUTOINCREMENT, value INTEGER)");
         //table 초기화
-        for(int i=0;i<_week*_weekFre;i++){InsertAttendanceCheck(_subname,null);}
+        for(int i=0;i<_week*_weekFre;i++){InsertAttendanceCheck(_subname,-1);}
 
     }
 
 
-    public void InsertAttendanceCheck(String _subname , Integer _value){
+    public void InsertAttendanceCheck(String _subname , int _value){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO '"+_subname+"'(value) VALUES('"+_value+"');");
     }
 
     //attendance check table의 값을 수정한다.
-    public void UpdateAttendanceCheck(String _subname,int _id, Integer _value){
+    public void UpdateAttendanceCheck(String _subname,int _id, int _value){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE '"+_subname+"' SET value = '"+_value+"' where id='"+_id+"'");
     }
 
     //AttendanceCheck_'"+_subname+"'의 값 꺼내기
-    public Integer[][] Output_AttendanceCheck_subname(String _subname){
+    public int[][] Output_AttendanceCheck_subname(String _subname){
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from '"+_subname+"'" ,null);
 
         int Row = Output_week(_subname);
         int Col=Output_weekFre(_subname);
-        Integer[][] result = new Integer[Row][Col];
+        int[][] result = new int[Row][Col];
 
         for(int i=0;i<Row;i++){
             for(int j=0;j<Col;j++){

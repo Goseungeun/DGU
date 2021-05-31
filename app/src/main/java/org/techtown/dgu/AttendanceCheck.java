@@ -30,12 +30,11 @@ public class AttendanceCheck extends Fragment {
     private String subName;                //과목 이름
     Subject_DB db;   //DB
 
-    //int는 null로 초기화 할 수 없고, Integer은 null로 초기화 가능
     private int WEEK;           //몇주차인지
     private int DAY_A_WEEK;     //한 주에 몇번 수업하는지
 
     //0:attendance, 1:late, 2:absent, null : no value
-    public Integer[][] checklist;
+    public int[][] checklist;
     //checklist.length하면 null도 포함해서 알려준다.
 
 
@@ -56,8 +55,6 @@ public class AttendanceCheck extends Fragment {
         view = (ViewGroup) inflater.inflate(R.layout.attendancecheck, container,false);
         TextView tv = view.findViewById(R.id.Tv_attendancecheck);
         tv.setText(""+subName+" 출석체크");
-        Log.d("나야","1"+subName);
-
 
         //BackButton1을 누르면 실행되는 함수
         ImageButton backbutton = (ImageButton)view.findViewById(R.id.BackButton1); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
@@ -205,14 +202,14 @@ public class AttendanceCheck extends Fragment {
         int lateNum=0;
         int absentNum=0;
 
-        //0:attendance, 1:late, 2:absent, null : no value
+        //0:attendance, 1:late, 2:absent, -1 : no value
         for(int i=0;i<WEEK;i++){
             for(int j=0;j<DAY_A_WEEK;j++) {
-                if (checklist[i][j] == (Integer) 0) {
+                if (checklist[i][j] == 0) {
                     attendNum++;
-                } else if (checklist[i][j] == (Integer) 1) {
+                } else if (checklist[i][j] == 1) {
                     lateNum++;
-                } else if (checklist[i][j] == (Integer) 2) {
+                } else if (checklist[i][j] == 2) {
                     absentNum++;
                 }
             }
@@ -224,20 +221,20 @@ public class AttendanceCheck extends Fragment {
     //출석,지각,결석에 맞춰서 이미지 표시하기
     public int imgview_setImageResource(int i, int k){
         int j=k-1;
-        //0:attendance, 1:late, 2:absent, null : no value
-        if(checklist[i][j]==(Integer)0)return(R.drawable.checkmark);
-        else if(checklist[i][j]==(Integer)1)return(R.drawable.minus);
-        else if(checklist[i][j]==(Integer)2)return(R.drawable.xmark);
-        else return(R.drawable.nothing);
+        //0:attendance, 1:late, 2:absent, -1 : no value
+        if(checklist[i][j]==-1)return(R.drawable.nothing);
+        else if(checklist[i][j]==1)return(R.drawable.minus);
+        else if(checklist[i][j]==2)return(R.drawable.xmark);
+        else return(R.drawable.checkmark);
     }
 
     //출석,지각,결석에 맞춰서 이미지 색칠하기
     public int imgview_setTint(int i,int k){
         int j=k-1;
-        //0:attendance, 1:late, 2:absent, null : no value
-        if(checklist[i][j]==(Integer)0)return(R.color.checkmark);
-        else if(checklist[i][j]==(Integer)1)return(R.color.minus);
-        else  return(R.color.xmark);
+        //0:attendance, 1:late, 2:absent, -1 : no value
+        if(checklist[i][j]==0)return(R.color.checkmark);
+        else if(checklist[i][j]==1)return(R.color.minus);
+        else return(R.color.xmark);
     }
 
     //dialog
@@ -259,10 +256,10 @@ public class AttendanceCheck extends Fragment {
 
         //default값 정하기
         int defaultItem;
-        //0:attendance, 1:late, 2:absent, null : no value
-        if(checklist[i][j]==(Integer)0)defaultItem=0;
-        else if(checklist[i][j]==(Integer)1)defaultItem=1;
-        else if(checklist[i][j]==(Integer)2)defaultItem=2;
+        //0:attendance, 1:late, 2:absent, -1 : no value
+        if(checklist[i][j]==0)defaultItem=0;
+        else if(checklist[i][j]==1)defaultItem=1;
+        else if(checklist[i][j]==2)defaultItem=2;
         else defaultItem=3;
         selectedItems.add(defaultItem);
 
@@ -280,12 +277,12 @@ public class AttendanceCheck extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //seletedItems.get(0) = 선택한 항목
-                        //checklist 값 바꾸기 //0:attendance, 1:late, 2:absent, null : no value
+                        //checklist 값 바꾸기 //0:attendance, 1:late, 2:absent, -1 : no value
                         int result = (int)selectedItems.get(0);
-                        if(result==0)checklist[i][j]=(Integer)0;
-                        else if(result==1)checklist[i][j]=(Integer)1;
-                        else if(result==2)checklist[i][j]=(Integer)2;
-                        else checklist[i][j]=(Integer)null;
+                        if(result==0)checklist[i][j]=0;
+                        else if(result==1)checklist[i][j]=1;
+                        else if(result==2)checklist[i][j]=2;
+                        else checklist[i][j]=-1;
 
 
                         ///Start UPDATE
@@ -300,7 +297,7 @@ public class AttendanceCheck extends Fragment {
                         ));
 
                         ///여기 id계산하는거 헷갈림
-                        db.UpdateAttendanceCheck(subName,i*DAY_A_WEEK+j, checklist[i][j]);
+                        db.UpdateAttendanceCheck(subName,i*DAY_A_WEEK+j+1, checklist[i][j]);
                         ///End UPDATE
                     }
                 });
