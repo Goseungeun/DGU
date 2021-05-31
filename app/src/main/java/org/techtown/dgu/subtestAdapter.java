@@ -71,7 +71,8 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
                                         String subtestdday=subtestDdayInput.getText().toString();
 
                                         String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                                        mSubTest_DB.UpdateTodo(subtestname,subtestdday);
+                                        int id = subtest.getId();
+                                        mSubTest_DB.UpdateTodo(id,subtestname,subtestdday);
 
                                         //update UI
                                         subtest.setSubtestname(subtestname);
@@ -88,8 +89,8 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
                             }
                             else if(position==1){
                                 //delete table
-                                String subtestname=subtest.getSubtestname();
-                                mSubTest_DB.DeleteTodo(subtestname);
+                                int id = subtest.getId();
+                                mSubTest_DB.DeleteTodo(id);
 
                                 //delete UI
                                 subTestList.remove(curPos);
@@ -128,5 +129,11 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
         if(subTestList!=null)
         return subTestList.size();
         else return 0;
+    }
+
+    // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
+    public void addtestItem(subtest _item){
+        subTestList.add(0,_item);
+        notifyItemInserted(0);
     }
 }

@@ -75,27 +75,27 @@ public class subtest_DB extends SQLiteOpenHelper {
 
     //insert문 (과목을 DB에 넣는다.)
     //사용자용 Insert, 처음 과목 등록 시
-    public void InsetSubject(String _subtestname, String _testDday){
+    public void InsetSubtest(String _subtestname, String _testDday){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO subtest(subtestname, testDday) VALUES('"+_subtestname+"','"+_testDday+"');");
     }
 
 
     //update문 (할일 목록을 수정한다.)
-    public void UpdateTodo(String _subtestname, String _testDday){
+    public void UpdateTodo(Integer _id,String _subtestname, String _testDday){
         SQLiteDatabase db = getWritableDatabase();
 
         //id를 기준으로 업데이트 하고자 하는 행을 찾은 후 입력값을 이용해 수정.
         //id가 기준인 이유 => AUTOINCREMENT를 걸어놨기 때문. (통상적으로 이걸 걸어놓으면 기준으로 사용한다.)
-        db.execSQL("UPDATE subtest SET  subtestname='"+_subtestname+"', testDday='"+_testDday+"'");
+        db.execSQL("UPDATE subtest SET  subtestname='"+_subtestname+"', testDday='"+_testDday+"'WHERE id='"+_id+"'");
     }
 
     //delete문 (과목을 삭제한다.)
-    public void DeleteTodo(String _subtestname){
+    public void DeleteTodo(Integer _id){
         SQLiteDatabase db = getWritableDatabase();
 
         //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
-        db.execSQL("DELETE FROM subtest  WHERE subtestname ='"+_subtestname+"'");
+        db.execSQL("DELETE FROM subtest WHERE id='"+_id+"'");
 
     }
 

@@ -40,7 +40,7 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/subjectNameInput"
+                    android:id="@+id/licenseNameInput"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@id/nameLabel"

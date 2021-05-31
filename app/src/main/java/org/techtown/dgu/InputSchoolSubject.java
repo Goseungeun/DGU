@@ -120,7 +120,7 @@ public class InputSchoolSubject extends DialogFragment {
                         item.setWeek(parseInt(weekInput.getText().toString()));
                         item.setWeekFre(parseInt(weekFrequencyInput.getText().toString()));
 
-                        mAdapter.addItem(item);
+                        mAdapter.addSubItem(item);
 
                         subrecyclerview.smoothScrollToPosition(0);
                         dialog.dismiss();

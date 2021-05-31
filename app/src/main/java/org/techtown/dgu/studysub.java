@@ -1,9 +1,16 @@
 package org.techtown.dgu;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+@Entity(tableName = "studysub")
+
 public class studysub {
+    @PrimaryKey
     private int id;
+
     private String subname;
     private String subtime;
     private int week;

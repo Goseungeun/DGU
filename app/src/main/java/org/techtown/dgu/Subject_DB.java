@@ -24,7 +24,7 @@ public class Subject_DB extends SQLiteOpenHelper {
         //cursor = 해당 데이터 베이스에서 조건에 맞춘 값들을 저장하는 공간
         //ORDER BY : 정렬
         //DESC : 내림차순 , ASC : 오름차순
-        Cursor cursor = db.rawQuery("SELECT * FROM Subject",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM Subject ",null);
 
         if(cursor.getCount()!=0){
             //cursor에 담긴 값이 있을 때 내부 수행
@@ -68,9 +68,9 @@ public class Subject_DB extends SQLiteOpenHelper {
         //데이터 베이스가 생성 될 때 호출
         //데이터베이스 -> 테이블 -> 컬럼 -> 값
 
+        //테이블을 생성한것같어..!
         db.execSQL("CREATE TABLE IF NOT EXISTS Subject(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "subname TEXT NOT NULL,week INTEGER NOT NULL, weekFre INTEGER NOT NULL, subtime TEXT)");
-
     }
 
     public String[] getSubjectNameList(){
@@ -98,77 +98,12 @@ public class Subject_DB extends SQLiteOpenHelper {
     public void InsetSubject(String _subname, Integer _week, Integer _weekFre){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO Subject(subname, week, weekFre) VALUES('"+_subname+"','"+_week+"','"+_weekFre+"');");
-
-
-        //AttendanceCheck Table을 만든다
-        //value : attendanceCheck 값을 받을 예정  => 0:attendance, 1:late, 2:absent, -1 : no value
-        db.execSQL("CREATE TABLE IF NOT EXISTS '"+_subname+"'(id INTEGER PRIMARY KEY AUTOINCREMENT, value INTEGER)");
-        //table 초기화
-        for(int i=0;i<_week*_weekFre;i++){InsertAttendanceCheck(_subname,-1);}
-
-    }
-
-
-    public void InsertAttendanceCheck(String _subname , int _value){
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO '"+_subname+"'(value) VALUES('"+_value+"');");
-    }
-
-    //attendance check table의 값을 수정한다.
-    public void UpdateAttendanceCheck(String _subname,int _id, int _value){
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE '"+_subname+"' SET value = '"+_value+"' where id='"+_id+"'");
-    }
-
-    //AttendanceCheck_'"+_subname+"'의 값 꺼내기
-    public int[][] Output_AttendanceCheck_subname(String _subname){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from '"+_subname+"'" ,null);
-
-        int Row = Output_week(_subname);
-        int Col=Output_weekFre(_subname);
-        int[][] result = new int[Row][Col];
-
-        for(int i=0;i<Row;i++){
-            for(int j=0;j<Col;j++){
-                cursor.moveToNext();
-                result[i][j]= cursor.getInt(cursor.getColumnIndex("value"));
-            }
-        }
-        cursor.close();
-        return result;
-    }
-
-    //해당 subname을 가지고 있는 subject의 week를 반환한다.
-    public int Output_week(String _subname){
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Subject where subname='"+_subname+"'",null);
-        int result=0;
-        if(cursor.getCount()!=0){
-            cursor.moveToNext();
-            result= cursor.getInt(cursor.getColumnIndex("week"));
-        }
-        cursor.close();
-        return result;
-    }
-
-    //해당 subname을 가지고 있는 subject의 weekFre를 반환한다.
-    public int Output_weekFre(String _subname){
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Subject where subname='"+_subname+"'",null);
-        int result=0;
-        if(cursor.getCount()!=0){
-            cursor.moveToNext();
-            result= cursor.getInt(cursor.getColumnIndex("weekFre"));
-        }
-        cursor.close();
-        return result;
     }
 
     //과목 공부 시간 추가
     public void InputSubjectTime(String _subname, String _subtime){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE Subject WHERE subname='"+_subname+"' SET subtime='"+_subtime+"');");
+        db.execSQL("UPDATE Subject WHERE subname=_subname SET subtime='"+_subtime+"');");
     }
 
     //update문 (할일 목록을 수정한다.)
