@@ -32,7 +32,7 @@ public class License extends Fragment {
         studylicenseAdapter mAdapter = new studylicenseAdapter(licensItems,this.getContext());
         rv_license.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         rv_license.setAdapter(mAdapter);
-        licensItems=new ArrayList<>();
+        licensItems=new ArrayList<study_license>();
 
         Button button1 = (Button)rootView.findViewById(R.id.button2); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
