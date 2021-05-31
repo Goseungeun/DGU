@@ -72,6 +72,22 @@ public class Subject_DB extends SQLiteOpenHelper {
                 "subname TEXT NOT NULL,week INTEGER NOT NULL, weekFre INTEGER NOT NULL, subtime TEXT)");
 
     }
+
+    public String[] getSubjectNameList(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("select subname from Subject" ,null);
+        String[] result = new String[cursor.getCount()];
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                result[i]=cursor.getString(cursor.getColumnIndex("subname"));
+                i++;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);

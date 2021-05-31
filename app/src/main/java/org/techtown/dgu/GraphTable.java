@@ -49,10 +49,12 @@ public class GraphTable extends Fragment {
     private String[] scorelist=new String[ROW];                                     //성적에 들어갈 값들
     private TextView Tv_semester;                                                   //학기를 나타내 주는 Textview
     private TextView Tv_semester_score;                                             //학기 평균 학점을 나타내 주는 Textview
-    private float[] semester_score_list=new float[SEMESTER_NUM];                  //각 학기별 평균 학점을 저장할 doubldlist
+    private float[] semester_score_list=new float[SEMESTER_NUM];                    //각 학기별 평균 학점을 저장할 doubldlist
     private TextView Tv_total_score;                                                //전체 평균학점을 나타내 주는 Textview
     private TextView save;                                                          //저장버튼
     private int cur_semester_index;                                                 //현재 표시해야할 semester의 index값이 무엇인지.
+    private TextView Tv_Import_subject;                                             //과목 불러오기 버튼
+
 
     //학기 버튼 (가로스크롤바)
     private Button[] semester = new Button[SEMESTER_NUM];
@@ -62,6 +64,7 @@ public class GraphTable extends Fragment {
     };
 
     GraphTable_DB table_dbs;      //DB
+    Subject_DB subject_db;        //DB
     private String[] semesterName = new String[SEMESTER_NUM];                         //학기 이름(db table 이름)
 
 
@@ -103,9 +106,40 @@ public class GraphTable extends Fragment {
         //저장 버튼 연결 (학기 평균 학점, 전체 평균 학점 계산하기 들어있음)
         saveButtonAction();
 
+        //과목 불러오기 버튼 연결
+        ImportSubjecButtonAction();
+
 
         return view;
 
+    }
+
+    private void ImportSubjecButtonAction() {
+
+        subject_db =new Subject_DB(getContext());
+        int length = subject_db.getSubjectNameList().length;
+        String[] subjectName=new String[length];
+        subjectName=subject_db.getSubjectNameList();
+
+
+        Tv_Import_subject = view.findViewById(R.id.Import_subject);
+        String[] finalSubjectName = subjectName;
+        Tv_Import_subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index=0;
+                for(int i=table_dbs.Output_GraphTableRow(semesterName[cur_semester_index])-1 ; (i<ROW) && (index<length) ; i++,index++){
+                    if(table_dbs.FindAlreadyExistsSubjectName(semesterName[cur_semester_index], finalSubjectName[index])){
+                        //이미 존재
+                        i--;
+                    }else{
+                        table_dbs.InsertGraphTable(semesterName[cur_semester_index],i, finalSubjectName[index] ,0,"A+");
+                    }
+                }
+                //db에 들어간대로 테이블에 업데이트 해주기
+                table_dbs.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
+            }
+        });
     }
 
     //각 학기별 평균 학점을 저장할 doubldlist 초기화하고 graphscoreDB도 초기화
