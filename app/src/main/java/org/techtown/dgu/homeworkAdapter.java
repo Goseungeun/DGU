@@ -74,7 +74,8 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                         String hwDday=homeworkDdayInput.getText().toString();
 
                                         String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                                        mHomework_DB.UpdateTodo(hwname,hwDday);
+                                        int id = homework.getId();
+                                        mHomework_DB.UpdateTodo(id,hwname,hwDday);
 
                                         //update UI
                                         homework.setHwname(hwname);
@@ -91,8 +92,8 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                             }
                             else if(position==1){
                                 //delete table
-                                String hwname=homework.getHwname();
-                                mHomework_DB.DeleteTodo(hwname);
+                                int id = homework.getId();
+                                mHomework_DB.DeleteTodo(id);
 
                                 //delete UI
                                 homeworkList.remove(curPos);
@@ -129,5 +130,11 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
          return homeworkList.size();
         else return 0;
     }
-
+    // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
+    public void addhwItem(homework _item){
+      if(_item!=null){
+        homeworkList.add(0,_item);
+        notifyItemInserted(0);
+      }
+    }
 }

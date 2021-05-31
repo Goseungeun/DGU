@@ -32,8 +32,22 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
 
     private ArrayList<studysub> subList;
     private Context mContext;
+
     private Subject_DB mSubject_DB;
 
+    protected RecyclerView hwrecycler;
+    private homework_DB mHomework_DB;
+    ArrayList<homework> homeworkList;
+    private homeworkAdapter mHomeworkAdapter;
+
+
+    protected RecyclerView testrecycler;
+    private subtest_DB mSubTest_DB;
+    ArrayList<subtest> subTestList;
+    private subtestAdapter msubtestAdapter;
+
+
+    
     public studysubAdapter(Context context, ArrayList<studysub> subList){
         this.subList = subList;
         this.mContext = context;
@@ -49,25 +63,37 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
 
     @Override
     public void onBindViewHolder(studysubViewHolder StudysubviewHolder, int i){
+        final int id=subList.get(i).getId();
         final String subname = subList.get(i).getSubname();
         final String subtime = subList.get(i).getSubtime();
 
-        ArrayList hwList = subList.get(i).getHwList();
-        ArrayList testList = subList.get(i).getTestList();
+        ArrayList homeworkList = subList.get(i).getHwList();
+        ArrayList subTestList = subList.get(i).getTestList();
         StudysubviewHolder.subjectname.setText(subname);
         StudysubviewHolder.subjecttime.setText(subtime);
-        homeworkAdapter homeworkListDataAdapter = new homeworkAdapter(mContext, hwList);
-        subtestAdapter subjecttestListDataAdapter = new subtestAdapter(mContext,testList);
+
+       // homeworkAdapter homeworkListDataAdapter = new homeworkAdapter(mContext, homeworkList);
+      //  subtestAdapter subjecttestListDataAdapter = new subtestAdapter(mContext,subTestList);
+
         StudysubviewHolder.hwrecycler.setLayoutManager(new LinearLayoutManager(mContext));
-        StudysubviewHolder.hwrecycler.setAdapter(homeworkListDataAdapter);
+        StudysubviewHolder.hwrecycler.setAdapter(mHomeworkAdapter);
         StudysubviewHolder.testrecycler.setLayoutManager(new LinearLayoutManager(mContext));
-        StudysubviewHolder.testrecycler.setAdapter(subjecttestListDataAdapter);
+        StudysubviewHolder.testrecycler.setAdapter(msubtestAdapter);
 
     }
+
     @Override
     public int getItemCount(){
         return subList.size();
     }
+
+    // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
+    public void addSubItem(studysub _item) {
+            subList.add(0,_item);
+            notifyItemInserted(0);
+        }
+
+
 
     public class studysubViewHolder extends RecyclerView.ViewHolder{
         protected ImageButton image;
@@ -83,16 +109,134 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
             this.image = (ImageButton)view.findViewById(R.id.imageButton);
             this.subjectname = (TextView)view.findViewById(R.id.subjectname);
             this.subjecttime = (TextView)view.findViewById(R.id.subjecttime);
+
             this.addhw = (TextView)view.findViewById(R.id.addhw);
             this.hwrecycler = (RecyclerView)view.findViewById(R.id.hwrecycler);
             this.addtest = (TextView)view.findViewById(R.id.addtest);
             this.testrecycler = (RecyclerView)view.findViewById(R.id.testrecycler);
 
+
+            mHomework_DB=new homework_DB((this.hwrecycler.getContext()));
+            homeworkAdapter homeworkListDataAdapter = new homeworkAdapter(mContext, homeworkList);
+            hwrecycler.setLayoutManager(new LinearLayoutManager(this.hwrecycler.getContext(),LinearLayoutManager.VERTICAL,false));
+            hwrecycler.setAdapter(homeworkListDataAdapter);
+            homeworkList=new ArrayList<>();
+
+
+            mSubTest_DB=new subtest_DB((this.testrecycler.getContext()));
+            subtestAdapter subjecttestListDataAdapter = new subtestAdapter(mContext,subTestList);
+            testrecycler.setLayoutManager(new LinearLayoutManager(this.testrecycler.getContext(),LinearLayoutManager.VERTICAL,false));
+            testrecycler.setAdapter(subjecttestListDataAdapter);
+            subTestList=new ArrayList<>();
+
+
+
+            //load recent DB
+            loadhwRecentDB();
+            loadtestRecentDB();
+
+
+////과제추가 다이얼로그
+            addhw.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v){
+                        //팝업창 띄우기
+                        Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
+                        dialog.setContentView(R.layout.homework_input);
+
+                        EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
+                        EditText homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
+                       
+
+                        Button homeworkInputBtn_ok=dialog.findViewById(R.id.homeworkInputButton);
+                        homeworkInputBtn_ok.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v){
+
+                                //Insert Database
+                                String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
+
+
+                                mHomework_DB.InsetHomework(homeworkNameInput.getText().toString(),homeworkDdayInput.getText().toString());
+                                
+                                //Insert UI
+                                homework hwitem=new homework();
+                                hwitem.setHwname(homeworkNameInput.getText().toString());
+                                hwitem.setHwDday(homeworkDdayInput.getText().toString());
+
+                                mHomeworkAdapter.addhwItem(hwitem);
+                                hwrecycler.setAdapter(mHomeworkAdapter);
+                                hwrecycler.smoothScrollToPosition(0);
+
+                                dialog.dismiss();
+                                Toast.makeText(mContext,"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        });
+
+                        dialog.show();
+                    
+                    
+                }
+            });
+
+////시험추가 다이얼로그
+            ///
+            addtest.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v){
+                    //팝업창 띄우기
+                    Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
+                    dialog.setContentView(R.layout.test_input);
+
+                    EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
+                    EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
+
+
+                    Button testInputBtn_ok=dialog.findViewById(R.id.subtestInputButton);
+                    testInputBtn_ok.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+
+                            //Insert Database
+                            String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
+
+
+                            mSubTest_DB.InsetSubtest(subtestNameInput.getText().toString(),subtestDdayInput.getText().toString());
+
+                            //Insert UI
+                            subtest testitem=new subtest();
+                            testitem.setSubtestname(subtestNameInput.getText().toString());
+                            testitem.setTestDday(subtestDdayInput.getText().toString());
+
+                            msubtestAdapter.addtestItem(testitem);
+                            testrecycler.setAdapter(msubtestAdapter);
+                            testrecycler.smoothScrollToPosition(0);
+
+                            dialog.dismiss();
+                            Toast.makeText(mContext,"시험이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    });
+
+                    dialog.show();
+
+
+                }
+            });
+            ///
+
+////과목 리사이클러뷰 선택시 실행
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
                     int curPos=getAdapterPosition(); //현재 리스트 클릭한 아이템 위치
                     studysub studysub=subList.get(curPos);
+
 
                     String[] strChoiceItems={"출석체크","과목 수정하기","과목 삭제하기"};
                     AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
@@ -122,8 +266,10 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                                         Integer week=parseInt(weekInput.getText().toString());
                                         Integer weekFre=parseInt(weekFrequencyInput.getText().toString());
 
+
                                         String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
-                                        mSubject_DB.UpdateTodo(subname,week,weekFre);
+                                        int id = studysub.getId();
+                                        mSubject_DB.UpdateTodo(id,subname,week,weekFre);
 
                                         //update UI
                                         studysub.setSubname(subname);
@@ -141,7 +287,8 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                             else if(position==2){
                                 //delete table
                                 String subname=studysub.getSubname();
-                                mSubject_DB.DeleteTodo(subname);
+                                int id = studysub.getId();
+                                mSubject_DB.DeleteTodo(id);
 
                                 //delete UI
                                 subList.remove(curPos);
@@ -154,12 +301,29 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
 
                 }
             });
-        }
-    }
 
-    // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
-    public void addItem(studysub _item){
-        subList.add(0,_item);
-        notifyItemInserted(0);
+
+        }
+
+        private void loadhwRecentDB() {
+            //저장되어 있던 DB를 가져온다
+            homeworkList=mHomework_DB.getHomeworkList();
+            if(mHomeworkAdapter==null){
+                mHomeworkAdapter=new homeworkAdapter(mContext,homeworkList);
+                hwrecycler.setHasFixedSize(true);
+                hwrecycler.setAdapter(mHomeworkAdapter);
+            }
+        }
+
+        private void loadtestRecentDB() {
+            //저장되어 있던 DB를 가져온다
+            subTestList=mSubTest_DB.getSubTestList();
+            if(msubtestAdapter==null){
+                msubtestAdapter=new subtestAdapter(mContext,subTestList);
+                testrecycler.setHasFixedSize(true);
+                testrecycler.setAdapter(msubtestAdapter);
+            }
+        }
+
     }
 }

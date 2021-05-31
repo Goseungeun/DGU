@@ -24,7 +24,7 @@ public class homework_DB extends SQLiteOpenHelper {
         //cursor = 해당 데이터 베이스에서 조건에 맞춘 값들을 저장하는 공간
         //ORDER BY : 정렬
         //DESC : 내림차순 , ASC : 오름차순
-        Cursor cursor = db.rawQuery("SELECT * FROM homework ORDER BY hwname DESC",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM homework",null);
 
         if(cursor.getCount()!=0){
             //cursor에 담긴 값이 있을 때 내부 수행
@@ -75,27 +75,27 @@ public class homework_DB extends SQLiteOpenHelper {
 
     //insert문 (과목을 DB에 넣는다.)
     //사용자용 Insert, 처음 과목 등록 시
-    public void InsetSubject(String _hwname, String _hwDday){
+    public void InsetHomework(String _hwname, String _hwDday){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO homework(hwname, hwDday) VALUES('"+_hwname+"','"+_hwDday+"');");
     }
 
 
     //update문 (할일 목록을 수정한다.)
-    public void UpdateTodo(String _hwname, String _hwDday){
+    public void UpdateTodo(Integer _id,String _hwname, String _hwDday){
         SQLiteDatabase db = getWritableDatabase();
 
         //id를 기준으로 업데이트 하고자 하는 행을 찾은 후 입력값을 이용해 수정.
         //id가 기준인 이유 => AUTOINCREMENT를 걸어놨기 때문. (통상적으로 이걸 걸어놓으면 기준으로 사용한다.)
-        db.execSQL("UPDATE homework SET  hwname='"+_hwname+"', hwDday='"+_hwDday+"'");
+        db.execSQL("UPDATE homework SET  hwname='"+_hwname+"', hwDday='"+_hwDday+"'WHERE id ='"+_id+"'");
     }
 
     //delete문 (과목을 삭제한다.)
-    public void DeleteTodo(String _hwname){
+    public void DeleteTodo(Integer _id){
         SQLiteDatabase db = getWritableDatabase();
 
         //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
-        db.execSQL("DELETE FROM homework  WHERE hwname ='"+_hwname+"'");
+        db.execSQL("DELETE FROM homework  WHERE id ='"+_id+"'");
 
     }
 

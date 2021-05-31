@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+import androidx.room.Entity;
+import androidx.room.Room;
 
 import org.techtown.dgu.studysub;
 
 import java.util.ArrayList;
-
 
 public class Subject_DB extends SQLiteOpenHelper {
     private static final int DB_VERSION=1;
@@ -67,8 +68,6 @@ public class Subject_DB extends SQLiteOpenHelper {
 
         //데이터 베이스가 생성 될 때 호출
         //데이터베이스 -> 테이블 -> 컬럼 -> 값
-
-        //테이블을 생성한것같어..!
         db.execSQL("CREATE TABLE IF NOT EXISTS Subject(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "subname TEXT NOT NULL,week INTEGER NOT NULL, weekFre INTEGER NOT NULL, subtime TEXT)");
     }
@@ -91,20 +90,22 @@ public class Subject_DB extends SQLiteOpenHelper {
     }
 
     //update문 (할일 목록을 수정한다.)
-    public void UpdateTodo(String _subname, Integer _week, Integer _weekFre){
+    public void UpdateTodo(Integer _id,String _subname, Integer _week, Integer _weekFre){
         SQLiteDatabase db = getWritableDatabase();
 
         //id를 기준으로 업데이트 하고자 하는 행을 찾은 후 입력값을 이용해 수정.
         //id가 기준인 이유 => AUTOINCREMENT를 걸어놨기 때문. (통상적으로 이걸 걸어놓으면 기준으로 사용한다.)
-        db.execSQL("UPDATE Subject SET  subname='"+_subname+"', week='"+_week+"',weekFre='"+_weekFre+"'");
+        db.execSQL("UPDATE Subject SET  subname='"+_subname+"', week='"+_week+"',weekFre='"+_weekFre+"' WHERE id='"+_id+"'");
     }
 
     //delete문 (과목을 삭제한다.)
-    public void DeleteTodo(String _subname){
+    public void DeleteTodo(Integer _id){
         SQLiteDatabase db = getWritableDatabase();
 
         //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
-        db.execSQL("DELETE FROM Subject  WHERE subname ='"+_subname+"'");
+        db.execSQL("DELETE FROM Subject WHERE id='"+_id+"'");
+
+
 
     }
 

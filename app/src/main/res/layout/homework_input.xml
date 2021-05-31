@@ -35,7 +35,7 @@
                     android:id="@+id/homework"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="     과    제     "
+                    android:text="      과    제     "
                     android:textColor="#ff222222"
                     android:textSize="16sp" />
 
