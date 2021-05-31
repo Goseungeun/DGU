@@ -21,7 +21,7 @@ public class License extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
 
         initUI(rootView);
-        Button button1 = (Button)rootView.findViewById(R.id.button2); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
+        Button button1 = (Button)rootView.findViewById(R.id.licensebtn_ok); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
