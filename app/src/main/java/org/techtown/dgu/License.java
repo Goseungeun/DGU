@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class License extends Fragment {
 
@@ -72,6 +73,8 @@ public class License extends Fragment {
             }
 
         });
+
+       // Ddaycal();      //DDay 계산 함수
         return rootView;
     }
 
@@ -83,7 +86,41 @@ public class License extends Fragment {
             rv_license.setAdapter(mAdapter);
         }
 
+    }
+
+    /*
+    private void Ddaycal(){
+        licensItems = mDBHelper.getlicenselist();       //DB의 모든 자격증 불러오기
+        int testyear;       //시험날짜 (년)
+        int testmonth;      //시험날짜 (월)
+        int testdate;       //시험날짜 (일)
+
+        //Array List의 크기만큼 for문 돌림
+        for (int i = 0; i <licensItems.size();i++){
+            study_license item = licensItems.get(i);        //i번째 아이템 가져오기
+            String day = item.getTestday();     //사용자가 입력한 시험날짜 가져오기
+            String[] testdayarray = day.split("/");     //구분기호 /를 기준으로 문자열을 나눠 줌
+
+            testyear = Integer.parseInt(testdayarray[0]);
+            testmonth = Integer.parseInt(testdayarray[1]);
+            testdate = Integer.parseInt(testdayarray[2]);
+
+            //오늘 날짜 받기
+            Calendar today = Calendar.getInstance();
+            //시험 날짜
+            Calendar test = Calendar.getInstance();
+            test.set(testyear,testmonth,testdate);
+
+
+            //Dday 계산
+            long long_test = test.getTimeInMillis()/(24*60*60*1000);
+            long long_today = today.getTimeInMillis()/(24*60*60*1000);
+
+            long dday = long_test - long_today;
+
+        }
 
     }
+    */
 
 }

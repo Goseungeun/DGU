@@ -57,6 +57,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView studytime;
+        public TextView dday;
         private ImageView startbutton;
         private SeekBar progress;
 
@@ -67,6 +68,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             studytime = itemView.findViewById(R.id.licensetime);
             startbutton = itemView.findViewById(R.id.startbutton);
             progress = itemView.findViewById(R.id.progress);
+            dday = itemView.findViewById(R.id.dday);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
