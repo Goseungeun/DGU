@@ -2,11 +2,11 @@ package org.techtown.dgu;
 
 public class study_license {
     String name;
-    String time;
+    String studytime;
+    String testday;
+    Double studyrate;
 
-    public study_license(String name, String time) {
-        this.name = name;
-        this.time = time;
+    public study_license() {
     }
 
     public String getName() {
@@ -17,12 +17,27 @@ public class study_license {
         this.name = name;
     }
 
-    public String getTime() {
-        return time;
+    public String getStudytime() {
+        return studytime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStudytime(String studytime) {
+        this.studytime = studytime;
     }
 
+    public String getTestday() {
+        return testday;
+    }
+
+    public void setTestday(String testday) {
+        this.testday = testday;
+    }
+
+    public Double getStudyrate() {
+        return studyrate;
+    }
+
+    public void setStudyrate(Double studyrate) {
+        this.studyrate = studyrate;
+    }
 }
