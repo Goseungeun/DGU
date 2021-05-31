@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapter.ViewHolder>{
+    public Object setItem;
     private ArrayList<study_license> items;
     private Context mContext;
     private STLicenseDBHelper mDBHelper;
@@ -57,7 +58,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView studytime;
-        public TextView dday;
+        //public TextView dday;
         private ImageView startbutton;
         private SeekBar progress;
 
@@ -68,7 +69,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             studytime = itemView.findViewById(R.id.licensetime);
             startbutton = itemView.findViewById(R.id.startbutton);
             progress = itemView.findViewById(R.id.progress);
-            dday = itemView.findViewById(R.id.dday);
+            //dday = itemView.findViewById(R.id.dday);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,7 +94,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
 
                                 et_name.setText(licenseItem.getName());
                                 et_testday.setText(licenseItem.getTestday());
-                                et_studyrate.setText(licenseItem.getStudytime());
+                                et_studyrate.setText(licenseItem.getStudyrate().toString());
 
                                 et_name.setSelection(et_name.getText().length());
 
