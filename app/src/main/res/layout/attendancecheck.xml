@@ -27,14 +27,14 @@
             android:tint="@color/green" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/Tv_attendancecheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="0dp"
             android:layout_weight="0"
             android:paddingLeft="10dp"
-            android:text="출석체크"
+            android:text="00 출석체크"
             android:textColor="@color/deepgreen"
             android:textSize="23sp" />
 
@@ -148,15 +148,44 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_margin="0dp">
+    <LinearLayout
+        android:id="@+id/actable_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp">
 
-        <fragment
-            android:id="@+id/setting_container"
-            android:name="org.techtown.dgu.AttendanceCheckTable"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </FrameLayout>
+        <TextView
+            android:id="@+id/check_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="View_CheckResult"
+            android:textColor="@color/deepgreen"
+            android:textSize="16sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="22dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <GridLayout
+                    android:id="@+id/check_table"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/green"
+                    >
+
+                </GridLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
 </LinearLayout>
