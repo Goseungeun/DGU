@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.w3c.dom.Text;
@@ -62,6 +63,7 @@ public class GraphTable extends Fragment {
 
     GraphTable_DB table_dbs;      //DB
     private String[] semesterName = new String[SEMESTER_NUM];                         //학기 이름(db table 이름)
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -181,6 +183,8 @@ public class GraphTable extends Fragment {
 
                 //평균학점 계산하기
                 CalculateGPA();
+
+                //graph chart 업데이트 하기
 
             }
         });

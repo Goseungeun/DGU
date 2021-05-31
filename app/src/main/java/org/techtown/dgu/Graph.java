@@ -108,7 +108,6 @@ public class Graph extends Fragment {
         //데이터 입력하기
         InputValues();
 
-
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(values, "DataSet 1");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -144,6 +143,7 @@ public class Graph extends Fragment {
     //그래프에 들어갈 값을 입력한다.
     private void InputValues() {
         GraphTable_DB G_db = new GraphTable_DB(getContext());
+        semester_score_list=G_db.Output_GPA();
 
         //values값 초기화
         for(int i=0;i<values.size();i++){
@@ -153,9 +153,10 @@ public class Graph extends Fragment {
         for(int i=0;i<SEMESTER_NUM;i++){
             float x_values =(float)(i+1);
             if(semester_score_list[i]!=0f){
-                values.add(new Entry(x_values,G_db.Output_GPA()[i]));
+                values.add(new Entry(x_values, (float) (Math.round(semester_score_list[i]*100)/100.00)));
             }
         }
     }
+
 }
 

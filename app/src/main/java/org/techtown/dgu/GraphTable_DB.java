@@ -182,7 +182,7 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         SQLiteDatabase score_db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT credit,score FROM '"+_tbname+"' where score !='NP' and score !='P' and score !='F'",null);
 
-        float GPA=0f;
+        float GPA=0.00f;
         if(cursor.getCount()!=0){
             //table안에 내용이 들어있다면 내부수행
             //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
