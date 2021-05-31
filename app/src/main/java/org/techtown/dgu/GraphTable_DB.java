@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.sql.SQLInput;
+
 public class GraphTable_DB extends SQLiteOpenHelper {
     private static final int DB_VERSION=1;
     private static final String DB_NAME = "GraphTable_DB";
@@ -24,6 +26,8 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         this.tbName=_tbName;
     }
 
+
+
     public GraphTable_DB(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -33,9 +37,12 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         //데이터 베이스가 생성 될 때 호출
         //데이터베이스 -> 테이블 -> 컬럼 -> 값
         //name: 과목이름 , credit : 학점 , score : 성적,
+        //graphtableDB
         for(int i=0 ; i<tbName.length;i++){
             db.execSQL("CREATE TABLE IF NOT EXISTS '"+tbName[i]+"'(RowID INTEGER NOT NULL, name TEXT NOT NULL, credit INTEGER NOT NULL, score TEXT NOT NULL)");
         }
+        //graphscoreDB
+        db.execSQL("CREATE TABLE IF NOT EXISTS GraphScore (semesterName TEXT NOT NULL, gpa REAL NOT NULL)");
     }
 
     @Override
@@ -49,10 +56,22 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO '"+_tbname+"' VALUES('"+_RowID+"','"+_name+"','"+_credit+"','"+_score+"');");
     }
 
+    //insert문 (graphsocre을 입력한다)
+    public void InsertGraphScore(String _semesterName, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO GraphScore VALUES('"+_semesterName+"','"+_gpa+"');");
+    }
+
     //update문 (graphtable 한줄을 수정한다.)
     public void UpdateGraphTable(String _tbname,int _RowID, String _name ,int _credit,String _score){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE '"+_tbname+"' SET name='"+_name+"', credit='"+_credit+"',score='"+_score+"' WHERE RowID = '"+_RowID+"'");
+    }
+
+    //update문 (graphsocre 한줄을 수정한다.)
+    public void UpdateGraphScore(String _semesterName, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE GraphScore SET semesterName='"+_semesterName+"', gpa='"+_gpa+"' WHERE semesterName='"+_semesterName+"'");
     }
 
     //delete문 (graphtable 한줄을 삭제한다.)
@@ -61,6 +80,12 @@ public class GraphTable_DB extends SQLiteOpenHelper {
 
         //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
         db.execSQL("DELETE FROM '"+_tbname+"' WHERE RowID ='"+_RowID+"'");
+    }
+
+    //delete문 (graphsocre 한줄을 삭제한다.)
+    public void DeleteGraphScore(String _semesterName, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM GraphScore WHERE semesterName ='"+_semesterName+"'");
     }
 
     //delete로 인한 재정렬문
@@ -136,9 +161,25 @@ public class GraphTable_DB extends SQLiteOpenHelper {
         else{cursor.close();return true;}
     }
 
+    //graphsocre에서 이미 존재하는 행인지 아닌지 판단. (존재하는 행이 있다면 true, 없다면 false)
+    public boolean FindAlreadyExistsSemesterName(String _semesterName){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM GraphScore where semesterName ='"+_semesterName+"'",null);
+
+        if(cursor.getCount()==0){
+            //semeseterName ='"+_semeseterName+"'"인게 없다면,
+            cursor.close();
+            return false;
+        }else{
+            cursor.close();
+            return true;
+        }
+    }
+
     //학기 평균 학점계산하기
     public float CalculateGPA(String _tbname){
         SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase score_db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT credit,score FROM '"+_tbname+"' where score !='NP' and score !='P' and score !='F'",null);
 
         float GPA=0f;
@@ -148,15 +189,10 @@ public class GraphTable_DB extends SQLiteOpenHelper {
             GPA=(float)(sum_Of_m_credit_times_m_score(""+_tbname)/sum_Of_m_credit(""+_tbname));
         }
 
-        /*if(score_db.FindAlreadyExistsSemesterName(""+_tbname)){
-            //이미 존재하는 행
-            //update문
-            score_db.UpdateGraphScore(""+_tbname,GPA+0f);
-        }else{
-            //insert문
-            score_db.InsertGraphScore(""+_tbname,GPA+0f);
-        }*/
         cursor.close();
+
+        //graphscoreDB에 업데이트
+        score_db.execSQL("UPDATE GraphScore SET semesterName='"+_tbname+"', gpa=GPA WHERE semesterName='"+_tbname+"'");
         return GPA;
     }
 
@@ -214,4 +250,21 @@ public class GraphTable_DB extends SQLiteOpenHelper {
                 return 1.0f;     //D0
         }
     }
+
+    public float[] Output_GPA(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT gpa FROM GraphScore ",null);
+
+        float[] result = new float[cursor.getCount()];
+        int i=0;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                result[i]= cursor.getFloat(cursor.getColumnIndex("gpa"));
+                i++;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
 }

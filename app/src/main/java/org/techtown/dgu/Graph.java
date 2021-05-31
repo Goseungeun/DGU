@@ -33,12 +33,6 @@ public class Graph extends Fragment {
     private ArrayList<Entry> values = new ArrayList<>();    //그래프에 표시할 값을 가지고 있는 arrayList
     private final static int SEMESTER_NUM=9;                                        //학기 개수
 
-    //학기 버튼 (가로스크롤바)
-    private Button[] semester = new Button[SEMESTER_NUM];
-    Integer[] semesterButtonIDs = {
-            R.id.button1_1, R.id.button1_2 , R.id.button2_1, R.id.button2_2,
-            R.id.button3_1, R.id.button3_2, R.id.button4_1, R.id.button4_2, R.id.button_etc
-    };
     String[] semesterName={"1-1", "1-2", "2-1", "2-2" , "3-1", "3-2", "4-1", "4-2", "기타"};          //학기 이름 담을 리스트
     float[] semester_score_list= new float[SEMESTER_NUM];    //학기별 평점 담을 리스트
 
@@ -97,7 +91,7 @@ public class Graph extends Fragment {
         xAxis.setAxisMinimum(0f);
         xAxis.setAxisMaximum(10f);
         xAxis.setCenterAxisLabels(true);
-        xAxis.setGranularity(0.5f);
+        xAxis.setGranularity(1f);
 
         //x축 이름 설정
         final ArrayList<String> xEntrys = new ArrayList<>();
@@ -147,34 +141,21 @@ public class Graph extends Fragment {
         //chart.invalidate();
     }
 
-
-
-
-    ///의심스러워!
     //그래프에 들어갈 값을 입력한다.
     private void InputValues() {
-
-        CalculateGPA();
-
-        for(int i=0;i<SEMESTER_NUM;i++){
-            int x_values = i+1;
-            if(semester_score_list[i]!=0f){
-                values.add(new Entry(x_values,semester_score_list[i]));
-            }
-        }
-    }
-
-    private void CalculateGPA() {
         GraphTable_DB G_db = new GraphTable_DB(getContext());
-        //학기 평균 학점 계산하기
+
+        //values값 초기화
+        for(int i=0;i<values.size();i++){
+            values.remove(i);
+        }
+        //values에 값 넣기
         for(int i=0;i<SEMESTER_NUM;i++){
-            semester_score_list[i] =(float) G_db.CalculateGPA(semesterName[i]);
+            float x_values =(float)(i+1);
             if(semester_score_list[i]!=0f){
-                semester_score_list[i]= (Math.round(semester_score_list[i]*100)/100f);
+                values.add(new Entry(x_values,G_db.Output_GPA()[i]));
             }
         }
     }
-
-
 }
 
