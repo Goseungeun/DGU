@@ -75,7 +75,7 @@ public class Home extends Fragment {
             }
         });
 
-        //AttendanceCheck TESTbutton
+       /* //AttendanceCheck TESTbutton
         ImageButton testbutton = (ImageButton)view.findViewById(R.id.TESTButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
         testbutton.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +86,7 @@ public class Home extends Fragment {
                 ((MainActivity)getActivity()).replaceFragment(new AttendanceCheck());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
-        //
+        //*/
         return view;
     }
 

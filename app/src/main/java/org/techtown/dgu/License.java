@@ -27,6 +27,7 @@ public class License extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
 
+
         mDBHelper= new STLicenseDBHelper(this.getContext());
         rv_license= (RecyclerView)rootView.findViewById(R.id.license_recycler);
         studylicenseAdapter mAdapter = new studylicenseAdapter(licensItems,this.getContext());
