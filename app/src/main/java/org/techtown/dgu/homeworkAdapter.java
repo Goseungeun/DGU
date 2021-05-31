@@ -125,7 +125,9 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
 
     @Override
     public int getItemCount() {
-        return homeworkList.size();
+        if(homeworkList!=null)
+         return homeworkList.size();
+        else return 0;
     }
 
 }

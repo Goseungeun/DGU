@@ -125,6 +125,8 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
 
     @Override
     public int getItemCount() {
+        if(subTestList!=null)
         return subTestList.size();
+        else return 0;
     }
 }
