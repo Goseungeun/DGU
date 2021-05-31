@@ -34,6 +34,7 @@
         android:layout_weight="1"
         android:gravity="right"
         android:text="D-DAY"
+        android:inputType="date"
         android:textSize="18sp" />
 
 </LinearLayout>

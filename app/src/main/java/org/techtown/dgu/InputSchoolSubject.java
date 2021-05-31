@@ -14,6 +14,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static java.lang.Integer.parseInt;
 
 
 /*public class InputSchoolSubject extends Fragment {
@@ -51,6 +58,11 @@ import androidx.fragment.app.Fragment;
 
 public class InputSchoolSubject extends DialogFragment {
 
+    private RecyclerView subrecyclerview;
+    private Subject_DB mSubject_DB;
+    ArrayList<studysub> subDataList;
+    private studysubAdapter mAdapter;
+
     private MydialogListener myListener;
 
     public interface MydialogListener {
@@ -74,7 +86,6 @@ public class InputSchoolSubject extends DialogFragment {
     }
 
     @Override
-
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -85,14 +96,37 @@ public class InputSchoolSubject extends DialogFragment {
 
                 .setPositiveButton("저장", new DialogInterface.OnClickListener() {
 
+                    private Object EditText;
+
+
                     @Override
 
                     public void onClick(DialogInterface dialog, int which) {
                         //입력받은 데이터 저장 부분 만들기
-                       /* EditText esubjectName = (EditText)getDialog().findViewById(R.id.subjectNameInput);
-                        String subjectName = esubjectName.getText().toString();
 
-                        myListener. myCallback(subjectName);*/
+               
+                        EditText subjectNameInput=(EditText)getDialog().findViewById(R.id.subjectNameInput);
+                        EditText weekInput=(EditText)getDialog().findViewById(R.id.weekInput);
+                        EditText weekFrequencyInput=(EditText)getDialog().findViewById(R.id.weekFrequencyInput);
+
+
+                        //Insert Database
+                        String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
+                        mSubject_DB.InsetSubject(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
+
+                        //Insert UI
+                        studysub item=new studysub();
+                        item.setSubname(subjectNameInput.getText().toString());
+                        item.setWeek(parseInt(weekInput.getText().toString()));
+                        item.setWeekFre(parseInt(weekFrequencyInput.getText().toString()));
+
+                        mAdapter.addSubItem(item);
+
+                        subrecyclerview.smoothScrollToPosition(0);
+                        dialog.dismiss();
+                        Toast.makeText(InputSchoolSubject.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
+
+
                     }
                 });
                  builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
