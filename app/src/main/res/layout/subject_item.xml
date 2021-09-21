@@ -19,11 +19,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/startbutton_sub"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_media_play" />
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#00E60000"
+                android:padding="5dp"
+                app:srcCompat="@drawable/stopwatch_basic"
+                app:tint="@color/deepgreen" />
 
             <LinearLayout
                 android:layout_width="match_parent"
