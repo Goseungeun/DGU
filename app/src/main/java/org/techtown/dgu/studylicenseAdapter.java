@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
     private ArrayList<study_license> items;
     private Context mContext;
     private STLicenseDBHelper mDBHelper;
+    private Stopwatch stopwatch = new Stopwatch();
 
     public studylicenseAdapter(ArrayList<study_license> items, Context mContext){
         this.items = items;
@@ -61,6 +63,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         //public TextView dday;
         private ImageView startbutton;
         private SeekBar progress;
+        private LinearLayout touch_area;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -70,8 +73,22 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             startbutton = itemView.findViewById(R.id.startbutton_lic);
             progress = itemView.findViewById(R.id.progress);
             //dday = itemView.findViewById(R.id.dday);
+            touch_area=itemView.findViewById(R.id.touch_area_lic);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            startbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
+                    study_license licenseItem = items.get(cusPos);
+
+                    stopwatch.button_click(licenseItem.getStudytime(),startbutton,studytime);
+
+                    licenseItem.setStudytime((String) studytime.getText());
+                    notifyItemChanged(cusPos,licenseItem);
+                }
+            });
+
+            touch_area.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치

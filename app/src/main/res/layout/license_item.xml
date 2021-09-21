@@ -21,10 +21,11 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#00E60000"
-            app:srcCompat="@drawable/stopwatch_basic"
+            app:srcCompat="@drawable/play"
             app:tint="@color/deepgreen" />
 
         <LinearLayout
+            android:id="@+id/touch_area_lic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"

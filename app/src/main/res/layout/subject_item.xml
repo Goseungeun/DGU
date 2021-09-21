@@ -26,7 +26,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="#00E60000"
-                app:srcCompat="@drawable/stopwatch_basic"
+                app:srcCompat="@drawable/play"
                 app:tint="@color/deepgreen" />
 
             <LinearLayout
