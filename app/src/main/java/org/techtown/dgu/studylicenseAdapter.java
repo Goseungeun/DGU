@@ -67,7 +67,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
 
             name = itemView.findViewById(R.id.licensename);
             studytime = itemView.findViewById(R.id.licensetime);
-            startbutton = itemView.findViewById(R.id.startbutton);
+            startbutton = itemView.findViewById(R.id.startbutton_lic);
             progress = itemView.findViewById(R.id.progress);
             //dday = itemView.findViewById(R.id.dday);
 

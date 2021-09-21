@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +67,8 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
     public void onBindViewHolder(studysubViewHolder StudysubviewHolder, int i){
         final int id=subList.get(i).getId();
         final String subname = subList.get(i).getSubname();
+
+        //과목 시간설정하는 방법 알 수 있는곳
         final String subtime = subList.get(i).getSubtime();
 
         ArrayList homeworkList = subList.get(i).getHwList();
@@ -97,7 +100,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
 
 
     public class studysubViewHolder extends RecyclerView.ViewHolder{
-        protected ImageButton image;
+        protected ImageView image;
         protected TextView subjectname;
         protected TextView subjecttime;
         protected TextView addhw;
@@ -107,7 +110,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
 
         public studysubViewHolder(View view){
             super(view);
-            this.image = (ImageButton)view.findViewById(R.id.imageButton);
+            this.image = (ImageView) view.findViewById(R.id.startbutton_sub);
             this.subjectname = (TextView)view.findViewById(R.id.subjectname);
             this.subjecttime = (TextView)view.findViewById(R.id.subjecttime);
 
