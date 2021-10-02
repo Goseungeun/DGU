@@ -9,6 +9,13 @@ public class study_license {
     public study_license() {
     }
 
+    public study_license(String _name, long _stdytime, String _testday, Double _studyrate ){
+        this.name=_name;
+        this.studytime=_stdytime;
+        this.testday=_testday;
+        this.studyrate=_studyrate;
+    }
+
     public String getName() {
         return name;
     }

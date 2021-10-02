@@ -19,7 +19,6 @@ import java.util.List;
 public class Stopwatch {
 
     int running=0;            //0:멈춤, 1:움직임
-    String time;      //저장되어있던 시간
 
     ImageView button;
     TextView Tv_time;
@@ -31,8 +30,8 @@ public class Stopwatch {
 
     int Seconds, Minutes, Hours ;
 
-    public void button_click(String _basic_time,ImageView _button, TextView _time){
-        this.time = _basic_time;
+    public void button_click(long _TimeBuff,ImageView _button, TextView _time){
+        this.TimeBuff = _TimeBuff;
         this.button=_button;
         this.Tv_time=_time;
 
@@ -73,12 +72,13 @@ public class Stopwatch {
             Minutes = Seconds / 60;
             Seconds = Seconds % 60;
 
-            time=""+ String.format("%02d", Hours)+":"
-                    + String.format("%02d", Minutes)+":"
-                    + String.format("%02d", Seconds);
+
+            String timeText=""+ String.format("%02d", Hours)+":"
+                                + String.format("%02d", Minutes)+":"
+                                + String.format("%02d", Seconds);
 
 
-            Tv_time.setText(time);
+            Tv_time.setText(timeText);
             handler.postDelayed(this, 0);
         }
 
