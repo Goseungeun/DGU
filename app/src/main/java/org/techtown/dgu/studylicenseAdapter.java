@@ -54,7 +54,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
 
     public void addItem(study_license item){
         items.add(item);
-        notifyItemChanged(0);
+        notifyItemInserted(0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

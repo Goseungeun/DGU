@@ -47,11 +47,15 @@ public class Stopwatch {
     }
 
     public void start(){
+        button.setImageResource(R.drawable.pause);
+
         StartTime = SystemClock.uptimeMillis();
         handler.postDelayed(runnable, 0);
     }
 
     public void stop(){
+        button.setImageResource(R.drawable.play);
+
         TimeBuff += MillisecondTime;
         handler.removeCallbacks(runnable);
     }
