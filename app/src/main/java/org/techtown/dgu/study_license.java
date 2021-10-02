@@ -2,7 +2,7 @@ package org.techtown.dgu;
 
 public class study_license {
     String name;
-    String studytime;
+    long studytime;
     String testday;
     Double studyrate;
 
@@ -17,11 +17,11 @@ public class study_license {
         this.name = name;
     }
 
-    public String getStudytime() {
+    public long getStudytime() {
         return studytime;
     }
 
-    public void setStudytime(String studytime) {
+    public void setStudytime(long studytime) {
         this.studytime = studytime;
     }
 
