@@ -2,19 +2,20 @@ package org.techtown.dgu;
 
 public class study_license {
     String name;
-    long studytime;
+    String studytime;
     String testday;
     Double studyrate;
 
     public study_license() {
     }
 
-    public study_license(String _name, long _stdytime, String _testday, Double _studyrate ){
-        this.name=_name;
-        this.studytime=_stdytime;
+    public study_license(String _name, String _studytime, String _testday, Double _studyrate){
+        this.name = _name;
+        this.studytime=_studytime;
         this.testday=_testday;
         this.studyrate=_studyrate;
     }
+
 
     public String getName() {
         return name;
@@ -24,11 +25,11 @@ public class study_license {
         this.name = name;
     }
 
-    public long getStudytime() {
+    public String getStudytime() {
         return studytime;
     }
 
-    public void setStudytime(long studytime) {
+    public void setStudytime(String studytime) {
         this.studytime = studytime;
     }
 

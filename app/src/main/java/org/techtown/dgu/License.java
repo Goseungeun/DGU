@@ -57,11 +57,7 @@ public class License extends Fragment {
                         mDBHelper.InsertLicense(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
 
                         //Insert UI
-                        study_license item = new study_license();
-                        item.setName(et_name.getText().toString());
-                        item.setStudytime(studytime);
-                        item.setTestday(et_testday.getText().toString());
-                        item.setStudyrate(Double.parseDouble(et_studyrate.getText().toString()));
+                        study_license item = new study_license(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
 
                         mAdapter.addItem(item);
 
