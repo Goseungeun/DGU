@@ -86,6 +86,9 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
 
                     licenseItem.setStudytime((String) studytime.getText());
                     Log.i("setStudyTime",(String) studytime.getText());
+
+                    //DB에 업데이트 해줌
+                    mDBHelper.UpdateLicenseStudyTime(licenseItem.getName(),(String) studytime.getText());
                     notifyItemChanged(cusPos,licenseItem);
                 }
             });

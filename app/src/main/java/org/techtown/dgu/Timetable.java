@@ -61,6 +61,10 @@ public class Timetable extends Fragment {
             Tv_title=view.findViewById(R.id.title);
             Tv_title.setText(tt_year+"년\n"+tt_month+"월 "+tt_day+"일");
             activity.dayBundle=null;
+
+            //TODO : 타임테이블의 해당날짜 총 공부시간 표시해야함!
+
+
         }
 
         //gridview 초기화

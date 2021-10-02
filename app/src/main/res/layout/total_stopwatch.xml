@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/ttime"
+        android:id="@+id/total_stopwatch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/timerbackground"

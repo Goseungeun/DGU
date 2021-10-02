@@ -71,6 +71,10 @@ public class STLicenseDBHelper extends SQLiteOpenHelper {
     }
 
     //UPDATE 문 (공부 시간이 바뀌어 업데이트 하는 경우)
+    public void UpdateLicenseStudyTime(String _name, String _studytime){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE licenselist SET studytime ='"+_studytime+"' WHERE name = '"+_name+"'");
+    }
 
     //DELETE 문
     public void deleteLicense(String _beforename){
