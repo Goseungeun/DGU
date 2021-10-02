@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
                     stopwatch.button_click(licenseItem.getStudytime(),startbutton,studytime);
 
                     licenseItem.setStudytime((String) studytime.getText());
+                    Log.i("setStudyTime",(String) studytime.getText());
                     notifyItemChanged(cusPos,licenseItem);
                 }
             });
