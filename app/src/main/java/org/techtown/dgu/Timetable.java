@@ -59,7 +59,7 @@ public class Timetable extends Fragment {
 
             // 타임테이블 날짜 표시하기
             Tv_title=view.findViewById(R.id.title);
-            Tv_title.setText(tt_year+"년 "+tt_month+"월 "+tt_day+"일");
+            Tv_title.setText(tt_year+"년\n"+tt_month+"월 "+tt_day+"일");
             activity.dayBundle=null;
         }
 
