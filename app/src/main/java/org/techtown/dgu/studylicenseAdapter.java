@@ -25,12 +25,13 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
     private ArrayList<study_license> items;
     private Context mContext;
     private STLicenseDBHelper mDBHelper;
-    private Stopwatch stopwatch = new Stopwatch();
+    private Stopwatch stopwatch;
 
     public studylicenseAdapter(ArrayList<study_license> items, Context mContext){
         this.items = items;
         this.mContext = mContext;
         mDBHelper = new STLicenseDBHelper(mContext);
+        stopwatch = new Stopwatch(mContext);
     }
 
     @NonNull
@@ -82,11 +83,9 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
                     study_license licenseItem = items.get(cusPos);
 
-                    stopwatch.button_click(licenseItem.getStudytime(),startbutton,studytime);
+                    stopwatch.button_click_license(licenseItem.getName(),licenseItem.getStudytime(),startbutton,studytime);
 
                     licenseItem.setStudytime((String) studytime.getText());
-                    Log.i("setStudyTime",(String) studytime.getText());
-
                     //DB에 업데이트 해줌
                     mDBHelper.UpdateLicenseStudyTime(licenseItem.getName(),(String) studytime.getText());
                     notifyItemChanged(cusPos,licenseItem);

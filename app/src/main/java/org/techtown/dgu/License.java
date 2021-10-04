@@ -23,6 +23,8 @@ public class License extends Fragment {
     private STLicenseDBHelper mDBHelper;
     private ArrayList<study_license> licensItems;
 
+    //TODO : 자격증을 추가하면 어플이 종료되는 이유 찾기
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
