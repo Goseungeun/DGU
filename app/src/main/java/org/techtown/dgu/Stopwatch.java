@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class Stopwatch{
+public class Stopwatch {
     //각각의 자격증, 과목의 스톱워치
     //당일의 총 공부시간도 포함
 
@@ -41,30 +41,33 @@ public class Stopwatch{
 
     private Stopwatch_DB StopwatchDB;
     String Today;
+    study_license licenseItem;
     String ItemName;
+    String DefalutTime = "00:00:00";
 
     public Stopwatch(Context mContext){
         this.StopwatchDB = new Stopwatch_DB(mContext);
+        this.Today=Today();
     }
 
-
-    public void button_click_license(String _ItemName, String _TimeBuff, ImageView _button, TextView _time){
-        this.ItemName=_ItemName;
-        this.TimeBuff = StringToLong(_TimeBuff);
+    public study_license button_click_license(study_license _licenseItem, ImageView _button, TextView _time){
+        this.licenseItem = _licenseItem;
+        this.ItemName=licenseItem.getName();
+        this.TimeBuff = StringToLong(licenseItem.getStudytime());
         this.button=_button;
         this.Tv_time=_time;
-        this.Today=Today();
-
 
         //TODO 날이 지나면 초기화 되는거 구현해야함
-        if(StopwatchDB.IsExist(Today)==null){
+
+        //행이 존재할수도 없을수도 있어서
+        if(ChangeDate()){
             //존재하는 행이 없다면
-            StopwatchDB.InsertTotalStudyTime(Today,_TimeBuff);
-            this.TimeBuffTotal =  StringToLong("00:00:00");
+            Today=Today();
+            StopwatchDB.InsertTotalStudyTime(Today,DefalutTime);
+            this.TimeBuffTotal =  StringToLong(DefalutTime);
         }else{
             this.TimeBuffTotal =  StringToLong(StopwatchDB.IsExist(Today));
         }
-
 
         //0:멈춤, 1:움직임
         if(running==0){
@@ -74,6 +77,7 @@ public class Stopwatch{
             stop();
             running=0;
         }
+        return licenseItem;
     }
 
     public void start(){
@@ -94,6 +98,14 @@ public class Stopwatch{
     public final Runnable runnable = new Runnable() {
 
         public void run() {
+            //돌아가는 와중에 다른날로 넘어갈 시 공부시간을 초기화해준다.
+            if(ChangeDate()){
+                Today=Today();
+                StopwatchDB.InsertTotalStudyTime(Today,DefalutTime);
+                TimeBuffTotal=StringToLong(DefalutTime);
+                TimeBuff=StringToLong(DefalutTime);
+            }
+
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
 
             UpdateTime = TimeBuff + MillisecondTime;    //개별 스톱워치
@@ -102,7 +114,10 @@ public class Stopwatch{
             String UpdateTimeString = LongToString(UpdateTime);
             String UpdateTimeStringTotal = LongToString(UpdateTimeTotal);
 
+            licenseItem.setStudytime(UpdateTimeString);
             Tv_time.setText(UpdateTimeString);
+
+            Log.v("innerStopwatch",licenseItem.getStudytime());
             StopwatchDB.UpdateTotalStudyTime(Today,UpdateTimeStringTotal);
 
             handler.postDelayed(this, 0);
@@ -144,11 +159,17 @@ public class Stopwatch{
         Date date = new Date(now);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        return sdf.format(date);
+        String result = sdf.format(date);
+        return result;
     }
 
-
+    //바뀐거면 true, 안바뀐거면 false
+    public boolean ChangeDate() {
+        if(StopwatchDB.IsExist(Today())==null){
+            Log.v("ChangeDate","in");
+            return true;}
+        else{return false;}
+    }
 
 }
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapter.ViewHolder>{
-    public Object setItem;
+
     private ArrayList<study_license> items;
     private Context mContext;
     private STLicenseDBHelper mDBHelper;
@@ -59,6 +60,12 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         notifyItemInserted(0);
     }
 
+    public void resetItem(){
+        for(int i=0;i<items.size();i++){
+            items.get(i).setStudytime("00:00:00");
+        }
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView studytime;
@@ -81,14 +88,12 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
                 @Override
                 public void onClick(View v) {
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
-                    study_license licenseItem = items.get(cusPos);
-
-                    stopwatch.button_click_license(licenseItem.getName(),licenseItem.getStudytime(),startbutton,studytime);
-
-                    licenseItem.setStudytime((String) studytime.getText());
+                    study_license item = items.get(cusPos);
+                    items.set(cusPos,stopwatch.button_click_license(item, startbutton, studytime));
+                    Log.v("OutsideStopwatch","Name : "+items.get(cusPos).getName()+" Studytime :"+items.get(cusPos).getStudytime());
                     //DB에 업데이트 해줌
-                    mDBHelper.UpdateLicenseStudyTime(licenseItem.getName(),(String) studytime.getText());
-                    notifyItemChanged(cusPos,licenseItem);
+                    mDBHelper.UpdateLicenseStudyTime(item.getName(),item.getStudytime());
+                    notifyItemChanged(cusPos,item);
                 }
             });
 
@@ -160,6 +165,12 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             name.setText(item.getName());
             studytime.setText(item.getStudytime());
         }
+
+
+
     }
 
+
 }
+
+

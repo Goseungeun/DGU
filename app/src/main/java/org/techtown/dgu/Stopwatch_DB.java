@@ -54,7 +54,7 @@ public class Stopwatch_DB extends SQLiteOpenHelper {
     //이미 존재하는 행인지 아닌지 판단. (존재하는 행이 있다면 true, 없다면 false)
     public String IsExist(String _date){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT studytime FROM TodayTotalStudyTime where date ='"+_date+"'",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM TodayTotalStudyTime where date ='"+_date+"'",null);
 
         cursor.moveToNext();
         if(cursor.getCount()==0){
@@ -62,7 +62,7 @@ public class Stopwatch_DB extends SQLiteOpenHelper {
             cursor.close();
             return null;
         }else{
-            String result = cursor.getString(0);
+            String result = cursor.getString(cursor.getColumnIndex("studytime"));
             cursor.close();
             return result;
         }
@@ -71,10 +71,25 @@ public class Stopwatch_DB extends SQLiteOpenHelper {
     //StopwatchToday와 연결
     public String getStudyTime(String _date){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT studytime FROM TodayTotalStudyTime where date ='"+_date+"'",null);
-
+        Cursor cursor = db.rawQuery("SELECT * FROM TodayTotalStudyTime where date ='"+_date+"'",null);
+        String result = "00:00:00";
         cursor.moveToNext();
-        String result = cursor.getString(0);
+        if(cursor.getCount()!=0){
+            result = cursor.getString(cursor.getColumnIndex("studytime"));
+        }
+        cursor.close();
+        return result;
+    }
+
+    //DB에 저장된 마지막 날짜와 현재 날짜 비교를 위한 함수/ Stopwatch.java와 연결예정
+    public String getLastDate(){
+        //DB에 저장된 날짜가 없으면 null, 있ㅇ면 해당 날짜 출력
+        String result=null;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM TodayTotalStudyTime",null);
+        while(cursor.moveToLast()){
+            result = cursor.getString(cursor.getColumnIndex("studytime"));
+        }
         cursor.close();
         return result;
     }

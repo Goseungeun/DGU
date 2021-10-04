@@ -2,6 +2,9 @@ package org.techtown.dgu;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -22,20 +26,21 @@ public class License extends Fragment {
     private studylicenseAdapter mAdapter;
     private STLicenseDBHelper mDBHelper;
     private ArrayList<study_license> licensItems;
-
-    //TODO : 자격증을 추가하면 어플이 종료되는 이유 찾기
+    private Stopwatch stopwatch;
+    Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
-
-
+        licensItems=new ArrayList<study_license>();
+        stopwatch = new Stopwatch(this.getContext());
         mDBHelper= new STLicenseDBHelper(this.getContext());
         rv_license= (RecyclerView)rootView.findViewById(R.id.license_recycler);
         studylicenseAdapter mAdapter = new studylicenseAdapter(licensItems,this.getContext());
         rv_license.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         rv_license.setAdapter(mAdapter);
-        licensItems=new ArrayList<study_license>();
+
+
 
         Button button1 = (Button)rootView.findViewById(R.id.button2); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
@@ -62,6 +67,7 @@ public class License extends Fragment {
                         study_license item = new study_license(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
 
                         mAdapter.addItem(item);
+                        loadRecentDB();
 
                         rv_license.smoothScrollToPosition(0);
                         dialog.dismiss();
@@ -73,19 +79,34 @@ public class License extends Fragment {
 
         });
 
+
        // Ddaycal();      //DDay 계산 함수
         return rootView;
     }
 
     private void loadRecentDB(){
+/*        //하루가 지나면 초기화되는거
+        handler.postDelayed(runnable, 0);*/
+
         licensItems = mDBHelper.getlicenselist();
-        if(mAdapter == null){
+
             mAdapter = new studylicenseAdapter(licensItems,getContext());
             rv_license.setHasFixedSize(true);
             rv_license.setAdapter(mAdapter);
-        }
+
 
     }
+
+/*    public final Runnable runnable = new Runnable() {
+        public void run() {
+            if(stopwatch.ChangeDate()){
+                Log.v("TTT4","run");
+                mDBHelper.Reset();
+                mAdapter.resetItem();
+            }
+            handler.postDelayed(this, 0);
+        }
+    };*/
 
     /*
     private void Ddaycal(){

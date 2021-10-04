@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 
@@ -29,7 +30,7 @@ public class STLicenseDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //SELECT 문
+    //SELECT 문 / License.java와 연결됨.
     public ArrayList<study_license> getlicenselist(){
         ArrayList<study_license> study_licenses = new ArrayList<>();
 
@@ -44,11 +45,7 @@ public class STLicenseDBHelper extends SQLiteOpenHelper {
                 String testday = cursor.getString(cursor.getColumnIndex("testday"));
                 Double studyrate = cursor.getDouble(cursor.getColumnIndex("studyrate"));
 
-                study_license item = new study_license();
-                item.setName(name);
-                item.setStudytime(studytime);
-                item.setTestday(testday);
-                item.setStudyrate(studyrate);
+                study_license item = new study_license(name, studytime,testday,studyrate);
                 study_licenses.add(item);
 
             }
@@ -56,6 +53,21 @@ public class STLicenseDBHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return study_licenses;
+    }
+
+    //하루지나면 초기화
+    public void Reset(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM licenselist",null);
+        if(cursor.getCount() != 0 ){
+            //조회할 데이터가 있을 경우 진행
+            while (cursor.moveToNext()){
+                //데이터 베이스 끝까지 진행
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                UpdateLicenseStudyTime(name, "00:00:00");
+            }
+        }
+        cursor.close();
     }
 
     //INSERT문
