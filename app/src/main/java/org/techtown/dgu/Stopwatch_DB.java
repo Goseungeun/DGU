@@ -81,18 +81,5 @@ public class Stopwatch_DB extends SQLiteOpenHelper {
         return result;
     }
 
-    //DB에 저장된 마지막 날짜와 현재 날짜 비교를 위한 함수/ Stopwatch.java와 연결예정
-    public String getLastDate(){
-        //DB에 저장된 날짜가 없으면 null, 있ㅇ면 해당 날짜 출력
-        String result=null;
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM TodayTotalStudyTime",null);
-        while(cursor.moveToLast()){
-            result = cursor.getString(cursor.getColumnIndex("studytime"));
-        }
-        cursor.close();
-        return result;
-    }
-
 
 }

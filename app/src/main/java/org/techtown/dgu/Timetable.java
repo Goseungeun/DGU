@@ -25,9 +25,12 @@ public class Timetable extends Fragment {
     Context context;
     String receiveday;
 
-    int tt_year;        //타임테이블 년도
-    int tt_month;       //타임테이블 월
-    int tt_day;         //타임테이블 일
+    TextView TodayStudyTime;
+    Stopwatch_DB stopwatch_db;
+
+    String tt_year;        //타임테이블 년도
+    String tt_month;       //타임테이블 월
+    String tt_day;         //타임테이블 일
     TextView Tv_title;
 
 
@@ -45,7 +48,7 @@ public class Timetable extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = (ViewGroup) inflater.inflate(R.layout.timetable, container,false);
-
+        stopwatch_db= new Stopwatch_DB(context);
 
         // 캘린더에서 날짜 가져오기
         if(activity.dayBundle!=null){
@@ -53,16 +56,18 @@ public class Timetable extends Fragment {
             receiveday=daybundle.getString("selectday");
 
             //날짜를 String->int로 변경
-            tt_year=Integer.parseInt(receiveday.substring(0,4));
-            tt_month=Integer.parseInt(receiveday.substring(4,6));
-            tt_day=Integer.parseInt(receiveday.substring(6,8));
+            tt_year=receiveday.substring(0,4);
+            tt_month=receiveday.substring(4,6);
+            tt_day=receiveday.substring(6,8);
 
             // 타임테이블 날짜 표시하기
             Tv_title=view.findViewById(R.id.title);
             Tv_title.setText(tt_year+"년\n"+tt_month+"월 "+tt_day+"일");
             activity.dayBundle=null;
 
-            //TODO : 타임테이블의 해당날짜 총 공부시간 표시해야함!
+            TodayStudyTime = view.findViewById(R.id.TodayStudyTime);
+            String date = ""+tt_year+"-"+tt_month+"-"+tt_day;
+            TodayStudyTime.setText(stopwatch_db.getStudyTime(date));
 
 
         }
