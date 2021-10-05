@@ -266,6 +266,10 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                                 EditText weekInput=dialog.findViewById(R.id.weekInput);
                                 EditText weekFrequencyInput=dialog.findViewById(R.id.weekFrequencyInput);
 
+                                subjectNameInput.setText(studysub.getSubname());
+                                weekInput.setText(Integer.toString(studysub.getWeek()));
+                                weekFrequencyInput.setText(Integer.toString(studysub.getWeekFre()));
+
                                 Button subjectbtn_ok=dialog.findViewById(R.id.subjectInputButton);
                                 subjectbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override

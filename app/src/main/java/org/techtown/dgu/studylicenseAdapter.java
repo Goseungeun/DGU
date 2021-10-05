@@ -64,6 +64,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         for(int i=0;i<items.size();i++){
             items.get(i).setStudytime("00:00:00");
         }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -120,7 +121,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
 
                                 et_name.setText(licenseItem.getName());
                                 et_testday.setText(licenseItem.getTestday());
-                                et_studyrate.setText(licenseItem.getStudyrate().toString());
+                                et_studyrate.setText(Double.toString(licenseItem.getStudyrate()));
 
                                 et_name.setSelection(et_name.getText().length());
 

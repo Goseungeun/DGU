@@ -11,7 +11,6 @@ import org.techtown.dgu.studysub;
 
 import java.util.ArrayList;
 
-
 public class Subject_DB extends SQLiteOpenHelper {
     private static final int DB_VERSION=1;
     private static final String DB_NAME="subject.db";

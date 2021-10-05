@@ -67,7 +67,8 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@id/freLabel"
-                    android:maxLength="3" />
+                    android:hint="0000/00/00"
+                    android:maxLength="10" />
             </LinearLayout>
 
             <Button

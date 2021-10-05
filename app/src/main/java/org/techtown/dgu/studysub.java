@@ -1,14 +1,9 @@
 package org.techtown.dgu;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import java.util.ArrayList;
 
-@Entity(tableName = "studysub")
-
 public class studysub {
-    @PrimaryKey
+
     private int id;
 
     private String subname;
@@ -22,7 +17,7 @@ public class studysub {
 
     }
 
-    public studysub(String subname,String subtime,ArrayList<homework> hwList, ArrayList<subtest> testList){
+    public studysub(String subname,String subtime,int week, int weekFre,ArrayList<homework> hwList, ArrayList<subtest> testList){
         this.subname = subname;
         this.subtime = subtime;
         this.week=week;
