@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -19,15 +22,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapter.ViewHolder>{
-    public Object setItem;
+
     private ArrayList<study_license> items;
     private Context mContext;
     private STLicenseDBHelper mDBHelper;
+    private Stopwatch stopwatch;
 
     public studylicenseAdapter(ArrayList<study_license> items, Context mContext){
         this.items = items;
         this.mContext = mContext;
         mDBHelper = new STLicenseDBHelper(mContext);
+        stopwatch = new Stopwatch(mContext);
     }
 
     @NonNull
@@ -51,8 +56,15 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
     }
 
     public void addItem(study_license item){
-       items.add(0,item);
-        notifyItemChanged(0);
+        items.add(item);
+        notifyItemInserted(0);
+    }
+
+    public void resetItem(){
+        for(int i=0;i<items.size();i++){
+            items.get(i).setStudytime("00:00:00");
+        }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -61,17 +73,32 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         //public TextView dday;
         private ImageView startbutton;
         private SeekBar progress;
+        private LinearLayout touch_area;
 
         public ViewHolder(View itemView){
             super(itemView);
 
             name = itemView.findViewById(R.id.licensename);
             studytime = itemView.findViewById(R.id.licensetime);
-            startbutton = itemView.findViewById(R.id.startbutton);
+            startbutton = itemView.findViewById(R.id.startbutton_lic);
             progress = itemView.findViewById(R.id.progress);
             //dday = itemView.findViewById(R.id.dday);
+            touch_area=itemView.findViewById(R.id.touch_area_lic);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            startbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
+                    study_license item = items.get(cusPos);
+                    items.set(cusPos,stopwatch.button_click_license(item, startbutton, studytime));
+                    Log.v("OutsideStopwatch","Name : "+items.get(cusPos).getName()+" Studytime :"+items.get(cusPos).getStudytime());
+                    //DB에 업데이트 해줌
+                    mDBHelper.UpdateLicenseStudyTime(item.getName(),item.getStudytime());
+                    notifyItemChanged(cusPos,item);
+                }
+            });
+
+            touch_area.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
@@ -139,6 +166,12 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             name.setText(item.getName());
             studytime.setText(item.getStudytime());
         }
+
+
+
     }
 
+
 }
+
+

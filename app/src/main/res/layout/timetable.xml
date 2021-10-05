@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="74dp"
@@ -27,8 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="0dp"
-            android:layout_weight="0"
             android:paddingLeft="10dp"
             android:text="TimeTable"
             android:textColor="@color/deepgreen"
@@ -60,10 +59,11 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/calendar_title"
             android:foregroundGravity="center"
+            android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingRight="20dp"
@@ -76,6 +76,41 @@
         <View
             android:id="@+id/view5"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/calendar_border"
+            android:foregroundGravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            >
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="총 공부시간"
+                android:textColor="@color/deepgreen" />
+
+            <TextView
+                android:id="@+id/TodayStudyTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="00:00:00"
+                android:textColor="@color/deepgreen"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
@@ -120,71 +155,6 @@
 
             </GridView>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/timetable_list"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="총 공부시간"
-                    android:textColor="@color/deepgreen" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="00:00:00"
-                    android:textColor="@color/deepgreen"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/bar"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#37AAB8A6" />
-
-            <LinearLayout
-                android:id="@+id/subject1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="과목 이름"
-                    android:textColor="@color/deepgreen" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="00:00:00"
-                    android:textColor="@color/deepgreen"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/bar2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:background="#37AAB8A6" />
         </LinearLayout>
 
     </LinearLayout>
