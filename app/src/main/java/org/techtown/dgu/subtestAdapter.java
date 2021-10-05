@@ -61,6 +61,8 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
                                 EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
                                 EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
 
+                                subtestNameInput.setText(subtest.getSubtestname());
+                                subtestDdayInput.setText(subtest.getTestDday());
 
                                 Button subtestbtn_ok=dialog.findViewById(R.id.subtestInputButton);
                                 subtestbtn_ok.setOnClickListener(new View.OnClickListener(){
@@ -69,6 +71,8 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
                                         //update table
                                         String subtestname=subtestNameInput.getText().toString();
                                         String subtestdday=subtestDdayInput.getText().toString();
+
+                                        String beforesubtestname=subtest.getSubtestname();
 
                                         String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                                         int id = subtest.getId();

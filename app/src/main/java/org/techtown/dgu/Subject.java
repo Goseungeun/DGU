@@ -91,6 +91,7 @@ public class Subject extends Fragment {
                         mAdapter.addSubItem(item);
                         subrecyclerview.setAdapter(mAdapter);
                         subrecyclerview.smoothScrollToPosition(0);
+
                         dialog.dismiss();
                         Toast.makeText(Subject.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
 
