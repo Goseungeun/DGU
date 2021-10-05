@@ -60,8 +60,7 @@ public class License extends Fragment {
                         study_license item = new study_license();
                         item.setName(et_name.getText().toString());
                         item.setStudytime(studytime);
-                        item.setTestday(et_testday.getText().toString());
-                        item.setStudyrate(Double.parseDouble(et_studyrate.getText().toString()));
+
 
                         mAdapter.addItem(item);
 

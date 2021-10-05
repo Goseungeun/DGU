@@ -64,6 +64,8 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                 EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
                                 EditText homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
 
+                                homeworkNameInput.setText(homework.getHwname());
+                                homeworkDdayInput.setText(homework.getHwDday());
 
                                 Button homeworkbtn_ok=dialog.findViewById(R.id.homeworkInputButton);
                                 homeworkbtn_ok.setOnClickListener(new View.OnClickListener(){
