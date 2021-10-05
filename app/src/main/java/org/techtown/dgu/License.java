@@ -40,7 +40,8 @@ public class License extends Fragment {
         rv_license.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         rv_license.setAdapter(mAdapter);
 
-
+        //하루가 지나면 초기화되는거
+        handler.postDelayed(runnable, 0);
 
         Button button1 = (Button)rootView.findViewById(R.id.button2); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
@@ -85,28 +86,25 @@ public class License extends Fragment {
     }
 
     private void loadRecentDB(){
-/*        //하루가 지나면 초기화되는거
-        handler.postDelayed(runnable, 0);*/
-
         licensItems = mDBHelper.getlicenselist();
 
-            mAdapter = new studylicenseAdapter(licensItems,getContext());
-            rv_license.setHasFixedSize(true);
-            rv_license.setAdapter(mAdapter);
-
-
+        mAdapter = new studylicenseAdapter(licensItems,getContext());
+        rv_license.setHasFixedSize(true);
+        rv_license.setAdapter(mAdapter);
     }
 
-/*    public final Runnable runnable = new Runnable() {
+    public final Runnable runnable = new Runnable() {
         public void run() {
             if(stopwatch.ChangeDate()){
                 Log.v("TTT4","run");
                 mDBHelper.Reset();
                 mAdapter.resetItem();
+                stopwatch.InsertTotalStudyTime();
+                loadRecentDB();
             }
             handler.postDelayed(this, 0);
         }
-    };*/
+    };
 
     /*
     private void Ddaycal(){

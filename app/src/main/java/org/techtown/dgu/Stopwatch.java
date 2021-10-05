@@ -50,6 +50,14 @@ public class Stopwatch {
         this.Today=Today();
     }
 
+    public void InsertTotalStudyTime(){
+        Today=Today();
+        StopwatchDB.InsertTotalStudyTime(Today,DefalutTime);
+        TimeBuffTotal=StringToLong(DefalutTime);
+        TimeBuff=StringToLong(DefalutTime);
+    }
+
+
     public study_license button_click_license(study_license _licenseItem, ImageView _button, TextView _time){
         this.licenseItem = _licenseItem;
         this.ItemName=licenseItem.getName();
@@ -62,9 +70,7 @@ public class Stopwatch {
         //행이 존재할수도 없을수도 있어서
         if(ChangeDate()){
             //존재하는 행이 없다면
-            Today=Today();
-            StopwatchDB.InsertTotalStudyTime(Today,DefalutTime);
-            this.TimeBuffTotal =  StringToLong(DefalutTime);
+            InsertTotalStudyTime();
         }else{
             this.TimeBuffTotal =  StringToLong(StopwatchDB.IsExist(Today));
         }
@@ -72,10 +78,8 @@ public class Stopwatch {
         //0:멈춤, 1:움직임
         if(running==0){
             start();
-            running=1;
         } else{
             stop();
-            running=0;
         }
         return licenseItem;
     }
@@ -84,6 +88,7 @@ public class Stopwatch {
         button.setImageResource(R.drawable.pause);
 
         StartTime = SystemClock.uptimeMillis();
+        running=1;
         handler.postDelayed(runnable, 0);
     }
 
@@ -91,7 +96,7 @@ public class Stopwatch {
         button.setImageResource(R.drawable.play);
 
         handler.removeCallbacks(runnable);
-
+        running=0;
         //TODO : 시작하는 시간, 끝나는 시간 이용해서 타임테이블 구성하기
     }
 
@@ -100,10 +105,7 @@ public class Stopwatch {
         public void run() {
             //돌아가는 와중에 다른날로 넘어갈 시 공부시간을 초기화해준다.
             if(ChangeDate()){
-                Today=Today();
-                StopwatchDB.InsertTotalStudyTime(Today,DefalutTime);
-                TimeBuffTotal=StringToLong(DefalutTime);
-                TimeBuff=StringToLong(DefalutTime);
+                InsertTotalStudyTime();
             }
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
@@ -166,7 +168,7 @@ public class Stopwatch {
     //바뀐거면 true, 안바뀐거면 false
     public boolean ChangeDate() {
         if(StopwatchDB.IsExist(Today())==null){
-            Log.v("ChangeDate","in");
+            Log.v("ChangeDate",Today());
             return true;}
         else{return false;}
     }
