@@ -1,15 +1,15 @@
-package org.techtown.dgu;
+package org.techtown.dgu.studylicense;
 
-public class study_license {
+public class LicenseItem {
     String name;
     String studytime;
     String testday;
     Double studyrate;
 
-    public study_license() {
+    public LicenseItem() {
     }
 
-    public study_license(String _name, String _studytime, String _testday, Double _studyrate){
+    public LicenseItem(String _name, String _studytime, String _testday, Double _studyrate){
         this.name = _name;
         this.studytime=_studytime;
         this.testday=_testday;

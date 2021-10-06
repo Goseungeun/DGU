@@ -7,7 +7,7 @@
     android:background="#00FFFFFF"
     android:gravity="right"
     android:orientation="vertical"
-    tools:context=".Setting_Fragment">
+    tools:context=".member.SettingFragment">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -54,7 +54,7 @@
 
         <fragment
             android:id="@+id/setting_container"
-            android:name="org.techtown.dgu.Setting"
+            android:name="org.techtown.dgu.member.Setting"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
     </FrameLayout>

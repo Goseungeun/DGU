@@ -1,20 +1,17 @@
-package org.techtown.dgu;
+package org.techtown.dgu.subject;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.techtown.dgu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,12 +53,12 @@ import static java.lang.Integer.parseInt;
 
 
 
-public class InputSchoolSubject extends DialogFragment {
+public class SubjectInputDialog extends DialogFragment {
 
     private RecyclerView subrecyclerview;
     private Subject_DB mSubject_DB;
-    ArrayList<studysub> subDataList;
-    private studysubAdapter mAdapter;
+    ArrayList<SubjectItem> subDataList;
+    private SubjectAdapter mAdapter;
 
     private MydialogListener myListener;
 
@@ -69,7 +66,7 @@ public class InputSchoolSubject extends DialogFragment {
         public void myCallback(String subjectName);
     }
 
-    public InputSchoolSubject() {
+    public SubjectInputDialog() {
 
     }
 
@@ -115,7 +112,7 @@ public class InputSchoolSubject extends DialogFragment {
                         mSubject_DB.InsetSubject(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
 
                         //Insert UI
-                        studysub item=new studysub();
+                        SubjectItem item=new SubjectItem();
                         item.setSubname(subjectNameInput.getText().toString());
                         item.setWeek(parseInt(weekInput.getText().toString()));
                         item.setWeekFre(parseInt(weekFrequencyInput.getText().toString()));
@@ -124,7 +121,7 @@ public class InputSchoolSubject extends DialogFragment {
 
                         subrecyclerview.smoothScrollToPosition(0);
                         dialog.dismiss();
-                        Toast.makeText(InputSchoolSubject.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubjectInputDialog.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
 
 
                     }

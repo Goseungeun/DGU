@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.homework;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.techtown.dgu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.member;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class Setting_Fragment extends Fragment {
+import org.techtown.dgu.Home;
+import org.techtown.dgu.MainActivity;
+import org.techtown.dgu.R;
+
+public class SettingFragment extends Fragment {
     private  ViewGroup view;
 
     @Override

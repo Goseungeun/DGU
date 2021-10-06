@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.member;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 import androidx.preference.SwitchPreferenceCompat;
+
+import org.techtown.dgu.R;
 
 public class Setting extends PreferenceFragmentCompat {
     //xml 폴더 안에 있는 setting.xml의 event

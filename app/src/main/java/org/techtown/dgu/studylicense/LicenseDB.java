@@ -1,21 +1,20 @@
-package org.techtown.dgu;
+package org.techtown.dgu.studylicense;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Handler;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class STLicenseDBHelper extends SQLiteOpenHelper {
+public class LicenseDB extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "StudyLicense.db";
 
-    public STLicenseDBHelper(@Nullable Context context) {
+    public LicenseDB(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -31,8 +30,8 @@ public class STLicenseDBHelper extends SQLiteOpenHelper {
     }
 
     //SELECT 문 / License.java와 연결됨.
-    public ArrayList<study_license> getlicenselist(){
-        ArrayList<study_license> study_licenses = new ArrayList<>();
+    public ArrayList<LicenseItem> getlicenselist(){
+        ArrayList<LicenseItem> study_licenses = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM licenselist",null);
@@ -45,7 +44,7 @@ public class STLicenseDBHelper extends SQLiteOpenHelper {
                 String testday = cursor.getString(cursor.getColumnIndex("testday"));
                 Double studyrate = cursor.getDouble(cursor.getColumnIndex("studyrate"));
 
-                study_license item = new study_license(name, studytime,testday,studyrate);
+                LicenseItem item = new LicenseItem(name, studytime,testday,studyrate);
                 study_licenses.add(item);
 
             }

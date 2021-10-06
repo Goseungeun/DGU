@@ -1,9 +1,8 @@
-package org.techtown.dgu;
+package org.techtown.dgu.studylicense;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,32 +10,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
+import org.techtown.dgu.R;
+import org.techtown.dgu.Stopwatch;
 
-public class License extends Fragment {
+import java.util.ArrayList;
+
+public class LicenseFragment extends Fragment {
 
     private RecyclerView rv_license;
-    private studylicenseAdapter mAdapter;
-    private STLicenseDBHelper mDBHelper;
-    private ArrayList<study_license> licensItems;
+    private LicenseAdapter mAdapter;
+    private LicenseDB mDBHelper;
+    private ArrayList<LicenseItem> licensItems;
     private Stopwatch stopwatch;
     Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
-        licensItems=new ArrayList<study_license>();
+        licensItems=new ArrayList<LicenseItem>();
         stopwatch = new Stopwatch(this.getContext());
-        mDBHelper= new STLicenseDBHelper(this.getContext());
+        mDBHelper= new LicenseDB(this.getContext());
         rv_license= (RecyclerView)rootView.findViewById(R.id.license_recycler);
-        studylicenseAdapter mAdapter = new studylicenseAdapter(licensItems,this.getContext());
+        LicenseAdapter mAdapter = new LicenseAdapter(licensItems,this.getContext());
         rv_license.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         rv_license.setAdapter(mAdapter);
 
@@ -50,7 +49,7 @@ public class License extends Fragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(License.this.getContext(), android.R.style.Theme_Material_Light_Dialog);
+                Dialog dialog = new Dialog(LicenseFragment.this.getContext(), android.R.style.Theme_Material_Light_Dialog);
                 dialog.setContentView(R.layout.activity_license_input);
                 EditText et_name = dialog.findViewById(R.id.licenseNameInput);
                 EditText et_testday = dialog.findViewById(R.id.editTextDate2);
@@ -66,7 +65,7 @@ public class License extends Fragment {
 
                         //Insert UI
 
-                        study_license item = new study_license(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
+                        LicenseItem item = new LicenseItem(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
 
 
                         mAdapter.addItem(item);
@@ -90,7 +89,7 @@ public class License extends Fragment {
     private void loadRecentDB(){
         licensItems = mDBHelper.getlicenselist();
 
-        mAdapter = new studylicenseAdapter(licensItems,getContext());
+        mAdapter = new LicenseAdapter(licensItems,getContext());
         rv_license.setHasFixedSize(true);
         rv_license.setAdapter(mAdapter);
     }

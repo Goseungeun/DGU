@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.techtown.dgu.member.SettingFragment;
+
 
 public class Home extends Fragment {
     private CalendarView mcalendar; //달력
@@ -71,7 +73,7 @@ public class Home extends Fragment {
             public void onClick(View v) {
 
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                ((MainActivity)getActivity()).replaceFragment(new Setting_Fragment());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+                ((MainActivity)getActivity()).replaceFragment(new SettingFragment());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
 

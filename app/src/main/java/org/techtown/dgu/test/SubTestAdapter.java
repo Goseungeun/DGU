@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.test;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,21 +15,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestViewHolder>{
+public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestViewHolder>{
 
-    private ArrayList<subtest> subTestList;
+    private ArrayList<SubTestItem> subTestList;
     private Context mContext;
-    private subtest_DB mSubTest_DB;
+    private SubTest_DB mSubTest_DB;
 
-    public subtestAdapter(Context context,ArrayList<subtest> st)
+    public SubTestAdapter(Context context, ArrayList<SubTestItem> st)
     {
         this.subTestList = st;
         this.mContext = context;
-        mSubTest_DB=new subtest_DB((context));
+        mSubTest_DB=new SubTest_DB((context));
     }
 
     public class subtestViewHolder extends RecyclerView.ViewHolder{
@@ -45,7 +47,7 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
                 @Override
                 public void onClick(View view){
                     int curPos=getAdapterPosition(); //현재 리스트 클릭한 아이템 위치
-                    subtest subtest=subTestList.get(curPos);
+                    SubTestItem subtest=subTestList.get(curPos);
 
                     String[] strChoiceItems={"시험 수정하기","시험 삭제하기"};
                     AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
@@ -118,7 +120,7 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
     {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.test_item,viewGroup, false);
 
-        return new subtestAdapter.subtestViewHolder(v);
+        return new SubTestAdapter.subtestViewHolder(v);
     }
 
     @Override
@@ -136,7 +138,7 @@ public class subtestAdapter extends RecyclerView.Adapter<subtestAdapter.subtestV
     }
 
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
-    public void addtestItem(subtest _item){
+    public void addtestItem(SubTestItem _item){
         subTestList.add(0,_item);
         notifyItemInserted(0);
     }

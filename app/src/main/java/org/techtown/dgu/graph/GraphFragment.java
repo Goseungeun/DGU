@@ -1,34 +1,30 @@
-package org.techtown.dgu;
+package org.techtown.dgu.graph;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.text.DecimalFormat;
+import org.techtown.dgu.R;
+
 import java.util.ArrayList;
 
 
-public class Graph extends Fragment {
+public class GraphFragment extends Fragment {
     private LineChart chart;
     private ArrayList<Entry> values = new ArrayList<>();    //그래프에 표시할 값을 가지고 있는 arrayList
     private final static int SEMESTER_NUM=9;                                        //학기 개수

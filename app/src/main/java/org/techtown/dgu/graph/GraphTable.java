@@ -1,10 +1,8 @@
-package org.techtown.dgu;
+package org.techtown.dgu.graph;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -16,19 +14,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import org.w3c.dom.Text;
+import org.techtown.dgu.R;
+import org.techtown.dgu.subject.Subject_DB;
 
 import java.util.ArrayList;
 import java.util.List;

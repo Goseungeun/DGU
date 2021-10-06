@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.studylicense;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-public class InputLicense extends DialogFragment {
+import org.techtown.dgu.R;
+
+public class LicenseInputDialog extends DialogFragment {
 
     private MydialogListener myListener;
 
@@ -23,7 +25,7 @@ public class InputLicense extends DialogFragment {
         public void myCallback(String subjectName);
     }
 
-    public InputLicense() {
+    public LicenseInputDialog() {
     }
 
     @Override
