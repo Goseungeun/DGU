@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.subject;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,16 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import org.techtown.dgu.studysub;
-
 import java.util.ArrayList;
 
 public class Subject_DB extends SQLiteOpenHelper {
     private static final int DB_VERSION=1;
     private static final String DB_NAME="subject.db";
 
-    public ArrayList<studysub> getSubList(){
-        ArrayList<studysub> subList = new ArrayList<>();
+    public ArrayList<SubjectItem> getSubList(){
+        ArrayList<SubjectItem> subList = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
 
@@ -40,7 +38,7 @@ public class Subject_DB extends SQLiteOpenHelper {
 
 
                 //새로 만든 subjectItem에 담자
-                studysub subjectItem = new studysub();
+                SubjectItem subjectItem = new SubjectItem();
                 subjectItem.setId(id);
                 subjectItem.setSubname(subname);
                 subjectItem.setWeek(week);

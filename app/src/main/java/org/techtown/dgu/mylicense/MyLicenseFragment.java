@@ -1,6 +1,5 @@
-package org.techtown.dgu;
+package org.techtown.dgu.mylicense;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayout;
+import org.techtown.dgu.R;
 
-public class Getlicense extends Fragment {
+public class MyLicenseFragment extends Fragment {
     RecyclerView recyclerView;
-    mylicenseAdapter adapter;
+    MyLicenseAdapter adapter;
 
 
     @Override
@@ -32,10 +31,10 @@ public class Getlicense extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new mylicenseAdapter();
+        adapter = new MyLicenseAdapter();
 
-        adapter.addItem(new mylicense("토익","2021","05","04","2023","05","04"));
-        adapter.addItem(new mylicense("정보처리기사","2021","04","09","2025","04","09"));
+        adapter.addItem(new MyLicenseItem("토익","2021","05","04","2023","05","04"));
+        adapter.addItem(new MyLicenseItem("정보처리기사","2021","04","09","2025","04","09"));
 
         recyclerView.setAdapter(adapter);
     }

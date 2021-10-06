@@ -1,11 +1,10 @@
-package org.techtown.dgu;
+package org.techtown.dgu.subject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,10 +20,13 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 
+import org.techtown.dgu.MainActivity;
+import org.techtown.dgu.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttendanceCheck extends Fragment {
+public class AttendanceCheckFragment extends Fragment {
     private  ViewGroup view;
 
     private String subName;                //과목 이름
@@ -64,7 +66,7 @@ public class AttendanceCheck extends Fragment {
             public void onClick(View v) {
 
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                ((MainActivity)getActivity()).replaceFragment(new Subject());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
+                ((MainActivity)getActivity()).replaceFragment(new SubjectFragment());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
             }
         });
 

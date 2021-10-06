@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.graph;
 
 import android.content.ContentValues;
 import android.content.Context;

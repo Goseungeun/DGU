@@ -1,6 +1,6 @@
-package org.techtown.dgu;
+package org.techtown.dgu.mylicense;
 
-public class mylicense {
+public class MyLicenseItem {
     String mylicensename;
     String getyear;
     String getmonth;
@@ -9,8 +9,8 @@ public class mylicense {
     String endmonth;
     String enddate;
 
-    public mylicense(String mylicensename, String getyear,String getmonth,String getdate,
-                     String endyear, String endmonth,String enddate) {
+    public MyLicenseItem(String mylicensename, String getyear, String getmonth, String getdate,
+                         String endyear, String endmonth, String enddate) {
         this.mylicensename = mylicensename;
         this.getyear = getyear;
         this.getmonth = getmonth;

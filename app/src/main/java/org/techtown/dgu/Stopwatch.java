@@ -1,29 +1,17 @@
 package org.techtown.dgu;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import org.techtown.dgu.studylicense.LicenseItem;
 
-import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class Stopwatch {
     //각각의 자격증, 과목의 스톱워치
@@ -41,7 +29,7 @@ public class Stopwatch {
 
     private Stopwatch_DB StopwatchDB;
     String Today;
-    study_license licenseItem;
+    LicenseItem licenseItem;
     String ItemName;
     String DefalutTime = "00:00:00";
 
@@ -58,7 +46,7 @@ public class Stopwatch {
     }
 
 
-    public study_license button_click_license(study_license _licenseItem, ImageView _button, TextView _time){
+    public LicenseItem button_click_license(LicenseItem _licenseItem, ImageView _button, TextView _time){
         this.licenseItem = _licenseItem;
         this.ItemName=licenseItem.getName();
         this.TimeBuff = StringToLong(licenseItem.getStudytime());

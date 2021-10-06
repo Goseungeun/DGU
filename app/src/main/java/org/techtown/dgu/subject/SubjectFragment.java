@@ -1,9 +1,7 @@
-package org.techtown.dgu;
+package org.techtown.dgu.subject;
 
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import org.techtown.dgu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,17 +23,17 @@ import java.util.Date;
 
 import static java.lang.Integer.parseInt;
 
-public class Subject extends Fragment {
+public class SubjectFragment extends Fragment {
 
     private RecyclerView subrecyclerview;
     private Subject_DB mSubject_DB;
-    ArrayList<studysub> subDataList;
-    private studysubAdapter mAdapter;
+    ArrayList<SubjectItem> subDataList;
+    private SubjectAdapter mAdapter;
 
 
 
-    public static Subject newInstance() {
-        return new Subject();
+    public static SubjectFragment newInstance() {
+        return new SubjectFragment();
     }
 
 
@@ -50,7 +46,7 @@ public class Subject extends Fragment {
 
         mSubject_DB= new Subject_DB(this.getContext());
         subrecyclerview= (RecyclerView)view.findViewById(R.id.subrecycler);
-        studysubAdapter adapter = new studysubAdapter(this.getContext(),subDataList);
+        SubjectAdapter adapter = new SubjectAdapter(this.getContext(),subDataList);
         subrecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         subrecyclerview.setAdapter(adapter);
         subDataList=new ArrayList<>();
@@ -66,7 +62,7 @@ public class Subject extends Fragment {
             @Override
             public void onClick(View v){
                 //팝업창 띄우기
-                Dialog dialog=new Dialog(Subject.this.getContext(), android.R.style.Theme_Material_Light_Dialog);
+                Dialog dialog=new Dialog(SubjectFragment.this.getContext(), android.R.style.Theme_Material_Light_Dialog);
                 dialog.setContentView(R.layout.activity_subject_input);
 
                 EditText subjectNameInput=dialog.findViewById(R.id.subjectNameInput);
@@ -83,7 +79,7 @@ public class Subject extends Fragment {
                         mSubject_DB.InsetSubject(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
 
                         //Insert UI
-                        studysub item=new studysub();
+                        SubjectItem item=new SubjectItem();
                         item.setSubname(subjectNameInput.getText().toString());
                         item.setWeek(parseInt(weekInput.getText().toString()));
                         item.setWeekFre(parseInt(weekFrequencyInput.getText().toString()));
@@ -93,7 +89,7 @@ public class Subject extends Fragment {
                         subrecyclerview.smoothScrollToPosition(0);
 
                         dialog.dismiss();
-                        Toast.makeText(Subject.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubjectFragment.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
 
 
                     }
@@ -124,7 +120,7 @@ public class Subject extends Fragment {
         //저장되어 있던 DB를 가져온다
         subDataList=mSubject_DB.getSubList();
         if(mAdapter==null){
-            mAdapter=new studysubAdapter(this.getContext(),subDataList);
+            mAdapter=new SubjectAdapter(this.getContext(),subDataList);
             subrecyclerview.setHasFixedSize(true);
             subrecyclerview.setAdapter(mAdapter);
         }

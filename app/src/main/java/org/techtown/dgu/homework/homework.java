@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.homework;
 
 //과제 정보를 표현하는 클래스 정의
 public class homework {

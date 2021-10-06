@@ -1,4 +1,4 @@
-package org.techtown.dgu;
+package org.techtown.dgu.mylicense;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.R;
+
 import java.util.ArrayList;
 
-public class mylicenseAdapter extends RecyclerView.Adapter<mylicenseAdapter.ViewHolder> {
-    ArrayList<mylicense> items = new ArrayList<mylicense>();
+public class MyLicenseAdapter extends RecyclerView.Adapter<MyLicenseAdapter.ViewHolder> {
+    ArrayList<MyLicenseItem> items = new ArrayList<MyLicenseItem>();
 
     @NonNull
     @Override
@@ -24,7 +26,7 @@ public class mylicenseAdapter extends RecyclerView.Adapter<mylicenseAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        mylicense item = items.get(position);
+        MyLicenseItem item = items.get(position);
         viewHolder.setItem(item);
 
     }
@@ -34,23 +36,23 @@ public class mylicenseAdapter extends RecyclerView.Adapter<mylicenseAdapter.View
         return items.size();
     }
 
-    public void addItem(mylicense item){
+    public void addItem(MyLicenseItem item){
         items.add(item);
     }
 
-    public void setItems(ArrayList<mylicense> items){
+    public void setItems(ArrayList<MyLicenseItem> items){
         this.items = items;
     }
 
-    public mylicense getItem(int position){
+    public MyLicenseItem getItem(int position){
         return items.get(position);
     }
 
-    public ArrayList<mylicense> getItems() {
+    public ArrayList<MyLicenseItem> getItems() {
         return items;
     }
 
-    public void setItem(int position, mylicense item){
+    public void setItem(int position, MyLicenseItem item){
         items.set(position,item);
     }
 
@@ -75,7 +77,7 @@ public class mylicenseAdapter extends RecyclerView.Adapter<mylicenseAdapter.View
             enddate = itemView.findViewById(R.id.enddate);
         }
 
-        public void setItem(mylicense item){
+        public void setItem(MyLicenseItem item){
             licensename.setText(item.getMylicensename());
             getyear.setText(item.getGetyear());
             getmonth.setText(item.getGetmonth());

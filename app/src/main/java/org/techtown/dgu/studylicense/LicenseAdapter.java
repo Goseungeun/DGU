@@ -1,10 +1,9 @@
-package org.techtown.dgu;
+package org.techtown.dgu.studylicense;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +18,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.R;
+import org.techtown.dgu.Stopwatch;
+
 import java.util.ArrayList;
 
-public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapter.ViewHolder>{
+public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHolder>{
 
-    private ArrayList<study_license> items;
+    private ArrayList<LicenseItem> items;
     private Context mContext;
-    private STLicenseDBHelper mDBHelper;
+    private LicenseDB mDBHelper;
     private Stopwatch stopwatch;
 
-    public studylicenseAdapter(ArrayList<study_license> items, Context mContext){
+    public LicenseAdapter(ArrayList<LicenseItem> items, Context mContext){
         this.items = items;
         this.mContext = mContext;
-        mDBHelper = new STLicenseDBHelper(mContext);
+        mDBHelper = new LicenseDB(mContext);
         stopwatch = new Stopwatch(mContext);
     }
 
@@ -46,7 +48,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        study_license item = items.get(position);
+        LicenseItem item = items.get(position);
         viewHolder.setItem(item);
     }
 
@@ -55,7 +57,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
         return items.size();
     }
 
-    public void addItem(study_license item){
+    public void addItem(LicenseItem item){
         items.add(item);
         notifyItemInserted(0);
     }
@@ -89,7 +91,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
                 @Override
                 public void onClick(View v) {
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
-                    study_license item = items.get(cusPos);
+                    LicenseItem item = items.get(cusPos);
                     items.set(cusPos,stopwatch.button_click_license(item, startbutton, studytime));
                     Log.v("OutsideStopwatch","Name : "+items.get(cusPos).getName()+" Studytime :"+items.get(cusPos).getStudytime());
                     //DB에 업데이트 해줌
@@ -102,7 +104,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
                 @Override
                 public void onClick(View v) {
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
-                    study_license licenseItem = items.get(cusPos);
+                    LicenseItem licenseItem = items.get(cusPos);
 
                     String[] strChoiceItems = {"수정하기","삭제하기"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -162,7 +164,7 @@ public class studylicenseAdapter extends RecyclerView.Adapter<studylicenseAdapte
             });
         }
 
-        public void setItem(study_license item){
+        public void setItem(LicenseItem item){
             name.setText(item.getName());
             studytime.setText(item.getStudytime());
         }

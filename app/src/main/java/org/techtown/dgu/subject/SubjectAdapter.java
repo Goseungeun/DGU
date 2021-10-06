@@ -1,28 +1,30 @@
-package org.techtown.dgu;
+package org.techtown.dgu.subject;
 
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import org.techtown.dgu.MainActivity;
+import org.techtown.dgu.R;
+import org.techtown.dgu.homework.homework;
+import org.techtown.dgu.homework.homeworkAdapter;
+import org.techtown.dgu.homework.homework_DB;
+import org.techtown.dgu.test.SubTestItem;
+import org.techtown.dgu.test.SubTestAdapter;
+import org.techtown.dgu.test.SubTest_DB;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,9 +32,9 @@ import java.util.Date;
 
 import static java.lang.Integer.parseInt;
 
-public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studysubViewHolder>{
+public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysubViewHolder>{
 
-    private ArrayList<studysub> subList;
+    private ArrayList<SubjectItem> subList;
     private Context mContext;
 
     private Subject_DB mSubject_DB;
@@ -44,13 +46,13 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
 
 
     protected RecyclerView testrecycler;
-    private subtest_DB mSubTest_DB;
-    ArrayList<subtest> subTestList;
-    private subtestAdapter msubtestAdapter;
+    private SubTest_DB mSubTest_DB;
+    ArrayList<SubTestItem> subTestList;
+    private SubTestAdapter msubtestAdapter;
 
 
     
-    public studysubAdapter(Context context, ArrayList<studysub> subList){
+    public SubjectAdapter(Context context, ArrayList<SubjectItem> subList){
         this.subList = subList;
         this.mContext = context;
         mSubject_DB=new Subject_DB(context);
@@ -92,7 +94,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
     }
 
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
-    public void addSubItem(studysub _item) {
+    public void addSubItem(SubjectItem _item) {
             subList.add(0,_item);
             notifyItemInserted(0);
         }
@@ -127,8 +129,8 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
             homeworkList=new ArrayList<>();
 
 
-            mSubTest_DB=new subtest_DB((this.testrecycler.getContext()));
-            subtestAdapter subjecttestListDataAdapter = new subtestAdapter(mContext,subTestList);
+            mSubTest_DB=new SubTest_DB((this.testrecycler.getContext()));
+            SubTestAdapter subjecttestListDataAdapter = new SubTestAdapter(mContext,subTestList);
             testrecycler.setLayoutManager(new LinearLayoutManager(this.testrecycler.getContext(),LinearLayoutManager.VERTICAL,false));
             testrecycler.setAdapter(subjecttestListDataAdapter);
             subTestList=new ArrayList<>();
@@ -213,7 +215,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                             mSubTest_DB.InsetSubtest(subtestNameInput.getText().toString(),subtestDdayInput.getText().toString());
 
                             //Insert UI
-                            subtest testitem=new subtest();
+                            SubTestItem testitem=new SubTestItem();
                             testitem.setSubtestname(subtestNameInput.getText().toString());
                             testitem.setTestDday(subtestDdayInput.getText().toString());
 
@@ -240,7 +242,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                 @Override
                 public void onClick(View view){
                     int curPos=getAdapterPosition(); //현재 리스트 클릭한 아이템 위치
-                    studysub studysub=subList.get(curPos);
+                    SubjectItem studysub=subList.get(curPos);
 
 
                     String[] strChoiceItems={"출석체크","과목 수정하기","과목 삭제하기"};
@@ -250,7 +252,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position) {
                             if(position==0){
-                                AttendanceCheck attendanceCheck = new AttendanceCheck();
+                                AttendanceCheckFragment attendanceCheck = new AttendanceCheckFragment();
 
                                 String name = studysub.getSubname();
                                 attendanceCheck.setSubName(name);
@@ -332,7 +334,7 @@ public class studysubAdapter extends RecyclerView.Adapter<studysubAdapter.studys
             //저장되어 있던 DB를 가져온다
             subTestList=mSubTest_DB.getSubTestList();
             if(msubtestAdapter==null){
-                msubtestAdapter=new subtestAdapter(mContext,subTestList);
+                msubtestAdapter=new SubTestAdapter(mContext,subTestList);
                 testrecycler.setHasFixedSize(true);
                 testrecycler.setAdapter(msubtestAdapter);
             }

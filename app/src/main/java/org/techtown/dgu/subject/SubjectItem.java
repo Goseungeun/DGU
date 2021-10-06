@@ -1,8 +1,11 @@
-package org.techtown.dgu;
+package org.techtown.dgu.subject;
+
+import org.techtown.dgu.homework.homework;
+import org.techtown.dgu.test.SubTestItem;
 
 import java.util.ArrayList;
 
-public class studysub {
+public class SubjectItem {
 
     private int id;
 
@@ -11,13 +14,13 @@ public class studysub {
     private int week;
     private int weekFre;
     private ArrayList<homework> hwList;
-    private ArrayList<subtest> testList;
+    private ArrayList<SubTestItem> testList;
 
-    public studysub(){
+    public SubjectItem(){
 
     }
 
-    public studysub(String subname,String subtime,int week, int weekFre,ArrayList<homework> hwList, ArrayList<subtest> testList){
+    public SubjectItem(String subname, String subtime, int week, int weekFre, ArrayList<homework> hwList, ArrayList<SubTestItem> testList){
         this.subname = subname;
         this.subtime = subtime;
         this.week=week;
@@ -74,11 +77,11 @@ public class studysub {
         this.hwList = hwList;
     }
 
-    public ArrayList<subtest> getTestList() {
+    public ArrayList<SubTestItem> getTestList() {
         return testList;
     }
 
-    public void setTestList(ArrayList<subtest> testList) {
+    public void setTestList(ArrayList<SubTestItem> testList) {
         this.testList = testList;
     }
 }

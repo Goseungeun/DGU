@@ -1,18 +1,7 @@
 package org.techtown.dgu;
 
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
-
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,14 +11,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.techtown.dgu.graph.GraphFragment;
+import org.techtown.dgu.mylicense.MyLicenseFragment;
+import org.techtown.dgu.studylicense.LicenseFragment;
+import org.techtown.dgu.subject.SubjectFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    org.techtown.dgu.Subject subject;
-    org.techtown.dgu.Graph graph;
+    SubjectFragment subject;
+    GraphFragment graph;
     org.techtown.dgu.Home home;
-    org.techtown.dgu.License license;
-    Getlicense my_license;
+    LicenseFragment license;
+    MyLicenseFragment my_license;
 
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
     Bundle dayBundle;
@@ -39,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        subject = new org.techtown.dgu.Subject();
-        graph = new org.techtown.dgu.Graph();
+        subject = new SubjectFragment();
+        graph = new GraphFragment();
         home = new org.techtown.dgu.Home();
-        license = new org.techtown.dgu.License();
-        my_license = new Getlicense();
+        license = new LicenseFragment();
+        my_license = new MyLicenseFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
 
