@@ -54,6 +54,8 @@ public class Stopwatch {
         this.Tv_time=_time;
 
         //TODO 날이 지나면 초기화 되는거 구현해야함
+        //TODO 바뀐 화면과 연결하기
+
 
         //행이 존재할수도 없을수도 있어서
         if(ChangeDate()){

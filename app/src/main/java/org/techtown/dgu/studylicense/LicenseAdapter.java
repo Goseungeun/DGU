@@ -16,10 +16,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.dgu.R;
 import org.techtown.dgu.Stopwatch;
+import org.techtown.dgu.StopwatchFragment;
 
 import java.util.ArrayList;
 
@@ -90,6 +92,11 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             startbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //TODO 화면전환
+                    AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
+                    StopwatchFragment fragment = new StopwatchFragment();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame,fragment).addToBackStack(null).commit();
+
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
                     LicenseItem item = items.get(cusPos);
                     items.set(cusPos,stopwatch.button_click_license(item, startbutton, studytime));
