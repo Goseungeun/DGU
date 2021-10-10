@@ -1,51 +1,47 @@
 package org.techtown.dgu.studylicense;
 
 public class LicenseItem {
-    String name;
-    String studytime;
-    String testday;
-    Double studyrate;
+    String licenseid;
+    String licensename;
+    String licensedday;
 
     public LicenseItem() {
     }
 
-    public LicenseItem(String _name, String _studytime, String _testday, Double _studyrate){
-        this.name = _name;
-        this.studytime=_studytime;
-        this.testday=_testday;
-        this.studyrate=_studyrate;
+    public LicenseItem( String _licensename, String _licensedday){
+        this.licensename=_licensename;
+        this.licensedday=_licensedday;
     }
 
-
-    public String getName() {
-        return name;
+    public LicenseItem(String _licenseid, String _licensename, String _licensedday){
+        this.licenseid=_licenseid;
+        this.licensename=_licensename;
+        this.licensedday=_licensedday;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getLicenseid() {
+        return licenseid;
     }
 
-    public String getStudytime() {
-        return studytime;
+    public void setLicenseid(String licenseid) {
+        this.licenseid = licenseid;
     }
 
-    public void setStudytime(String studytime) {
-        this.studytime = studytime;
+    public String getLicensename() {
+        return licensename;
     }
 
-    public String getTestday() {
-        return testday;
+    public void setLicensename(String licensename) {
+        this.licensename = licensename;
     }
 
-    public void setTestday(String testday) {
-        this.testday = testday;
+    public String getLicensedday() {
+        return licensedday;
     }
 
-    public Double getStudyrate() {
-        return studyrate;
-    }
-
-    public void setStudyrate(Double studyrate) {
-        this.studyrate = studyrate;
+    public void setLicensedday(String licensedday) {
+        this.licensedday = licensedday;
     }
 }
+
+

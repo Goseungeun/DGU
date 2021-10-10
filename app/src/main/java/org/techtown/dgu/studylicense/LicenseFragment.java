@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.Stopwatch;
 
@@ -23,7 +24,7 @@ public class LicenseFragment extends Fragment {
 
     private RecyclerView rv_license;
     private LicenseAdapter mAdapter;
-    private LicenseDB mDBHelper;
+    private DGUDB mDBHelper;
     private ArrayList<LicenseItem> licensItems;
     private Stopwatch stopwatch;
     Handler handler = new Handler();
@@ -33,14 +34,14 @@ public class LicenseFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
         licensItems=new ArrayList<LicenseItem>();
         stopwatch = new Stopwatch(this.getContext());
-        mDBHelper= new LicenseDB(this.getContext());
+        mDBHelper= new DGUDB(this.getContext());
         rv_license= (RecyclerView)rootView.findViewById(R.id.license_recycler);
-        LicenseAdapter mAdapter = new LicenseAdapter(licensItems,this.getContext());
+        mAdapter = new LicenseAdapter(licensItems,this.getContext());
         rv_license.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         rv_license.setAdapter(mAdapter);
 
         //하루가 지나면 초기화되는거
-        handler.postDelayed(runnable, 0);
+ //       handler.postDelayed(runnable, 0);
 
         Button button1 = (Button)rootView.findViewById(R.id.button2); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
 
@@ -52,21 +53,15 @@ public class LicenseFragment extends Fragment {
                 Dialog dialog = new Dialog(LicenseFragment.this.getContext(), android.R.style.Theme_Material_Light_Dialog);
                 dialog.setContentView(R.layout.activity_license_input);
                 EditText et_name = dialog.findViewById(R.id.licenseNameInput);
-                EditText et_testday = dialog.findViewById(R.id.editTextDate2);
-                EditText et_studyrate = dialog.findViewById(R.id.progressRateInput);
+                EditText et_licensedday = dialog.findViewById(R.id.editTextDate2);
                 Button licensebtn_ok = dialog.findViewById(R.id.licensebtn_ok);
 
                 licensebtn_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Insert Database
-                        String studytime = "00:00:00";
-                        mDBHelper.InsertLicense(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
 
                         //Insert UI
-
-                        LicenseItem item = new LicenseItem(et_name.getText().toString(),studytime,et_testday.getText().toString(),Double.parseDouble(et_studyrate.getText().toString()));
-
+                        LicenseItem item = new LicenseItem(et_name.getText().toString(),et_licensedday.getText().toString());
 
                         mAdapter.addItem(item);
                         loadRecentDB();
@@ -94,7 +89,8 @@ public class LicenseFragment extends Fragment {
         rv_license.setAdapter(mAdapter);
     }
 
-    public final Runnable runnable = new Runnable() {
+    //TODO : 하루 초기화 용으로 stopwatch에서 썼던거
+/*    public final Runnable runnable = new Runnable() {
         public void run() {
             if(stopwatch.ChangeDate()){
                 Log.v("TTT4","run");
@@ -105,7 +101,7 @@ public class LicenseFragment extends Fragment {
             }
             handler.postDelayed(this, 0);
         }
-    };
+    };*/
 
     /*
     private void Ddaycal(){
