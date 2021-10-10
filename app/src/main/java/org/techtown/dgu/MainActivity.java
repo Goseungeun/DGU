@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     org.techtown.dgu.Home home;
     LicenseFragment license;
     MyLicenseFragment my_license;
+    StatsFragment statsfragment;
 
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
     Bundle dayBundle;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         home = new org.techtown.dgu.Home();
         license = new LicenseFragment();
         my_license = new MyLicenseFragment();
+        statsfragment=new StatsFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container,graph).commit();
+                                .replace(R.id.container,license).commit();
 
                         return true;
                     case R.id.tab3:
@@ -64,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.tab4:
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, license).commit();
+                                .replace(R.id.container, graph).commit();
                         return true;
 
                     case R.id.tab5:
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, my_license).commit();
+                                .replace(R.id.container, statsfragment).commit();
                         return true;
                 }
 

@@ -12,8 +12,8 @@
         android:id="@+id/tab2"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@drawable/graph"
-        android:title="그래프" />
+        android:icon="@drawable/license"
+        android:title="자격증" />
     <item
         android:id="@+id/tab3"
         app:showAsAction="ifRoom"
@@ -24,12 +24,12 @@
         android:id="@+id/tab4"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@drawable/license"
-        android:title="자격증" />
+        android:icon="@drawable/grade"
+        android:title="그래프" />
     <item
         android:id="@+id/tab5"
         app:showAsAction="ifRoom"
         android:enabled="true"
-        android:icon="@drawable/mylicense"
-        android:title="취득 자격증" />
+        android:icon="@drawable/graph"
+        android:title="통계" />
 </menu>
