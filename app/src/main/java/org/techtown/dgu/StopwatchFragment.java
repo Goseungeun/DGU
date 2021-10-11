@@ -1,6 +1,7 @@
 package org.techtown.dgu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -27,7 +28,7 @@ public class StopwatchFragment extends Fragment {
 
     String subid;
     String licenseid;
-    String studytimeid=null;  //TODO : null로 검색해도 잘나오나..?
+    String studytimeid=null;
 
     TextView FocuseTime, Today, TotalTime,EachCategory, EachName,EachTime;
     ImageView pause;
@@ -118,6 +119,17 @@ public class StopwatchFragment extends Fragment {
     public void stop(){
         handler.removeCallbacks(runnable);
         //TODO : 시작하는 시간, 끝나는 시간 이용해서 타임테이블 구성하기
+
+        //화면전환
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        if(subid!=null) {
+            //과목으로 돌아가야함.
+            intent.putExtra("category","subject");
+        }else{
+            //자격증으로 돌아가야함.
+            intent.putExtra("category","license");
+        }
+        startActivity(intent);
     }
 
     public final Runnable runnable = new Runnable() {
@@ -127,6 +139,7 @@ public class StopwatchFragment extends Fragment {
             if(ChangeDate()){
                 setStudytimeid(DB.InsertStudyTime(subid,licenseid));
                 TimeBuff =  StringToLong(DB.getStudytime(getStudytimeid()));
+                TimeBuffTotal = StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
             }
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
@@ -184,7 +197,6 @@ public class StopwatchFragment extends Fragment {
 
     //바뀐거면 true, 안바뀐거면 false
     public boolean ChangeDate() {
-        //Log.v("ChangeDate inner",getStudytimeid());
         if(DB.SearchStudytimeID(subid, licenseid)==null){return true;}
         else{return false;}
     }

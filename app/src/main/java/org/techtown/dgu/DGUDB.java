@@ -211,29 +211,6 @@ public class DGUDB extends SQLiteOpenHelper {
         }
     }
 
-//    public String DateTotalStudyTime(String _date){
-//        SQLiteDatabase db = getReadableDatabase();
-//        Cursor cursor = db.rawQuery("SELECT sum(strftime('HH:MM:SS',studytime)) FROM studytime WHERE date ='"+_date+"'",null);
-//        System.out.print(cursor);
-//        int time=0;
-//        String result = null;
-//
-//        int i=0;
-//        while(cursor.moveToNext()){
-//
-//            time = cursor.getInt(0);
-//            Log.v("totalTimeSumming","time : "+time);
-//            Cursor cursor1 = db.rawQuery("select strftime('HH:mm:ss','"+result+"') + strftime('HH:mm:ss','"+time+"') ",null);
-//            cursor1.moveToNext();
-//            result=cursor1.getString(0);
-//            Log.v("totalTimeSumming","time : "+time+", result : "+result);
-//            cursor1.close();
-//            i++;
-//        }
-//        cursor.close();
-//        return result;
-//    }
-
     public String DateTotalStudyTime(String _date){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db. rawQuery("SELECT time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS total FROM studytime WHERE date = '"+_date+"'",null);
@@ -245,9 +222,6 @@ public class DGUDB extends SQLiteOpenHelper {
 
         return result;
     }
-
-
-
 
 
     //StopwatchToday와 연결

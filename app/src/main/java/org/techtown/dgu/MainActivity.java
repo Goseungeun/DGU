@@ -1,6 +1,8 @@
 package org.techtown.dgu;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -26,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
     MyLicenseFragment my_license;
     StatsFragment statsfragment;
 
+    String category="category";
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
     Bundle dayBundle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +42,30 @@ public class MainActivity extends AppCompatActivity {
         graph = new GraphFragment();
         home = new org.techtown.dgu.Home();
         license = new LicenseFragment();
-        my_license = new MyLicenseFragment();
         statsfragment=new StatsFragment();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
+        //stopwatch에서 화면 돌아올 때를 위한 함수들
+        Intent intent = getIntent();
+        if((String)intent.getSerializableExtra("category")!=null){
+            this.category = (String)intent.getSerializableExtra("category");
+        }
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setSelectedItemId(R.id.tab3);
+        switch (this.category){
+            case "subject":
+                bottomNavigation.setSelectedItemId(R.id.tab1);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, subject).commit();
+                break;
+            case "license":
+                bottomNavigation.setSelectedItemId(R.id.tab2);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, license).commit();
+                break;
+            default:
+                bottomNavigation.setSelectedItemId(R.id.tab3);
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
+                break;
+        }
+
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
