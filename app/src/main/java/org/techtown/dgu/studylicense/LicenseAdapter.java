@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.Stopwatch;
 import org.techtown.dgu.StopwatchFragment;
@@ -29,13 +30,13 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 
     private ArrayList<LicenseItem> items;
     private Context mContext;
-    private LicenseDB mDBHelper;
+    private DGUDB mDBHelper;
     private Stopwatch stopwatch;
 
     public LicenseAdapter(ArrayList<LicenseItem> items, Context mContext){
         this.items = items;
         this.mContext = mContext;
-        mDBHelper = new LicenseDB(mContext);
+        mDBHelper = new DGUDB(mContext);
         stopwatch = new Stopwatch(mContext);
     }
 
@@ -60,23 +61,18 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     }
 
     public void addItem(LicenseItem item){
+        //DB에 insert해주면서 item에 id를 settting해준다.
+        item.setLicenseid(mDBHelper.InsertLicense(item.getLicensename(),item.getLicensedday()));
         items.add(item);
         notifyItemInserted(0);
     }
 
-    public void resetItem(){
-        for(int i=0;i<items.size();i++){
-            items.get(i).setStudytime("00:00:00");
-        }
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView studytime;
         //public TextView dday;
         private ImageView startbutton;
-        private SeekBar progress;
         private LinearLayout touch_area;
 
         public ViewHolder(View itemView){
@@ -85,7 +81,6 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             name = itemView.findViewById(R.id.licensename);
             studytime = itemView.findViewById(R.id.licensetime);
             startbutton = itemView.findViewById(R.id.startbutton_lic);
-            progress = itemView.findViewById(R.id.progress);
             //dday = itemView.findViewById(R.id.dday);
             touch_area=itemView.findViewById(R.id.touch_area_lic);
 
@@ -100,9 +95,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
                     LicenseItem item = items.get(cusPos);
                     items.set(cusPos,stopwatch.button_click_license(item, startbutton, studytime));
-                    Log.v("OutsideStopwatch","Name : "+items.get(cusPos).getName()+" Studytime :"+items.get(cusPos).getStudytime());
-                    //DB에 업데이트 해줌
-                    mDBHelper.UpdateLicenseStudyTime(item.getName(),item.getStudytime());
+
                     notifyItemChanged(cusPos,item);
                 }
             });
@@ -124,13 +117,11 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                                 Dialog dialog = new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.activity_license_input);
                                 EditText et_name = dialog.findViewById(R.id.licenseNameInput);
-                                EditText et_testday = dialog.findViewById(R.id.editTextDate2);
-                                EditText et_studyrate = dialog.findViewById(R.id.progressRateInput);
+                                EditText et_dday = dialog.findViewById(R.id.editTextDate2);
                                 Button licensebtn_ok = dialog.findViewById(R.id.licensebtn_ok);
 
-                                et_name.setText(licenseItem.getName());
-                                et_testday.setText(licenseItem.getTestday());
-                                et_studyrate.setText(Double.toString(licenseItem.getStudyrate()));
+                                et_name.setText(licenseItem.getLicensename());
+                                et_dday.setText(licenseItem.getLicensedday());
 
                                 et_name.setSelection(et_name.getText().length());
 
@@ -139,15 +130,13 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                                     public void onClick(View v) {
                                         //UPDATE table
                                         String name = et_name.getText().toString();
-                                        String testday = et_testday.getText().toString();
-                                        Double studyrate = Double.parseDouble(et_studyrate.getText().toString());       //진도율 스트링으로 받아와 실수형으로 변환
-                                        String beforename = licenseItem.getName();
-                                        mDBHelper.UpdateLicense(name,testday,studyrate,beforename);
+                                        String licensedday = et_dday.getText().toString();
+                                        String id = licenseItem.getLicenseid();
+                                        mDBHelper.UpdateLicense(id,name,licensedday);
 
                                         //update UI
-                                        licenseItem.setName(name);
-                                        licenseItem.setTestday(testday);
-                                        licenseItem.setStudyrate(studyrate);
+                                        licenseItem.setLicensename(name);
+                                        licenseItem.setLicensedday(licensedday);
                                         notifyItemChanged(cusPos,licenseItem);
                                         dialog.dismiss();
                                     }
@@ -158,8 +147,8 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 
                             else if (position == 1) {
                                 //delete table
-                                String beforename = licenseItem.getName();
-                                mDBHelper.deleteLicense(beforename);
+                                String id = licenseItem.getLicenseid();
+                                mDBHelper.deleteLicense(id);
                                 //delete UI
                                 items.remove(cusPos);
                                 notifyItemRemoved(cusPos);
@@ -172,8 +161,9 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
         }
 
         public void setItem(LicenseItem item){
-            name.setText(item.getName());
-            studytime.setText(item.getStudytime());
+            name.setText(item.getLicensename());
+            //studytime.setText(item.getStudytime());
+            //TODO 여기에 dday도 추가해야함.
         }
 
 

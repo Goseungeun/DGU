@@ -48,8 +48,8 @@ public class Stopwatch {
 
     public LicenseItem button_click_license(LicenseItem _licenseItem, ImageView _button, TextView _time){
         this.licenseItem = _licenseItem;
-        this.ItemName=licenseItem.getName();
-        this.TimeBuff = StringToLong(licenseItem.getStudytime());
+        //this.ItemName=licenseItem.getName();
+        //this.TimeBuff = StringToLong(licenseItem.getStudytime());
         this.button=_button;
         this.Tv_time=_time;
 
@@ -106,10 +106,10 @@ public class Stopwatch {
             String UpdateTimeString = LongToString(UpdateTime);
             String UpdateTimeStringTotal = LongToString(UpdateTimeTotal);
 
-            licenseItem.setStudytime(UpdateTimeString);
+            //licenseItem.setStudytime(UpdateTimeString);
             Tv_time.setText(UpdateTimeString);
 
-            Log.v("innerStopwatch",licenseItem.getStudytime());
+            //Log.v("innerStopwatch",licenseItem.getStudytime());
             StopwatchDB.UpdateTotalStudyTime(Today,UpdateTimeStringTotal);
 
             handler.postDelayed(this, 0);

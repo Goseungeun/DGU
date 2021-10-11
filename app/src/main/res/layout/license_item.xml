@@ -76,12 +76,6 @@
 
             </LinearLayout>
 
-            <SeekBar
-                android:id="@+id/progress"
-                style="@style/Widget.AppCompat.SeekBar.Discrete"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
