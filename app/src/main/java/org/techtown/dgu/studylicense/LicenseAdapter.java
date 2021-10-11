@@ -93,7 +93,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                     //TODO 화면전환
                     AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
                     StopwatchFragment fragment = new StopwatchFragment(null,item.getLicenseid());
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame,fragment).commit();
+                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment).commit();
 
                     notifyItemChanged(cusPos,item);
                 }
