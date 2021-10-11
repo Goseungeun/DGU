@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.techtown.dgu.studylicense.LicenseFragment;
 import org.techtown.dgu.subject.SubjectFragment;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StopwatchFragment extends Fragment {
+    //TODO 시간을 재는 도중에 뒤로가기 막아야함.
     private ViewGroup view;
     private DGUDB DB;
 
@@ -45,7 +47,6 @@ public class StopwatchFragment extends Fragment {
         this.licenseid=_licenseid;
     }
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.stopwatch, container, false);
 
@@ -59,8 +60,6 @@ public class StopwatchFragment extends Fragment {
         EachName = view.findViewById(R.id.stopwatchEachName);
         EachTime = view.findViewById(R.id.stopwatchEachTime);
         pause = view.findViewById(R.id.stopwatchpause);
-
-
 
         //테이블에 행이 존재할수도 없을수도 있어서
         if(ChangeDate()){
@@ -129,6 +128,9 @@ public class StopwatchFragment extends Fragment {
             //자격증으로 돌아가야함.
             intent.putExtra("category","license");
         }
+        //화면전환이 됐을 때, 핸드폰 상의 뒤로가기 버튼을 누르면 이전 스톱워치화면이 보이는 현상을 막기위한 코드
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         startActivity(intent);
     }
 
@@ -143,8 +145,6 @@ public class StopwatchFragment extends Fragment {
             }
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-
-//            TimeBuffTotal=StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
 
             UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치
