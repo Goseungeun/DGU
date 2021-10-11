@@ -138,7 +138,7 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public String give_Today(){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(" select strftime('%Y-%m-%d','now','localtime');",null);
+        Cursor cursor = db.rawQuery(" SELECT strftime('%Y-%m-%d','now','localtime');",null);
         cursor.moveToNext();
         String result = cursor.getString(0);
         cursor.close();
@@ -211,28 +211,42 @@ public class DGUDB extends SQLiteOpenHelper {
         }
     }
 
+//    public String DateTotalStudyTime(String _date){
+//        SQLiteDatabase db = getReadableDatabase();
+//        Cursor cursor = db.rawQuery("SELECT sum(strftime('HH:MM:SS',studytime)) FROM studytime WHERE date ='"+_date+"'",null);
+//        System.out.print(cursor);
+//        int time=0;
+//        String result = null;
+//
+//        int i=0;
+//        while(cursor.moveToNext()){
+//
+//            time = cursor.getInt(0);
+//            Log.v("totalTimeSumming","time : "+time);
+//            Cursor cursor1 = db.rawQuery("select strftime('HH:mm:ss','"+result+"') + strftime('HH:mm:ss','"+time+"') ",null);
+//            cursor1.moveToNext();
+//            result=cursor1.getString(0);
+//            Log.v("totalTimeSumming","time : "+time+", result : "+result);
+//            cursor1.close();
+//            i++;
+//        }
+//        cursor.close();
+//        return result;
+//    }
+
     public String DateTotalStudyTime(String _date){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT sum(cast(strftime('HH:MM:SS',studytime)AS integer)) FROM studytime where date ='"+_date+"'",null);
-
-        int time=0;
-        String result = null;
-
-        int i=0;
-        while(cursor.moveToNext()){
-
-            time = cursor.getInt(0);
-            Log.v("totalTimeSumming","time : "+time);
-            /*Cursor cursor1 = db.rawQuery("select strftime('HH:mm:ss','"+result+"') + strftime('HH:mm:ss','"+time+"') ",null);
-            cursor1.moveToNext();
-            result=cursor1.getString(0);
-            Log.v("totalTimeSumming","time : "+time+", result : "+result);
-            cursor1.close();
-            i++;*/
+        Cursor cursor = db. rawQuery("SELECT time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS total FROM studytime WHERE date = '"+_date+"'",null);
+        String result = "00:00:00";
+        if(cursor!=null && cursor.moveToFirst()){
+            Log.d("확인",""+cursor.getString(cursor.getColumnIndex("total")));
+            result = cursor.getString(cursor.getColumnIndex("total"));
         }
-        cursor.close();
-        return null;
+
+        return result;
     }
+
+
 
 
 

@@ -72,7 +72,7 @@ public class StopwatchFragment extends Fragment {
         }
 
         this.TimeBuff =  StringToLong(DB.getStudytime(getStudytimeid()));
-        this.TimeBuffTotal = StringToLong("00:00:00");
+        this.TimeBuffTotal = StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
         this.TimeBuffFocus = StringToLong("00:00:00");
 
         Log.v("Timebuff",""+TimeBuff);
@@ -131,7 +131,7 @@ public class StopwatchFragment extends Fragment {
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
 
-            //TimeBuffTotal=StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
+//            TimeBuffTotal=StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
 
             UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치
