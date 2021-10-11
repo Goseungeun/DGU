@@ -223,6 +223,19 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
+    public String MonthTotalStudyTime(String _startdate, String _enddate){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db. rawQuery("SELECT time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS total " +
+                "FROM studytime WHERE strftime('%s', date) BETWEEN strftime('%s', '"+_startdate+"') AND strftime('%s', '"+_enddate+"')",null);
+        String result = "00:00:00";
+        if(cursor!=null && cursor.moveToFirst()){
+            Log.d("확인",""+cursor.getString(cursor.getColumnIndex("total"))+_startdate+_enddate);
+            result = cursor.getString(cursor.getColumnIndex("total"));
+        }
+
+        return result;
+    }
+
 
     //StopwatchToday와 연결
     public String getStudyTime(String _date){
