@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
-import org.techtown.dgu.Stopwatch;
 
 import java.util.ArrayList;
 
@@ -26,14 +25,12 @@ public class LicenseFragment extends Fragment {
     private LicenseAdapter mAdapter;
     private DGUDB mDBHelper;
     private ArrayList<LicenseItem> licensItems;
-    private Stopwatch stopwatch;
     Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.license,container,false);
         licensItems=new ArrayList<LicenseItem>();
-        stopwatch = new Stopwatch(this.getContext());
         mDBHelper= new DGUDB(this.getContext());
         rv_license= (RecyclerView)rootView.findViewById(R.id.license_recycler);
         mAdapter = new LicenseAdapter(licensItems,this.getContext());

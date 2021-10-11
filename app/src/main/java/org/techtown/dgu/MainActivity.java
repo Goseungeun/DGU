@@ -142,4 +142,20 @@ public class MainActivity extends AppCompatActivity {
         this.dayBundle=bundle;
     }
 
+    //TODO 화면 돌아가는거 다시 생각해 보기
+    /*public void replaceStopwatch(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activity_main_frame, MainActivity).commit();
+
+        if(fragment == new SubjectFragment()){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, subject).commit();
+
+            BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+            bottomNavigation.setSelectedItemId(R.id.tab1);
+        }
+
+    }*/
+
+
 }
