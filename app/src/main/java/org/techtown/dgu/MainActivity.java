@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.techtown.dgu.graph.GraphFragment;
-import org.techtown.dgu.mylicense.MyLicenseFragment;
 import org.techtown.dgu.studylicense.LicenseFragment;
 import org.techtown.dgu.subject.SubjectFragment;
 
@@ -23,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     GraphFragment graph;
     org.techtown.dgu.Home home;
     LicenseFragment license;
-    MyLicenseFragment my_license;
     StatsFragment statsfragment;
 
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         graph = new GraphFragment();
         home = new org.techtown.dgu.Home();
         license = new LicenseFragment();
-        my_license = new MyLicenseFragment();
         statsfragment=new StatsFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
