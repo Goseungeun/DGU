@@ -1,3 +1,4 @@
+/*
 package org.techtown.dgu;
 
 import android.content.Context;
@@ -17,41 +18,56 @@ public class Stopwatch {
     //각각의 자격증, 과목의 스톱워치
     //당일의 총 공부시간도 포함
 
-    int running=0;            //0:멈춤, 1:움직임
-    ImageView button;
+    //TODO 여기다가 프래그먼트안에 있는 애들 id로 연결
     TextView Tv_time;
 
     long MillisecondTime, StartTime = 0L ;
     long TimeBuff, UpdateTime =0L;
-
     long TimeBuffTotal, UpdateTimeTotal =0L;
+    long UpdateTimeFocus=0L;
+
     Handler handler = new Handler();
 
-    private Stopwatch_DB StopwatchDB;
-    String Today;
-    LicenseItem licenseItem;
+    private DGUDB StopwatchDB;
+
+
+
     String ItemName;
     String DefalutTime = "00:00:00";
 
-    public Stopwatch(Context mContext){
-        this.StopwatchDB = new Stopwatch_DB(mContext);
-        this.Today=Today();
+
+    String subid;
+    String licenseid;
+
+    public String getId() {
+        return id;
     }
 
-    public void InsertTotalStudyTime(){
-        Today=Today();
-        StopwatchDB.InsertTotalStudyTime(Today,DefalutTime);
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    String id;
+
+    public Stopwatch(Context mContext){
+        this.StopwatchDB = new DGUDB(mContext);
+
+    }
+
+    public void InsertTotalStudyTime(String _subid, String _licenseid){
+        StopwatchDB.InsertStudyTime(_subid,_licenseid);
         TimeBuffTotal=StringToLong(DefalutTime);
         TimeBuff=StringToLong(DefalutTime);
     }
 
 
-    public LicenseItem button_click_license(LicenseItem _licenseItem, ImageView _button, TextView _time){
-        this.licenseItem = _licenseItem;
+    public void button_click(String _subid, String _licenseid){
+        this.subid =_subid;
+        this.licenseid=_licenseid;
         //this.ItemName=licenseItem.getName();
         //this.TimeBuff = StringToLong(licenseItem.getStudytime());
-        this.button=_button;
-        this.Tv_time=_time;
+
+        //this.Tv_time=_time;
 
         //TODO 날이 지나면 초기화 되는거 구현해야함
         //TODO 바뀐 화면과 연결하기
@@ -60,33 +76,25 @@ public class Stopwatch {
         //행이 존재할수도 없을수도 있어서
         if(ChangeDate()){
             //존재하는 행이 없다면
-            InsertTotalStudyTime();
+            setId(StopwatchDB.InsertStudyTime(subid,licenseid));
         }else{
-            this.TimeBuffTotal =  StringToLong(StopwatchDB.IsExist(Today));
+            setId(StopwatchDB.SearchStudytimeID(subid,licenseid));
+            //this.TimeBuffTotal =  StringToLong(StopwatchDB.IsExist(getId()));
         }
 
-        //0:멈춤, 1:움직임
-        if(running==0){
-            start();
-        } else{
-            stop();
-        }
-        return licenseItem;
+        start();
     }
 
+
     public void start(){
-        button.setImageResource(R.drawable.pause);
 
         StartTime = SystemClock.uptimeMillis();
-        running=1;
+
         handler.postDelayed(runnable, 0);
     }
 
     public void stop(){
-        button.setImageResource(R.drawable.play);
-
         handler.removeCallbacks(runnable);
-        running=0;
         //TODO : 시작하는 시간, 끝나는 시간 이용해서 타임테이블 구성하기
     }
 
@@ -95,22 +103,26 @@ public class Stopwatch {
         public void run() {
             //돌아가는 와중에 다른날로 넘어갈 시 공부시간을 초기화해준다.
             if(ChangeDate()){
-                InsertTotalStudyTime();
+                setId(StopwatchDB.InsertStudyTime(subid,licenseid));
             }
+
+            //어디다가 업데이트 할 지 알아야하기때문에 해당 튜플의 id를 가져온다.
+
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
 
-            UpdateTime = TimeBuff + MillisecondTime;    //개별 스톱워치
+            UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치
+            UpdateTimeFocus = MillisecondTime;                  //집중한 시간
 
             String UpdateTimeString = LongToString(UpdateTime);
-            String UpdateTimeStringTotal = LongToString(UpdateTimeTotal);
+            String UpdateTimeTotalString = LongToString(UpdateTimeTotal);
+            String UpdateTimeFocusString = LongToString(UpdateTimeFocus);
 
-            //licenseItem.setStudytime(UpdateTimeString);
+
             Tv_time.setText(UpdateTimeString);
 
-            //Log.v("innerStopwatch",licenseItem.getStudytime());
-            StopwatchDB.UpdateTotalStudyTime(Today,UpdateTimeStringTotal);
+            StopwatchDB.UpdateStudyTime(getId(),UpdateTimeTotalString);
 
             handler.postDelayed(this, 0);
         }
@@ -146,22 +158,12 @@ public class Stopwatch {
         return result;
     }
 
-    public String Today(){
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String result = sdf.format(date);
-        return result;
-    }
-
     //바뀐거면 true, 안바뀐거면 false
     public boolean ChangeDate() {
-        if(StopwatchDB.IsExist(Today())==null){
-            Log.v("ChangeDate",Today());
-            return true;}
+        if(StopwatchDB.IsExist(id)==null){return true;}
         else{return false;}
     }
 
 }
 
+*/

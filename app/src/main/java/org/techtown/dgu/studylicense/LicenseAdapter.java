@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
-import org.techtown.dgu.Stopwatch;
 import org.techtown.dgu.StopwatchFragment;
 
 import java.util.ArrayList;
@@ -31,13 +30,11 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     private ArrayList<LicenseItem> items;
     private Context mContext;
     private DGUDB mDBHelper;
-    private Stopwatch stopwatch;
 
     public LicenseAdapter(ArrayList<LicenseItem> items, Context mContext){
         this.items = items;
         this.mContext = mContext;
         mDBHelper = new DGUDB(mContext);
-        stopwatch = new Stopwatch(mContext);
     }
 
     @NonNull
@@ -87,14 +84,16 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             startbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO 화면전환
-                    AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
-                    StopwatchFragment fragment = new StopwatchFragment();
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame,fragment).addToBackStack(null).commit();
 
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
                     LicenseItem item = items.get(cusPos);
-                    items.set(cusPos,stopwatch.button_click_license(item, startbutton, studytime));
+                    //TODO ? 아래줄이 왜 있는지 모르겠음
+                    //items.set(cusPos,stopwatch.button_click(item, startbutton, studytime));
+
+                    //TODO 화면전환
+                    AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
+                    StopwatchFragment fragment = new StopwatchFragment(null,item.getLicenseid());
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame,fragment).commit();
 
                     notifyItemChanged(cusPos,item);
                 }

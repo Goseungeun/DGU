@@ -18,7 +18,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView23"
+        android:id="@+id/stopwatchFocusTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:00:00"
@@ -27,7 +27,7 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/stopwatchpause"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
@@ -54,7 +54,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/stopwatchToday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -73,7 +73,7 @@
                 android:textSize="17sp" />
 
             <TextView
-                android:id="@+id/textView25"
+                android:id="@+id/stopwatchTotalTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -103,7 +103,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/stopwatchEachCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -112,7 +112,7 @@
                 android:textColor="@color/background" />
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/stopwatchEachName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -122,7 +122,7 @@
                 android:textSize="17sp" />
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/stopwatchEachTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
