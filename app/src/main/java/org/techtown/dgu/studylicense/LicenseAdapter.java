@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-//TODO 여기부터, 자격증에 시간나타나게하는거
 public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHolder>{
 
     private ArrayList<LicenseItem> items;
@@ -60,7 +59,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
         }else{item.setLicensestudytime("00:00:00");}
 
         try {
-            item.setLicensedday(ddayCacultation(item.getLicensedday()));
+            item.setViewdday(ddayCacultation(item.getLicensedday()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -142,12 +141,9 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                     //TODO ? 아래줄이 왜 있는지 모르겠음
                     //items.set(cusPos,stopwatch.button_click(item, startbutton, studytime));
 
-                    //TODO 화면전환
                     AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
                     StopwatchFragment fragment = new StopwatchFragment(null,item.getLicenseid());
                     activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment).commit();
-
-
 
                     notifyItemChanged(cusPos,item);
                 }
@@ -216,8 +212,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
         public void setItem(LicenseItem item){
             name.setText(item.getLicensename());
             studytime.setText(item.getLicensestudytime());
-            dday.setText(item.getLicensedday());
-            //TODO 여기에 dday도 추가해야함.
+            dday.setText(item.getViewdday());
         }
 
 
