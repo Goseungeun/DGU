@@ -26,7 +26,7 @@ public class Timetable extends Fragment {
     String receiveday;
 
     TextView TodayStudyTime;
-    Stopwatch_DB stopwatch_db;
+    DGUDB DB;
 
     String tt_year;        //타임테이블 년도
     String tt_month;       //타임테이블 월
@@ -48,7 +48,7 @@ public class Timetable extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = (ViewGroup) inflater.inflate(R.layout.timetable, container,false);
-        stopwatch_db= new Stopwatch_DB(context);
+        DB= new DGUDB(context);
 
         // 캘린더에서 날짜 가져오기
         if(activity.dayBundle!=null){
@@ -67,7 +67,7 @@ public class Timetable extends Fragment {
 
             TodayStudyTime = view.findViewById(R.id.TodayStudyTime);
             String date = ""+tt_year+"-"+tt_month+"-"+tt_day;
-            TodayStudyTime.setText(stopwatch_db.getStudyTime(date));
+            TodayStudyTime.setText(DB.getStudyTime(date));
 
 
         }
