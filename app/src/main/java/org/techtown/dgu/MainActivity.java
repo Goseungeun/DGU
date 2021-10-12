@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.techtown.dgu.graph.GraphFragment;
-import org.techtown.dgu.mylicense.MyLicenseFragment;
 import org.techtown.dgu.studylicense.LicenseFragment;
 import org.techtown.dgu.subject.SubjectFragment;
 
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     GraphFragment graph;
     org.techtown.dgu.Home home;
     LicenseFragment license;
-    MyLicenseFragment my_license;
     StatsFragment statsfragment;
 
     String category="category";
