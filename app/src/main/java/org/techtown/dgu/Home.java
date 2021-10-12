@@ -55,9 +55,15 @@ public class Home extends Fragment {
         String date = format.format(Calendar.getInstance().getTime());
 
         TextView homeMonthTotalStudytime= view.findViewById(R.id.homeMonthTotalStudytime);
-        homeMonthTotalStudytime.setText(DB.MonthTotalStudyTime
+        String homeMonthTotalStudytimeText = DB.MonthTotalStudyTime
                 (date+"-01",
-                        date+"-"+cal.getActualMaximum(Calendar.DAY_OF_MONTH)));
+                        date+"-"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        if(homeMonthTotalStudytimeText!=null){
+            homeMonthTotalStudytime.setText(homeMonthTotalStudytimeText);
+        }else{
+            homeMonthTotalStudytime.setText("00:00:00");
+        }
+
 
 
         //날짜를 누르면 실행되는 함수
