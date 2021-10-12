@@ -23,7 +23,12 @@ import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.StopwatchFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 //TODO 여기부터, 자격증에 시간나타나게하는거
 public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHolder>{
 
@@ -54,10 +59,42 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             item.setLicensestudytime(mDBHelper.getStudytime(mDBHelper.SearchStudytimeID(null,item.getLicenseid())));
         }else{item.setLicensestudytime("00:00:00");}
 
+        try {
+            item.setLicensedday(ddayCacultation(item.getLicensedday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         Log.v("Licenseitem",""+item.getLicensestudytime());
         viewHolder.setItem(item);
     }
+
+    public String ddayCacultation(String testday) throws ParseException {
+        String result="";
+
+        Calendar getToday = Calendar.getInstance();
+        getToday.setTime(new Date()); //오늘
+
+        String s_date = testday;
+        Date date = new SimpleDateFormat("yyyyMMdd").parse(s_date);
+        Calendar cmpDate = Calendar.getInstance();
+        cmpDate.setTime(date);
+
+        long diffSec = (getToday.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
+        long diffDays = diffSec / (24*60*60) +1; //일자수 차이
+        Log.v("dday",""+diffDays);
+
+        if(diffDays==0) {
+            result = "D-day";
+        }else if(diffDays<0){
+            result="D+"+Math.abs(diffDays);
+        } else{
+            result="D-"+diffDays;
+        }
+
+        return result;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -75,7 +112,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView studytime;
-        //public TextView dday;
+        private TextView dday;
         private ImageView startbutton;
         private LinearLayout touch_area;
 
@@ -85,7 +122,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             name = itemView.findViewById(R.id.licensename);
             studytime = itemView.findViewById(R.id.licensetime);
             startbutton = itemView.findViewById(R.id.startbutton_lic);
-            //dday = itemView.findViewById(R.id.dday);
+            dday = itemView.findViewById(R.id.dday);
             touch_area=itemView.findViewById(R.id.touch_area_lic);
             studytime=itemView.findViewById(R.id.licensetime);
 
@@ -172,6 +209,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
         public void setItem(LicenseItem item){
             name.setText(item.getLicensename());
             studytime.setText(item.getLicensestudytime());
+            dday.setText(item.getLicensedday());
             //TODO 여기에 dday도 추가해야함.
         }
 
