@@ -32,7 +32,7 @@ import java.util.Date;
 
 import static java.lang.Integer.parseInt;
 
-public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysubViewHolder>{
+public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysubViewHolder>{
 
     private ArrayList<SubjectItem> subList;
     private Context mContext;
