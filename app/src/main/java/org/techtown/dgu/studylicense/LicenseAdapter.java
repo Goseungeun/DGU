@@ -70,29 +70,36 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     }
 
     public String ddayCacultation(String testday) throws ParseException {
-        String result="";
 
-        Calendar getToday = Calendar.getInstance();
-        getToday.setTime(new Date()); //오늘
+        // Millisecond 형태의 하루(24 시간)
+        final int ONE_DAY = 24 * 60 * 60 * 1000;
 
-        String s_date = testday;
-        Date date = new SimpleDateFormat("yyyyMMdd").parse(s_date);
-        Calendar cmpDate = Calendar.getInstance();
-        cmpDate.setTime(date);
+        int year= Integer.parseInt(testday.substring(0,4));
+        int month= Integer.parseInt(testday.substring(4,6));
+        int day= Integer.parseInt(testday.substring(6,8));
 
-        long diffSec = (getToday.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
-        long diffDays = diffSec / (24*60*60) +1; //일자수 차이
-        Log.v("dday",""+diffDays);
+        // D-day 설정
+        final Calendar ddayCalendar = Calendar.getInstance();
+        ddayCalendar.set(year, month-1, day);
 
-        if(diffDays==0) {
-            result = "D-day";
-        }else if(diffDays<0){
-            result="D+"+Math.abs(diffDays);
-        } else{
-            result="D-"+diffDays;
+        // D-day 를 구하기 위해 millisecond 으로 환산하여 d-day 에서 today 의 차를 구한다.
+        final long dday = ddayCalendar.getTimeInMillis() / ONE_DAY;
+        final long today = Calendar.getInstance().getTimeInMillis() / ONE_DAY;
+        long result = dday - today;
+
+        // 출력 시 d-day 에 맞게 표시
+        String strFormat;
+        if (result > 0) {
+            strFormat = "D-%d";
+        } else if (result == 0) {
+            strFormat = "D-Day";
+        } else {
+            result *= -1;
+            strFormat = "D+%d";
         }
 
-        return result;
+        String strCount = (String.format(strFormat, result));
+        return strCount;
     }
 
 
