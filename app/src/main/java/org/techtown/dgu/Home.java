@@ -54,7 +54,6 @@ public class Home extends Fragment {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         String date = format.format(Calendar.getInstance().getTime());
 
-        Log.v("cccal",""+cal.getActualMaximum(Calendar.DAY_OF_MONTH)+date);
         TextView homeMonthTotalStudytime= view.findViewById(R.id.homeMonthTotalStudytime);
         homeMonthTotalStudytime.setText(DB.MonthTotalStudyTime
                 (date+"-01",

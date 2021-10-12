@@ -24,7 +24,7 @@ import org.techtown.dgu.R;
 import org.techtown.dgu.StopwatchFragment;
 
 import java.util.ArrayList;
-
+//TODO 여기부터, 자격증에 시간나타나게하는거
 public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHolder>{
 
     private ArrayList<LicenseItem> items;
@@ -49,6 +49,13 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         LicenseItem item = items.get(position);
+
+        if(mDBHelper.SearchStudytimeID(null,item.getLicenseid())!=null && item.getLicenseid()!=null){
+            item.setLicensestudytime(mDBHelper.getStudytime(mDBHelper.SearchStudytimeID(null,item.getLicenseid())));
+        }else{item.setLicensestudytime("00:00:00");}
+
+
+        Log.v("Licenseitem",""+item.getLicensestudytime());
         viewHolder.setItem(item);
     }
 
@@ -80,6 +87,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             startbutton = itemView.findViewById(R.id.startbutton_lic);
             //dday = itemView.findViewById(R.id.dday);
             touch_area=itemView.findViewById(R.id.touch_area_lic);
+            studytime=itemView.findViewById(R.id.licensetime);
 
             startbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,6 +102,8 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                     AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
                     StopwatchFragment fragment = new StopwatchFragment(null,item.getLicenseid());
                     activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment).commit();
+
+
 
                     notifyItemChanged(cusPos,item);
                 }
@@ -161,7 +171,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 
         public void setItem(LicenseItem item){
             name.setText(item.getLicensename());
-            //studytime.setText(item.getStudytime());
+            studytime.setText(item.getLicensestudytime());
             //TODO 여기에 dday도 추가해야함.
         }
 

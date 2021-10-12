@@ -25,7 +25,10 @@ public class StopwatchToday extends Fragment {
         //당일 총 공부시간 textview 연결
         Tv_time_total= view.findViewById(R.id.total_stopwatch);
 
-        Tv_time_total.setText(DB.DateTotalStudyTime(DB.give_Today()));
+        if(DB.DateTotalStudyTime(DB.give_Today())!=null){
+            Tv_time_total.setText(DB.DateTotalStudyTime(DB.give_Today()));
+        }else{Tv_time_total.setText("00:00:00");}
+
 
         return view;
     }

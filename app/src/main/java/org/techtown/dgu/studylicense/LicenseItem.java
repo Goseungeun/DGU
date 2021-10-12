@@ -4,6 +4,15 @@ public class LicenseItem {
     String licenseid;
     String licensename;
     String licensedday;
+    String licensestudytime;
+
+    public String getLicensestudytime() {
+        return licensestudytime;
+    }
+
+    public void setLicensestudytime(String licensestudytime) {
+        this.licensestudytime = licensestudytime;
+    }
 
     public LicenseItem() {
     }
