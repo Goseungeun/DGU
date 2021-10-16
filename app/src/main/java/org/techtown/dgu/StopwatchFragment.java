@@ -30,7 +30,7 @@ public class StopwatchFragment extends Fragment {
 
     String subid;
     String licenseid;
-    String studytimeid=null;
+    int studytimeid=0;
 
     TextView FocuseTime, Today, TotalTime,EachCategory, EachName,EachTime;
     ImageView pause;
@@ -197,15 +197,15 @@ public class StopwatchFragment extends Fragment {
 
     //바뀐거면 true, 안바뀐거면 false
     public boolean ChangeDate() {
-        if(DB.SearchStudytimeID(subid, licenseid)==null){return true;}
+        if(DB.SearchStudytimeID(subid, licenseid)==0){return true;}
         else{return false;}
     }
 
-    public String getStudytimeid() {
+    public int getStudytimeid() {
         return studytimeid;
     }
 
-    public void setStudytimeid(String studytimeid) {
+    public void setStudytimeid(int studytimeid) {
         this.studytimeid = studytimeid;
     }
 

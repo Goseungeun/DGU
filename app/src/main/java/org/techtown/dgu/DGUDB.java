@@ -63,7 +63,6 @@ public class DGUDB extends SQLiteOpenHelper {
     /// 여기부터 license table과 관련된 함수
 
 
-
     //SELECT 문 / LicenseFragment.java와 연결됨.
     public ArrayList<LicenseItem> getlicenselist(){
         ArrayList<LicenseItem> study_licenses = new ArrayList<>();
@@ -145,18 +144,18 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-    public String SearchStudytimeID(String _subid, String _licenseid){
+    public int SearchStudytimeID(String _subid, String _licenseid){
         SQLiteDatabase db1 = getReadableDatabase();
         Cursor cursor = db1.rawQuery("SELECT studytimeid FROM studytime " +
                 "where date ='"+give_Today()+"'and subid ='"+_subid+"' and licenseid ='"+_licenseid+"'",null);
 
         if(cursor.getCount()==0){
             cursor.close();
-            return null;
+            return 0;
         }else{
-            String id=null;
+            int id = 0;
             while(cursor.moveToNext()){
-                id = cursor.getString(cursor.getColumnIndex("studytimeid"));
+                id = cursor.getInt(cursor.getColumnIndex("studytimeid"));
             }
             cursor.close();
             return id;
@@ -164,22 +163,22 @@ public class DGUDB extends SQLiteOpenHelper {
 
     }
 
-    public String InsertStudyTime(String _subid, String _licenseid){
+    public int InsertStudyTime(String _subid, String _licenseid){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO studytime (subid ,licenseid, date, studytime) VALUES('"+ _subid+"','" +_licenseid + "','" +give_Today()+"','" +"00:00:00"+"');");
 
         SQLiteDatabase db1 = getReadableDatabase();
         Cursor cursor = db1.rawQuery("SELECT * FROM studytime",null);
-        String id=null;
+        int id=0;
         while(cursor.moveToNext()){
-             id= cursor.getString(cursor.getColumnIndex("studytimeid"));
-             Log.v("studytime id" , id);
+             id= cursor.getInt(cursor.getColumnIndex("studytimeid"));
+             Log.v("studytime id" , ""+id);
         }
         cursor.close();
         return id;
     }
 
-    public void UpdateStudyTime(String _studytimeid, String _studytime){
+    public void UpdateStudyTime(int _studytimeid, String _studytime){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE studytime SET studytime='"+_studytime+"' WHERE studytimeid = '"+_studytimeid+"'" );
     }
@@ -193,7 +192,8 @@ public class DGUDB extends SQLiteOpenHelper {
     }
 
     //이미 존재하는 행인지 아닌지 판단.
-    public String getStudytime(String _studytimeid){
+    public String getStudytime(int _studytimeid){
+        Log.v("getstudytime",""+_studytimeid);
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
                 "where studytimeid ='"+_studytimeid+"'",null);
@@ -236,19 +236,64 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-
-    //StopwatchToday와 연결
-    public String getStudyTime(String _date){
+    //studytimeid를 입력하면 subjectname이나 licensename을 출력한다.
+    public String getSubjectnameOrLicensename(int _studytimeid){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM studytime where date ='"+_date+"'",null);
-        String result = "00:00:00";
+        String result="";
+
+        //과목 또는 자격증이 삭제된 경우
+        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
+                "where studytimeid ='"+_studytimeid+"'and subid = '"+null+"'and licenseid = '"+null+"'",null);
+
         cursor.moveToNext();
         if(cursor.getCount()!=0){
-            result = cursor.getString(cursor.getColumnIndex("studytime"));
+            result= "삭제된 과목 또는 자격증입니다.";
         }
+
+        //과목인경우
+        Cursor cursor1 = db.rawQuery("SELECT * FROM studytime " +
+                "where studytimeid ='"+_studytimeid+"'and licenseid = '"+null+"'",null);
+
+        cursor1.moveToNext();
+        if(cursor1.getCount()!=0){
+            //TODO 과목과 연결할것.
+            result= "과목,"+"과목연결안됨";
+        }
+
+        //자격증인 경우
+        Cursor cursor2 = db.rawQuery("SELECT * FROM studytime " +
+                "where studytimeid ='"+_studytimeid+"'and subid = '"+null+"'",null);
+
+        cursor2.moveToNext();
+        if(cursor2.getCount()!=0){
+            String licenseID = cursor2.getString(cursor2.getColumnIndex("licenseid"));
+            result= "자격증,"+getLicenseName(licenseID);
+        }
+
+        cursor.close();
+        cursor1.close();
+        cursor2.close();
+        return result;
+    }
+
+    //date를 입력하면 date와 같은 값을 가지는 행의 공부id string 배열을 출력한다.
+    public int[] getStudytimeIdArray(String _date){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
+                "where date ='"+_date+"'",null);
+
+        int result[] = new int[cursor.getCount()];
+        int i=0;
+        while(cursor.moveToNext()){
+            result[i] = cursor.getInt(cursor.getColumnIndex("studytimeid"));
+            i++;
+        }
+
         cursor.close();
         return result;
     }
+
+
 
 
 }
