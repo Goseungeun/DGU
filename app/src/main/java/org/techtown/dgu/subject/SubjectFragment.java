@@ -3,6 +3,7 @@ package org.techtown.dgu.subject;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import org.techtown.dgu.R;
+import org.techtown.dgu.homework.homework;
+import org.techtown.dgu.test.SubTestItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,19 +44,20 @@ public class SubjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
-
+        subDataList = new ArrayList<>();
 
 
         mSubject_DB= new Subject_DB(this.getContext());
         subrecyclerview= (RecyclerView)view.findViewById(R.id.subrecycler);
-        SubjectAdapter adapter = new SubjectAdapter(this.getContext(),subDataList);
+        SubjectAdapter mAdapter = new SubjectAdapter(this.getContext(),subDataList);
         subrecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
-        subrecyclerview.setAdapter(adapter);
+        subrecyclerview.setAdapter(mAdapter);
         subDataList=new ArrayList<>();
+        // 여기서부터 화면만 보이게 만든거
 
 
         //load recent DB
-        loadRecentDB();
+       // loadRecentDB();
 
 
         Button subjectInput = (Button)view.findViewById(R.id.subjectInputButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
@@ -75,14 +79,15 @@ public class SubjectFragment extends Fragment {
                     public void onClick(View v){
 
                         //Insert Database
-                        String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
-                        mSubject_DB.InsetSubject(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
+//                        String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
+//                        mSubject_DB.InsetSubject(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
 
                         //Insert UI
                         SubjectItem item=new SubjectItem();
                         item.setSubname(subjectNameInput.getText().toString());
                         item.setWeek(parseInt(weekInput.getText().toString()));
                         item.setWeekFre(parseInt(weekFrequencyInput.getText().toString()));
+                        Log.d("확인","item:"+item.getSubname());
 
                         mAdapter.addSubItem(item);
                         subrecyclerview.setAdapter(mAdapter);
