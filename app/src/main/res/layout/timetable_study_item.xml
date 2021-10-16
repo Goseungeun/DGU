@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:background="@drawable/calendar_border"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/TimetableStudyItemCategory"
