@@ -23,7 +23,11 @@ import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.StopwatchFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHolder>{
 
@@ -49,8 +53,54 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         LicenseItem item = items.get(position);
+
+        if(mDBHelper.SearchStudytimeID(null,item.getLicenseid())!=null && item.getLicenseid()!=null){
+            item.setLicensestudytime(mDBHelper.getStudytime(mDBHelper.SearchStudytimeID(null,item.getLicenseid())));
+        }else{item.setLicensestudytime("00:00:00");}
+
+        try {
+            item.setViewdday(ddayCacultation(item.getLicensedday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Log.v("Licenseitem",""+item.getLicensestudytime());
         viewHolder.setItem(item);
     }
+
+    public String ddayCacultation(String testday) throws ParseException {
+
+        // Millisecond 형태의 하루(24 시간)
+        final int ONE_DAY = 24 * 60 * 60 * 1000;
+
+        int year= Integer.parseInt(testday.substring(0,4));
+        int month= Integer.parseInt(testday.substring(4,6));
+        int day= Integer.parseInt(testday.substring(6,8));
+
+        // D-day 설정
+        final Calendar ddayCalendar = Calendar.getInstance();
+        ddayCalendar.set(year, month-1, day);
+
+        // D-day 를 구하기 위해 millisecond 으로 환산하여 d-day 에서 today 의 차를 구한다.
+        final long dday = ddayCalendar.getTimeInMillis() / ONE_DAY;
+        final long today = Calendar.getInstance().getTimeInMillis() / ONE_DAY;
+        long result = dday - today;
+
+        // 출력 시 d-day 에 맞게 표시
+        String strFormat;
+        if (result > 0) {
+            strFormat = "D-%d";
+        } else if (result == 0) {
+            strFormat = "D-Day";
+        } else {
+            result *= -1;
+            strFormat = "D+%d";
+        }
+
+        String strCount = (String.format(strFormat, result));
+        return strCount;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -68,7 +118,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private TextView studytime;
-        //public TextView dday;
+        private TextView dday;
         private ImageView startbutton;
         private LinearLayout touch_area;
 
@@ -78,8 +128,9 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             name = itemView.findViewById(R.id.licensename);
             studytime = itemView.findViewById(R.id.licensetime);
             startbutton = itemView.findViewById(R.id.startbutton_lic);
-            //dday = itemView.findViewById(R.id.dday);
+            dday = itemView.findViewById(R.id.dday);
             touch_area=itemView.findViewById(R.id.touch_area_lic);
+            studytime=itemView.findViewById(R.id.licensetime);
 
             startbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,10 +141,9 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                     //TODO ? 아래줄이 왜 있는지 모르겠음
                     //items.set(cusPos,stopwatch.button_click(item, startbutton, studytime));
 
-                    //TODO 화면전환
                     AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
                     StopwatchFragment fragment = new StopwatchFragment(null,item.getLicenseid());
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame,fragment).commit();
+                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment).commit();
 
                     notifyItemChanged(cusPos,item);
                 }
@@ -161,8 +211,8 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 
         public void setItem(LicenseItem item){
             name.setText(item.getLicensename());
-            //studytime.setText(item.getStudytime());
-            //TODO 여기에 dday도 추가해야함.
+            studytime.setText(item.getLicensestudytime());
+            dday.setText(item.getViewdday());
         }
 
 
