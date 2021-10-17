@@ -40,7 +40,7 @@ public class DGUDB extends SQLiteOpenHelper {
                 "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid)," +
                 "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid INTEGER PRIMARY KEY AUTOINCREMENT, timetablecontent TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa INTEGER)");
     }
@@ -292,6 +292,52 @@ public class DGUDB extends SQLiteOpenHelper {
         cursor.close();
         return result;
     }
+
+
+    //timetable과 관련된 함수 시작
+    public void InsertTimeTable(String _timetableid, String _timetablecontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO timetable (timetableid , timetablecontent) VALUES('"+ _timetableid+"','" +_timetablecontent+"');");
+    }
+
+    public void UpdateTimeTable(String _timetableid, String _timetablecontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE timetable SET timetablecontent='"+_timetablecontent+"'" +
+                " WHERE timetableid = '"+_timetableid+"'" );
+    }
+
+    public void DeleteTimeTable(String _timetableid, String _timetablecontent){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
+        db.execSQL("DELETE FROM timetable WHERE timetableid = '"+_timetableid+"'");
+    }
+
+    public String getTimeTableContent(String _timetableid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM timetable " +
+                "where timetableid = '"+_timetableid+"'",null);
+
+        String result="";
+        while(cursor.moveToNext()){
+            result = cursor.getString(cursor.getColumnIndex("timetablecontent"));
+        }
+        cursor.close();
+        return result;
+    }
+
+    //date를 입력하면 date와 같은 행이 존재하는지 알아보기, 존재하면 true, 존재하지 않으면 false
+    public boolean isExistTodayTimeTable(String _timetableid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM timetable " +
+                "where timetableid = '"+_timetableid+"'",null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        if(count==0){ return false; }
+        else{return true;}
+    }
+
 
 
 

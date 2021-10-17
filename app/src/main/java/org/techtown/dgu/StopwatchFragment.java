@@ -16,11 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.airbnb.lottie.L;
+
 import org.techtown.dgu.studylicense.LicenseFragment;
 import org.techtown.dgu.subject.SubjectFragment;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class StopwatchFragment extends Fragment {
@@ -35,10 +39,14 @@ public class StopwatchFragment extends Fragment {
     TextView FocuseTime, Today, TotalTime,EachCategory, EachName,EachTime;
     ImageView pause;
 
-    long MillisecondTime, StartTime = 0L ;
+    long MillisecondTime, StartTime= 0L ;
     long TimeBuff, UpdateTime =0L;
     long TimeBuffTotal, UpdateTimeTotal =0L;
     long TimeBuffFocus, UpdateTimeFocus=0L;
+
+    long TimetableStartTime, TimetableEndTime=0L;
+
+    String StartTimeString, EndTimeString = null;
 
     Handler handler = new Handler();
 
@@ -112,12 +120,19 @@ public class StopwatchFragment extends Fragment {
 
     public void start(){
         StartTime = SystemClock.uptimeMillis();
+        TimetableStartTime = System.currentTimeMillis();
+        StartTimeString = LongToString(TimetableStartTime);
         handler.postDelayed(runnable, 0);
     }
 
     public void stop(){
         handler.removeCallbacks(runnable);
-        //TODO : 시작하는 시간, 끝나는 시간 이용해서 타임테이블 구성하기
+        TimetableEndTime = System.currentTimeMillis();
+        EndTimeString=LongToString(TimetableEndTime);
+
+        //timetable 내용 업데이트
+        FillTimeTable();
+
 
         //화면전환
         Intent intent = new Intent(getContext(), MainActivity.class);
@@ -209,6 +224,51 @@ public class StopwatchFragment extends Fragment {
         this.studytimeid = studytimeid;
     }
 
+    private void FillTimeTable() {
 
+        //timetablecontent초기화
+        String today = DB.give_Today();
+        int timetablecontent[] =new int[24*60];
+        if(!DB.isExistTodayTimeTable(today)){
+            //timetable에 기존 값이 없는 경우
+            for(int i=0;i<timetablecontent.length;i++){
+                timetablecontent[i]=0;
+            }
+            DB.InsertTimeTable(today, Arrays.toString(timetablecontent));
+        }else{
+            String [] timetablecontentStrings = DB.getTimeTableContent(today).replaceAll("\\[", "")
+                    .replaceAll("]", "").replaceAll(" ","").split(",");
+
+            for(int i=0;i<timetablecontentStrings.length;i++){
+                timetablecontent[i]=Integer.parseInt(timetablecontentStrings[i]);
+            }
+        }
+
+        int StartHour = Integer.parseInt(StartTimeString.substring(0,2));
+        int Startmin = Integer.parseInt(StartTimeString.substring(3,5));
+        int EndHour = Integer.parseInt(EndTimeString.substring(0,2));
+        int Endmin = Integer.parseInt(EndTimeString.substring(3,5));
+        Log.v("timetableFragment1","StartTimeString : "+StartTimeString+"EndTimeString : "+EndTimeString);
+        Log.v("timetableFragmentStrart","Start"+StartHour+":"+Startmin+"End"+EndHour+":"+Endmin);
+
+        int i=0;
+
+        for(int hour=StartHour;hour<=EndHour;hour++){
+            for(int min=0;min<60;min++){
+                //시작지점까지는 그냥 이동해야함.
+                if(i==0){ min=Startmin;}
+
+                i=60*hour+min;
+                timetablecontent[i]=1;
+
+                Log.v("timetableFragment","hour : "+hour+" min : "+min+" timetablecontent[i] : "+timetablecontent[i]);
+
+                if(hour==EndHour && min==Endmin){break;}
+            }
+        }
+
+
+        DB.UpdateTimeTable(today, Arrays.toString(timetablecontent));
+    }
 
 }

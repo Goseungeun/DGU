@@ -20,6 +20,7 @@ import org.techtown.dgu.studylicense.LicenseItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class Timetable extends Fragment {
@@ -90,15 +91,36 @@ public class Timetable extends Fragment {
 
 
         //gridview 내용 채워넣기 시작
+        int timetablecontent[] =new int[24*60];
+        //타임테이블 내용 디비에서 가져오기
+        if(!DB.isExistTodayTimeTable(date)){
+            //timetable에 기존 값이 없는 경우
+            for(int i=0;i<timetablecontent.length;i++){
+                timetablecontent[i]=0;
+            }
+        }else{
+            String [] timetablecontentStrings = DB.getTimeTableContent(date).replaceAll("\\[", "")
+                    .replaceAll("]", "").replaceAll(" ","").split(",");
 
+            for(int i=0;i<timetablecontentStrings.length;i++){
+                timetablecontent[i]=Integer.parseInt(timetablecontentStrings[i]);
+            }
+        }
 
-
-        //타임테이블 옆 시간 채워넣기
         //타임테이블에 들어있는 뷰마다 시간 지정해주기
         for (int hour=0;hour<24;hour++){
             hour_adapter.addItem(new timetable_hour_Item(hour));
             for(int min=0;min<60;min++){
-                adapter.addItem(new Timetable_Item(hour,min));
+                int i=hour*60+min;
+                if(timetablecontent[i]==0){
+                    //공부안함
+                    Log.v("timetable","hour : "+hour+" min : "+min+" timetablecontent[i] : "+timetablecontent[i]);
+                    adapter.addItem(new Timetable_Item(hour,min,false));
+                }else{
+                    //공부함
+                    adapter.addItem(new Timetable_Item(hour,min,true));
+                }
+
             }
         }
 
