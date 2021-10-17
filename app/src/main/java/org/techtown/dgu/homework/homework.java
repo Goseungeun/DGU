@@ -2,11 +2,11 @@ package org.techtown.dgu.homework;
 
 //과제 정보를 표현하는 클래스 정의
 public class homework {
-    private int id;
+    private String id;
     private String hwname;  //과제 이름
     private String hwDday;     //마감 날짜까지 얼마나 남았는지 D-day
 
-    public homework(int id,String hwname,String hwDday){
+    public homework(String id,String hwname,String hwDday){
         this.id = id;
         this.hwname = hwname;
         this.hwDday = hwDday;
@@ -23,11 +23,11 @@ public class homework {
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

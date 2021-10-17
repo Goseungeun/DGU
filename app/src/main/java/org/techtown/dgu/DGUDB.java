@@ -28,10 +28,10 @@ public class DGUDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         db.execSQL("CREATE TABLE IF NOT EXISTS subject (subid TEXT PRIMARY KEY, subname TEXT NOT NULL, week INTEGER NOT NULL, weekfre INTEGER NOT NULL)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
+        db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid TEXT PRIMARY KEY, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
                 + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS test (testid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
+        db.execSQL("CREATE TABLE IF NOT EXISTS test (testid TEXT PRIMARY KEY, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
                 + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS subgraph (subgraphid INTEGER PRIMARY KEY AUTOINCREMENT, subsemester TEXT NOT NULL, subname TEXT NOT NULL,"
@@ -105,10 +105,10 @@ public class DGUDB extends SQLiteOpenHelper {
         Cursor hw_cursor = db.rawQuery("SELECT * FROM hw WHERE subid ='"+sub_id+"';",null);
         if (hw_cursor.getCount() != 0){
             while (hw_cursor.moveToNext()){
-                int hwId = hw_cursor.getInt(hw_cursor.getColumnIndex("hwid"));
+                String hwId = hw_cursor.getString(hw_cursor.getColumnIndex("hwid"));
                 String hwname = hw_cursor.getString(hw_cursor.getColumnIndex("hwname"));
                 String hwdday = hw_cursor.getString(hw_cursor.getColumnIndex("hwdday"));
-
+                Log.d("확인","hwid: " + hwId);
                 homework hwitem = new homework(hwId,hwname,hwdday);
                 hwList.add(hwitem);
             }
@@ -117,9 +117,11 @@ public class DGUDB extends SQLiteOpenHelper {
         return hwList;
     }
 
-    public void insertHw (String _subid,String _hwname,String _hwdday){
+    public String insertHw (String _subid,String _hwname,String _hwdday){
+        String _id = give_id();
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO hw (subid,hwname,hwdday) VALUES('"+ _subid+"','" +_hwname + "','" +_hwdday+"');");
+        db.execSQL("INSERT INTO hw  VALUES('"+ _id+"','" +_subid + "','" +_hwname+"','"+_hwdday+"');'");
+        return _id;
     }
 
     //test table 관련 함수
@@ -129,10 +131,9 @@ public class DGUDB extends SQLiteOpenHelper {
         Cursor test_cursor = db.rawQuery("SELECT * FROM test WHERE subid ='"+sub_id+"';",null);
         if (test_cursor.getCount() != 0){
             while (test_cursor.moveToNext()){
-                int testid = test_cursor.getInt(test_cursor.getColumnIndex("testid"));
+                String testid = test_cursor.getString(test_cursor.getColumnIndex("testid"));
                 String testname = test_cursor.getString(test_cursor.getColumnIndex("testname"));
                 String testdday = test_cursor.getString(test_cursor.getColumnIndex("testdday"));
-
                 SubTestItem testitem = new SubTestItem(testid,testname,testdday);
                 testList.add(testitem);
             }
@@ -140,6 +141,14 @@ public class DGUDB extends SQLiteOpenHelper {
         test_cursor.close();
         return testList;
     }
+
+    public String insertTest (String _subid,String _testname,String _testdday){
+        String _id = give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO test VALUES('"+ _id+"','"+ _subid+"','" +_testname + "','" +_testdday+"');");
+        return _id;
+    }
+
     /// 여기부터 license table과 관련된 함수
     //SELECT 문 / LicenseFragment.java와 연결됨.
     public ArrayList<LicenseItem> getlicenselist(){

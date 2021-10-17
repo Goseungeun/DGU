@@ -15,21 +15,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestViewHolder>{
 
     private ArrayList<SubTestItem> subTestList;
     private Context mContext;
-    private SubTest_DB mSubTest_DB;
+    private DGUDB db;
 
-    public SubTestAdapter(ArrayList<SubTestItem> st)
-    {
+    public SubTestAdapter(Context context, ArrayList<SubTestItem> st) {
+        this.mContext = context;
         this.subTestList = st;
+        this.db = new DGUDB(mContext);
     }
 
     public class subtestViewHolder extends RecyclerView.ViewHolder{
@@ -75,8 +78,7 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                                         String beforesubtestname=subtest.getSubtestname();
 
                                         String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                                        int id = subtest.getId();
-                                        mSubTest_DB.UpdateTodo(id,subtestname,subtestdday);
+                                        String id = subtest.getId();
 
                                         //update UI
                                         subtest.setSubtestname(subtestname);
@@ -93,8 +95,7 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                             }
                             else if(position==1){
                                 //delete table
-                                int id = subtest.getId();
-                                mSubTest_DB.DeleteTodo(id);
+                                String id = subtest.getId();
 
                                 //delete UI
                                 subTestList.remove(curPos);
@@ -136,8 +137,10 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
     }
 
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
-    public void addtestItem(SubTestItem _item){
-        subTestList.add(0,_item);
-        notifyItemInserted(0);
+    public void addtestItem(String subid,SubTestItem _item){
+        int addpos = subTestList.size();
+        _item.setId(db.insertTest(subid,_item.getSubtestname(),_item.getTestDday()));
+        subTestList.add(_item);
+        notifyItemInserted(addpos);
     }
 }

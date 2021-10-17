@@ -48,7 +48,6 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
             super(view);
             homeworkname = view.findViewById(R.id.homeworkname);
             homeworkdday = view.findViewById(R.id.homeworkdday);
-///
             view.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
@@ -79,9 +78,7 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                         //update table
                                         String hwname=homeworkNameInput.getText().toString();
                                         String hwDday=homeworkDdayInput.getText().toString();
-
-                                        String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                                        int id = homework.getId();
+                                        String id = homework.getId();
 
                                         //update UI
                                         homework.setHwname(hwname);
@@ -98,7 +95,7 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                             }
                             else if(position==1){
                                 //delete table
-                                int id = homework.getId();
+                                String id = homework.getId();
 
                                 //delete UI
                                 homeworkList.remove(curPos);
@@ -111,7 +108,6 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
 
                 }
             });
-            ///
         }
     }
     @NonNull
@@ -137,7 +133,7 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
     public void addhwItem(String subid,homework _item){
         int addpos = homeworkList.size();
-        db.insertHw(subid,_item.getHwname(), _item.getHwDday()); //db저장
+        _item.setId(db.insertHw(subid,_item.getHwname(),_item.getHwDday()));
         homeworkList.add(_item);
         notifyItemInserted(addpos);
     }

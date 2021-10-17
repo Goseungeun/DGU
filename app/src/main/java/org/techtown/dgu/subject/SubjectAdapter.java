@@ -62,7 +62,8 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
         homeworkList = subList.get(position).getHwList();
         subTestList = subList.get(position).getTestList();
         homeworkAdapter hwAdapter = new homeworkAdapter(mContext,homeworkList);
-        SubTestAdapter testAdapter = new SubTestAdapter(subTestList);
+        SubTestAdapter testAdapter = new SubTestAdapter(mContext,subTestList);
+
         if(db.SearchStudytimeID(subItem.getId(),null)!=null && subItem.getId()!=null){
             //studytime 테이블에 정보 있으면 그 시간 불러오기
             subItem.setSubtime(db.getStudytime(db.SearchStudytimeID(subItem.getId(),null)));
@@ -88,18 +89,38 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                         homework hwItem=new homework(homeworkNameInput.getText().toString(),homeworkDdayInput.getText().toString());
                         hwAdapter.addhwItem(sub_id,hwItem);
                         dialog.dismiss();
-                        Toast.makeText(mContext,"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
-
-
                     }
                 });
 
                 dialog.show();
+
+            }
+        });
+
+        //시험 추가 버튼 클릭시
+        StudysubviewHolder.addtest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
+                dialog.setContentView(R.layout.test_input);
+                EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
+                EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
+                Button testInputBtn_ok=dialog.findViewById(R.id.subtestInputButton);
+                testInputBtn_ok.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        String sub_id = subItem.getId();
+                        SubTestItem testItem=new SubTestItem(subtestNameInput.getText().toString(),subtestDdayInput.getText().toString());
+                        testAdapter.addtestItem(sub_id,testItem);
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
             }
         });
     }
-
-
 
     @Override
     public int getItemCount(){
@@ -111,11 +132,11 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
 
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
     public void addSubItem(SubjectItem _item) {
+        int addpos = subList.size();
         //데이터 베이스에 넣어주면서 id 넣어주기
-        Log.d("확인","item ="+ _item.getSubname());
         _item.setId(db.InsertSubject(_item.getSubname(),_item.getWeek(), _item.getWeekFre()));
         subList.add(_item);
-        notifyItemInserted(0);
+        notifyItemInserted(addpos);
     }
 
 
@@ -140,80 +161,7 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
             this.addtest = (TextView)view.findViewById(R.id.addtest);
             this.testrecycler = (RecyclerView)view.findViewById(R.id.testrecycler);
 
-////과제추가 다이얼로그
-//            addhw.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v){
-//                        //팝업창 띄우기
-//                        Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
-//                        dialog.setContentView(R.layout.homework_input);
-//                        EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
-//                        EditText homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
-//                        Button homeworkInputBtn_ok=dialog.findViewById(R.id.homeworkInputButton);
-//                        homeworkInputBtn_ok.setOnClickListener(new View.OnClickListener(){
-//                            @Override
-//                            public void onClick(View v){
-//                                int curPos = getAdapterPosition();
-//                                String sub_id = subList.get(curPos).getId();
-//                                homework hwItem=new homework(homeworkNameInput.getText().toString(),homeworkDdayInput.getText().toString());
-//
-//                                hwrecycler.smoothScrollToPosition(0);
-//
-//
-//                                dialog.dismiss();
-//                                Toast.makeText(mContext,"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
-//
-//
-//                            }
-//                        });
-//
-//                        dialog.show();
-//
-//
-//                }
-//            });
 
-//////시험추가 다이얼로그
-//            ///
-//            addtest.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v){
-//                    //팝업창 띄우기
-//                    Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
-//                    dialog.setContentView(R.layout.test_input);
-//
-//                    EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
-//                    EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
-//
-//
-//                    Button testInputBtn_ok=dialog.findViewById(R.id.subtestInputButton);
-//                    testInputBtn_ok.setOnClickListener(new View.OnClickListener(){
-//                        @Override
-//                        public void onClick(View v){
-//
-//                            //Insert Database
-//                            String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
-//
-//
-//                            //Insert UI
-//                            SubTestItem testitem=new SubTestItem();
-//                            testitem.setSubtestname(subtestNameInput.getText().toString());
-//                            testitem.setTestDday(subtestDdayInput.getText().toString());
-//                            testrecycler.smoothScrollToPosition(0);
-//
-//                            dialog.dismiss();
-//                            Toast.makeText(mContext,"시험이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
-//
-//
-//                        }
-//                    });
-//
-//                    dialog.show();
-//
-//
-//                }
-//            });
 
 //////과목 리사이클러뷰 선택시 실행
 //            view.setOnClickListener(new View.OnClickListener(){

@@ -70,10 +70,8 @@ public class SubjectFragment extends Fragment {
                         //Insert UI
                         SubjectItem item = new SubjectItem(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
                         mAdapter.addSubItem(item);
-                        subrecyclerview.smoothScrollToPosition(0);
+                        loadRecentDB();
                         dialog.dismiss();
-                        Toast.makeText(SubjectFragment.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
-
 
                     }
                 });
