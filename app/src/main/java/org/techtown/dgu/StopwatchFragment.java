@@ -1,6 +1,7 @@
 package org.techtown.dgu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -13,29 +14,39 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.airbnb.lottie.L;
 
 import org.techtown.dgu.studylicense.LicenseFragment;
 import org.techtown.dgu.subject.SubjectFragment;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class StopwatchFragment extends Fragment {
+    //TODO 시간을 재는 도중에 뒤로가기 막아야함.
     private ViewGroup view;
     private DGUDB DB;
 
     String subid;
     String licenseid;
-    String studytimeid=null;  //TODO : null로 검색해도 잘나오나..?
+    int studytimeid=0;
 
     TextView FocuseTime, Today, TotalTime,EachCategory, EachName,EachTime;
     ImageView pause;
 
-    long MillisecondTime, StartTime = 0L ;
+    long MillisecondTime, StartTime= 0L ;
     long TimeBuff, UpdateTime =0L;
     long TimeBuffTotal, UpdateTimeTotal =0L;
     long TimeBuffFocus, UpdateTimeFocus=0L;
+
+    long TimetableStartTime, TimetableEndTime=0L;
+
+    String StartTimeString, EndTimeString = null;
 
     Handler handler = new Handler();
 
@@ -43,7 +54,6 @@ public class StopwatchFragment extends Fragment {
         this.subid=_subid;
         this.licenseid=_licenseid;
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.stopwatch, container, false);
@@ -58,8 +68,6 @@ public class StopwatchFragment extends Fragment {
         EachName = view.findViewById(R.id.stopwatchEachName);
         EachTime = view.findViewById(R.id.stopwatchEachTime);
         pause = view.findViewById(R.id.stopwatchpause);
-
-
 
         //테이블에 행이 존재할수도 없을수도 있어서
         if(ChangeDate()){
@@ -112,12 +120,33 @@ public class StopwatchFragment extends Fragment {
 
     public void start(){
         StartTime = SystemClock.uptimeMillis();
+        TimetableStartTime = System.currentTimeMillis();
+        StartTimeString = LongToString(TimetableStartTime);
         handler.postDelayed(runnable, 0);
     }
 
     public void stop(){
         handler.removeCallbacks(runnable);
-        //TODO : 시작하는 시간, 끝나는 시간 이용해서 타임테이블 구성하기
+        TimetableEndTime = System.currentTimeMillis();
+        EndTimeString=LongToString(TimetableEndTime);
+
+        //timetable 내용 업데이트
+        FillTimeTable();
+
+
+        //화면전환
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        if(subid!=null) {
+            //과목으로 돌아가야함.
+            intent.putExtra("category","subject");
+        }else{
+            //자격증으로 돌아가야함.
+            intent.putExtra("category","license");
+        }
+        //화면전환이 됐을 때, 핸드폰 상의 뒤로가기 버튼을 누르면 이전 스톱워치화면이 보이는 현상을 막기위한 코드
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(intent);
     }
 
     public final Runnable runnable = new Runnable() {
@@ -127,11 +156,10 @@ public class StopwatchFragment extends Fragment {
             if(ChangeDate()){
                 setStudytimeid(DB.InsertStudyTime(subid,licenseid));
                 TimeBuff =  StringToLong(DB.getStudytime(getStudytimeid()));
+                TimeBuffTotal = StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
             }
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-
-//            TimeBuffTotal=StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
 
             UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치
@@ -184,19 +212,63 @@ public class StopwatchFragment extends Fragment {
 
     //바뀐거면 true, 안바뀐거면 false
     public boolean ChangeDate() {
-        //Log.v("ChangeDate inner",getStudytimeid());
-        if(DB.SearchStudytimeID(subid, licenseid)==null){return true;}
+        if(DB.SearchStudytimeID(subid, licenseid)==0){return true;}
         else{return false;}
     }
 
-    public String getStudytimeid() {
+    public int getStudytimeid() {
         return studytimeid;
     }
 
-    public void setStudytimeid(String studytimeid) {
+    public void setStudytimeid(int studytimeid) {
         this.studytimeid = studytimeid;
     }
 
+    private void FillTimeTable() {
 
+        //timetablecontent초기화
+        String today = DB.give_Today();
+        int timetablecontent[] =new int[24*60];
+        if(!DB.isExistTodayTimeTable(today)){
+            //timetable에 기존 값이 없는 경우
+            for(int i=0;i<timetablecontent.length;i++){
+                timetablecontent[i]=0;
+            }
+            DB.InsertTimeTable(today, Arrays.toString(timetablecontent));
+        }else{
+            String [] timetablecontentStrings = DB.getTimeTableContent(today).replaceAll("\\[", "")
+                    .replaceAll("]", "").replaceAll(" ","").split(",");
+
+            for(int i=0;i<timetablecontentStrings.length;i++){
+                timetablecontent[i]=Integer.parseInt(timetablecontentStrings[i]);
+            }
+        }
+
+        int StartHour = Integer.parseInt(StartTimeString.substring(0,2));
+        int Startmin = Integer.parseInt(StartTimeString.substring(3,5));
+        int EndHour = Integer.parseInt(EndTimeString.substring(0,2));
+        int Endmin = Integer.parseInt(EndTimeString.substring(3,5));
+        Log.v("timetableFragment1","StartTimeString : "+StartTimeString+"EndTimeString : "+EndTimeString);
+        Log.v("timetableFragmentStrart","Start"+StartHour+":"+Startmin+"End"+EndHour+":"+Endmin);
+
+        int i=0;
+
+        for(int hour=StartHour;hour<=EndHour;hour++){
+            for(int min=0;min<60;min++){
+                //시작지점까지는 그냥 이동해야함.
+                if(i==0){ min=Startmin;}
+
+                i=60*hour+min;
+                timetablecontent[i]=1;
+
+                Log.v("timetableFragment","hour : "+hour+" min : "+min+" timetablecontent[i] : "+timetablecontent[i]);
+
+                if(hour==EndHour && min==Endmin){break;}
+            }
+        }
+
+
+        DB.UpdateTimeTable(today, Arrays.toString(timetablecontent));
+    }
 
 }

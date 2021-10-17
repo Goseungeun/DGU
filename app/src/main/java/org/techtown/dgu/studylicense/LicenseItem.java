@@ -4,6 +4,25 @@ public class LicenseItem {
     String licenseid;
     String licensename;
     String licensedday;
+    String licensestudytime;
+
+    public String getViewdday() {
+        return Viewdday;
+    }
+
+    public void setViewdday(String viewdday) {
+        Viewdday = viewdday;
+    }
+
+    String Viewdday;
+
+    public String getLicensestudytime() {
+        return licensestudytime;
+    }
+
+    public void setLicensestudytime(String licensestudytime) {
+        this.licensestudytime = licensestudytime;
+    }
 
     public LicenseItem() {
     }
