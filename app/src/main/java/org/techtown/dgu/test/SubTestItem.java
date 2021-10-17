@@ -10,7 +10,8 @@ public class SubTestItem {
 
     }
 
-    public SubTestItem(String subtestname, String testDday){
+    public SubTestItem(int id,String subtestname, String testDday){
+        this.id = id;
         this.subtestname = subtestname;
         this.testDday = testDday;
     }

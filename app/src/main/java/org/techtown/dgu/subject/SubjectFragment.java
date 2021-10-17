@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.homework.homework;
 import org.techtown.dgu.test.SubTestItem;
@@ -29,36 +30,25 @@ import static java.lang.Integer.parseInt;
 public class SubjectFragment extends Fragment {
 
     private RecyclerView subrecyclerview;
-    private Subject_DB mSubject_DB;
-    ArrayList<SubjectItem> subDataList;
+    private DGUDB db;
+    ArrayList<SubjectItem> subjectList;
     private SubjectAdapter mAdapter;
-
-
 
     public static SubjectFragment newInstance() {
         return new SubjectFragment();
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
-        subDataList = new ArrayList<>();
-
-
-        mSubject_DB= new Subject_DB(this.getContext());
+        subjectList = new ArrayList<>();
+        db= new DGUDB(this.getContext());
         subrecyclerview= (RecyclerView)view.findViewById(R.id.subrecycler);
-        SubjectAdapter mAdapter = new SubjectAdapter(this.getContext(),subDataList);
+        SubjectAdapter mAdapter = new SubjectAdapter(this.getContext(),subjectList);
         subrecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         subrecyclerview.setAdapter(mAdapter);
-        subDataList=new ArrayList<>();
         // 여기서부터 화면만 보이게 만든거
-
-
-        //load recent DB
-       // loadRecentDB();
-
+        loadRecentDB();
 
         Button subjectInput = (Button)view.findViewById(R.id.subjectInputButton); // click시 Fragment를 전환할 event를 발생시킬 버튼을 정의합니다.
         subjectInput.setOnClickListener(new View.OnClickListener() {
@@ -77,22 +67,10 @@ public class SubjectFragment extends Fragment {
                 subjectBtn_ok.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-
-                        //Insert Database
-//                        String currentTime=new SimpleDateFormat("yyyy-MM-dd:mm:ss").format(new Date());
-//                        mSubject_DB.InsetSubject(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
-
                         //Insert UI
-                        SubjectItem item=new SubjectItem();
-                        item.setSubname(subjectNameInput.getText().toString());
-                        item.setWeek(parseInt(weekInput.getText().toString()));
-                        item.setWeekFre(parseInt(weekFrequencyInput.getText().toString()));
-                        Log.d("확인","item:"+item.getSubname());
-
+                        SubjectItem item = new SubjectItem(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
                         mAdapter.addSubItem(item);
-                        subrecyclerview.setAdapter(mAdapter);
                         subrecyclerview.smoothScrollToPosition(0);
-
                         dialog.dismiss();
                         Toast.makeText(SubjectFragment.this.getContext(),"과목이 추가 되었습니다.",Toast.LENGTH_SHORT).show();
 
@@ -121,17 +99,11 @@ public class SubjectFragment extends Fragment {
     }
 
     private void loadRecentDB() {
-
         //저장되어 있던 DB를 가져온다
-        subDataList=mSubject_DB.getSubList();
-        if(mAdapter==null){
-            mAdapter=new SubjectAdapter(this.getContext(),subDataList);
-            subrecyclerview.setHasFixedSize(true);
-            subrecyclerview.setAdapter(mAdapter);
+        subjectList=db.getsubjectlist();
+        mAdapter=new SubjectAdapter(getContext(),subjectList);
+        subrecyclerview.setAdapter(mAdapter);
         }
     }
 
-
-
-}
 

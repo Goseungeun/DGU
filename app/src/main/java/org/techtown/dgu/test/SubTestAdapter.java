@@ -27,11 +27,9 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
     private Context mContext;
     private SubTest_DB mSubTest_DB;
 
-    public SubTestAdapter(Context context, ArrayList<SubTestItem> st)
+    public SubTestAdapter(ArrayList<SubTestItem> st)
     {
         this.subTestList = st;
-        this.mContext = context;
-        mSubTest_DB=new SubTest_DB((context));
     }
 
     public class subtestViewHolder extends RecyclerView.ViewHolder{

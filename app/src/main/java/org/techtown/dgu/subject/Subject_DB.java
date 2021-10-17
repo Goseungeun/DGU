@@ -30,7 +30,7 @@ public class Subject_DB extends SQLiteOpenHelper {
                 //cursor에 담긴 값이 없을 때 까지 내부 수행
 
                 //cursor에 담긴 값을 옮기자.
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String id = cursor.getString(cursor.getColumnIndex("id"));
                 String subname = cursor.getString(cursor.getColumnIndex("subname"));
                 String subtime = cursor.getString(cursor.getColumnIndex("subtime"));
                 int week = cursor.getInt(cursor.getColumnIndex("week"));

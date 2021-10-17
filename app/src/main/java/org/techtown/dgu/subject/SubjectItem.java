@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class SubjectItem {
 
-    private int id;
+    private String subid;
 
     private String subname;
     private String subtime;
@@ -17,24 +17,29 @@ public class SubjectItem {
     private ArrayList<SubTestItem> testList;
 
     public SubjectItem(){
-
     }
 
-    public SubjectItem(String subname, String subtime, int week, int weekFre, ArrayList<homework> hwList, ArrayList<SubTestItem> testList){
+    public SubjectItem(String subname, int week, int weekFre){
         this.subname = subname;
-        this.subtime = subtime;
+        this.week = week;
+        this.weekFre = weekFre;
+    }
+
+    public SubjectItem(String subid, String subname, int week, int weekFre, ArrayList<homework> hwList, ArrayList<SubTestItem> testList){
+        this.subid = subid;
+        this.subname = subname;
         this.week=week;
         this.weekFre=weekFre;
         this.hwList = hwList;
         this.testList = testList;
     }
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return subid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String subid) {
+        this.subid = subid;
     }
 
     public String getSubname() {

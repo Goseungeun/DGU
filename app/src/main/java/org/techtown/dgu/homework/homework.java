@@ -6,10 +6,18 @@ public class homework {
     private String hwname;  //과제 이름
     private String hwDday;     //마감 날짜까지 얼마나 남았는지 D-day
 
-    public homework(String hwname,String hwDday){
+    public homework(int id,String hwname,String hwDday){
+        this.id = id;
         this.hwname = hwname;
         this.hwDday = hwDday;
     }
+
+    public homework(String hwname, String hwDday) {
+        this.hwname = hwname;
+        this.hwDday = hwDday;
+    }
+
+
 
     public homework() {
 

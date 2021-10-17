@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
+import org.techtown.dgu.subject.SubjectItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,12 +31,12 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
 
     private ArrayList<homework> homeworkList;
     private Context mContext;
-    private homework_DB mHomework_DB;
+    private DGUDB db;
 
-    public homeworkAdapter(Context context,ArrayList<homework> hw){
-        this.homeworkList = hw;
+    public homeworkAdapter(Context context, ArrayList<homework> homeworkList){
+        this.homeworkList = homeworkList;
         this.mContext = context;
-        mHomework_DB=new homework_DB(context);
+        this.db = new DGUDB(mContext);
     }
 
     public class homeworkViewHolder extends RecyclerView.ViewHolder{
@@ -79,7 +82,6 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
 
                                         String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                                         int id = homework.getId();
-                                        mHomework_DB.UpdateTodo(id,hwname,hwDday);
 
                                         //update UI
                                         homework.setHwname(hwname);
@@ -97,7 +99,6 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                             else if(position==1){
                                 //delete table
                                 int id = homework.getId();
-                                mHomework_DB.DeleteTodo(id);
 
                                 //delete UI
                                 homeworkList.remove(curPos);
@@ -125,7 +126,6 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
     public void onBindViewHolder(homeworkViewHolder HomeworkviewHolder, int position) {
         HomeworkviewHolder.homeworkname.setText(homeworkList.get(position).getHwname());
         HomeworkviewHolder.homeworkdday.setText(homeworkList.get(position).getHwDday());
-
     }
 
     @Override
@@ -135,10 +135,10 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
         else return 0;
     }
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
-    public void addhwItem(homework _item){
-      if(_item!=null){
-        homeworkList.add(0,_item);
-        notifyItemInserted(0);
-      }
+    public void addhwItem(String subid,homework _item){
+        int addpos = homeworkList.size();
+        db.insertHw(subid,_item.getHwname(), _item.getHwDday()); //db저장
+        homeworkList.add(_item);
+        notifyItemInserted(addpos);
     }
 }

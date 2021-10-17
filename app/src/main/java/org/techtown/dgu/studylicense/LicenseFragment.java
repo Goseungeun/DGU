@@ -56,13 +56,10 @@ public class LicenseFragment extends Fragment {
                 licensebtn_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         //Insert UI
                         LicenseItem item = new LicenseItem(et_name.getText().toString(),et_licensedday.getText().toString());
-
                         mAdapter.addItem(item);
                         loadRecentDB();
-
                         rv_license.smoothScrollToPosition(0);
                         dialog.dismiss();
                     }
@@ -80,9 +77,7 @@ public class LicenseFragment extends Fragment {
 
     private void loadRecentDB(){
         licensItems = mDBHelper.getlicenselist();
-
         mAdapter = new LicenseAdapter(licensItems,getContext());
-        rv_license.setHasFixedSize(true);
         rv_license.setAdapter(mAdapter);
     }
 
