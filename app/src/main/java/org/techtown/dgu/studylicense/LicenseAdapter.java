@@ -111,7 +111,6 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
         //DB에 insert해주면서 item에 id를 settting해준다.
         item.setLicenseid(mDBHelper.InsertLicense(item.getLicensename(),item.getLicensedday()));
         items.add(item);
-        notifyItemInserted(0);
     }
 
 

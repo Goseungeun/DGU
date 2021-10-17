@@ -8,7 +8,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.techtown.dgu.homework.homework;
 import org.techtown.dgu.studylicense.LicenseItem;
+import org.techtown.dgu.subject.SubjectItem;
+import org.techtown.dgu.test.SubTestItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,10 +28,10 @@ public class DGUDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         db.execSQL("CREATE TABLE IF NOT EXISTS subject (subid TEXT PRIMARY KEY, subname TEXT NOT NULL, week INTEGER NOT NULL, weekfre INTEGER NOT NULL)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
+        db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid TEXT PRIMARY KEY, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
                 + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS test (testid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
+        db.execSQL("CREATE TABLE IF NOT EXISTS test (testid TEXT PRIMARY KEY, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
                 + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS subgraph (subgraphid INTEGER PRIMARY KEY AUTOINCREMENT, subsemester TEXT NOT NULL, subname TEXT NOT NULL,"
@@ -60,8 +63,93 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-    /// 여기부터 license table과 관련된 함수
+    // subject table 조작 함수
+    public ArrayList<SubjectItem> getsubjectlist(){
+        ArrayList<SubjectItem> subList = new ArrayList<>();
+        ArrayList<homework> hwList;
+        ArrayList<SubTestItem> testList;
 
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor sub_cursor = db.rawQuery("SELECT * FROM subject;",null);
+        if(sub_cursor.getCount() != 0){
+            //커서 안에 데이터 존재하고, 커서가 첫번째 아이템에 위치하고 있을 때
+            while (sub_cursor.moveToNext()){
+                //커서의 끝까지 진행
+                String sub_id = sub_cursor.getString(sub_cursor.getColumnIndex("subid"));
+                String sub_name = sub_cursor.getString(sub_cursor.getColumnIndex("subname"));
+                int week = sub_cursor.getInt(sub_cursor.getColumnIndex("week"));
+                int weekfre = sub_cursor.getInt(sub_cursor.getColumnIndex("weekfre"));
+                hwList = gethwList(sub_id);
+                Log.d("확인","hwList = "+ hwList);
+                testList = gettestList(sub_id);
+
+                SubjectItem subjectItem = new SubjectItem(sub_id,sub_name,week,weekfre,hwList,testList);
+                subList.add(subjectItem);
+            }
+        }
+        sub_cursor.close();
+        return subList;
+    }
+
+    public String InsertSubject (String _subname,int _week, int _weekfre){
+        String _id= give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO subject VALUES('"+ _id+"','" +_subname + "','" +_week+"','"+_weekfre+"');'");
+        return _id;
+    }
+
+    //homework table 관련 함수
+    public ArrayList<homework> gethwList(String sub_id){
+        ArrayList<homework> hwList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor hw_cursor = db.rawQuery("SELECT * FROM hw WHERE subid ='"+sub_id+"';",null);
+        if (hw_cursor.getCount() != 0){
+            while (hw_cursor.moveToNext()){
+                String hwId = hw_cursor.getString(hw_cursor.getColumnIndex("hwid"));
+                String hwname = hw_cursor.getString(hw_cursor.getColumnIndex("hwname"));
+                String hwdday = hw_cursor.getString(hw_cursor.getColumnIndex("hwdday"));
+                Log.d("확인","hwid: " + hwId);
+                homework hwitem = new homework(hwId,hwname,hwdday);
+                hwList.add(hwitem);
+            }
+        }
+        hw_cursor.close();
+        return hwList;
+    }
+
+    public String insertHw (String _subid,String _hwname,String _hwdday){
+        String _id = give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO hw  VALUES('"+ _id+"','" +_subid + "','" +_hwname+"','"+_hwdday+"');'");
+        return _id;
+    }
+
+    //test table 관련 함수
+    public ArrayList<SubTestItem> gettestList(String sub_id){
+        ArrayList<SubTestItem> testList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor test_cursor = db.rawQuery("SELECT * FROM test WHERE subid ='"+sub_id+"';",null);
+        if (test_cursor.getCount() != 0){
+            while (test_cursor.moveToNext()){
+                String testid = test_cursor.getString(test_cursor.getColumnIndex("testid"));
+                String testname = test_cursor.getString(test_cursor.getColumnIndex("testname"));
+                String testdday = test_cursor.getString(test_cursor.getColumnIndex("testdday"));
+                SubTestItem testitem = new SubTestItem(testid,testname,testdday);
+                testList.add(testitem);
+            }
+        }
+        test_cursor.close();
+        return testList;
+    }
+
+    public String insertTest (String _subid,String _testname,String _testdday){
+        String _id = give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO test VALUES('"+ _id+"','"+ _subid+"','" +_testname + "','" +_testdday+"');");
+        return _id;
+    }
+
+    /// 여기부터 license table과 관련된 함수
 
     //SELECT 문 / LicenseFragment.java와 연결됨.
     public ArrayList<LicenseItem> getlicenselist(){
