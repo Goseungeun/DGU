@@ -10,12 +10,13 @@
         android:id="@+id/id_hourname"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="fill"
         android:layout_weight="1"
+        android:background="@color/white"
         android:gravity="center"
         android:minHeight="16dp"
-        android:background="@color/white"
         android:text="시"
-        android:textSize="10sp"
-        android:layout_gravity="fill"/>
+        android:textColor="@color/deepgreen"
+        android:textSize="10sp" />
 
 </LinearLayout>
