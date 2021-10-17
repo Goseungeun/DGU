@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,14 +91,17 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
 
     @Override
     public int getItemCount(){
+        if(subList == null){
+            return 0;
+        }
         return subList.size();
     }
 
     // 현재 어댑터에 새로운 아이템을 전달받아 추가하는 목적
     public void addSubItem(SubjectItem _item) {
-            subList.add(0,_item);
-            notifyItemInserted(0);
-        }
+        Log.d("확인","_item:"+_item.getSubname());
+        subList.add(_item);
+    }
 
 
 
