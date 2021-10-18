@@ -27,7 +27,9 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -36,14 +38,30 @@ public class StatsFragment extends Fragment {
     private LineChart lineChart;
     private DGUDB mDBHelper;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.statsfragment, container, false);
         mDBHelper = new DGUDB(getContext());
 
 
-
+        TextView year=view.findViewById(R.id.sta_year);
         TextView month=view.findViewById(R.id.sta_month);
+
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat forma = new SimpleDateFormat("yyyy");
+        year.setText(forma.format(Calendar.getInstance().getTime()));
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM");
+        month.setText(formatter.format(Calendar.getInstance().getTime()));
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        String date = format.format(Calendar.getInstance().getTime());
+        Log.d("날짜","date"+date);
+
+
+
 
         //가장 많이한 공부
         lineChart = view.findViewById(R.id.moststudytime);
@@ -57,7 +75,7 @@ public class StatsFragment extends Fragment {
         ProgressBar silverprogress=view.findViewById(R.id.progressBarsilver);
         ProgressBar bronzeprogress=view.findViewById(R.id.progressBarbronze);
 
-        int mname[] = mDBHelper.getMostStudytimeIdArray();
+        int mname[] = mDBHelper.getMostStudytimeIdArray(date);
 
         for (int i = 0; i < mname.length; i++) {
             Log.v("StringIds", "i:" + i + ", name[i]:" + mname[i]);
