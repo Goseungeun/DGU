@@ -29,10 +29,10 @@ public class DGUDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS subject (subid TEXT PRIMARY KEY, subname TEXT NOT NULL, week INTEGER NOT NULL, weekfre INTEGER NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid TEXT PRIMARY KEY, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
-                + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
+                + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS test (testid TEXT PRIMARY KEY, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
-                + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
+                + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE )");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS subgraph (subgraphid INTEGER PRIMARY KEY AUTOINCREMENT, subsemester TEXT NOT NULL, subname TEXT NOT NULL,"
                 + "subcredit INTEGER NOT NULL, subscore FLOAT NOT NULL)");
@@ -40,8 +40,8 @@ public class DGUDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS license (licenseid TEXT PRIMARY KEY, licensename TEXT NOT NULL, licensedday TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS studytime (studytimeid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT , licenseid TEXT, date TEXT NOT NULL, studytime TEXT default'"+"00:00:00"+"'," +
-                "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid)," +
-                "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid))");
+                "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE," +
+                "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid) ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
 
@@ -100,7 +100,14 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public void Updatesubject (String _subid, String _subname, int _week, int _weekfre){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE subject SET subname = '"+_subname+"',week'"+_week+"',weekfre '"+_weekfre+"' WHERE subid ='"+_subid+"';");
+        db.execSQL("UPDATE subject SET subname = '"+_subname+"',week = '"+_week+"',weekfre = '"+_weekfre+"' WHERE subid ='"+_subid+"';");
+    }
+
+    public void deleteSubject (String _subid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM subject WHERE subid = '"+_subid+"';");
+        db.execSQL("DELETE FROM hw WHERE subid ='"+_subid+"';");
+        db.execSQL("DELETE FROM test WHERE subid ='"+_subid+"';");
     }
 
     //homework table 관련 함수
@@ -131,7 +138,12 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public void UpdateHw (String _hwid, String _hwname, String _hwdday){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE hw SET hwname = '"+_hwname+"',hwdday'"+_hwdday+"' WHERE hwid ='"+_hwid+"';");
+        db.execSQL("UPDATE hw SET hwname = '"+_hwname+"',hwdday ='"+_hwdday+"' WHERE hwid ='"+_hwid+"';");
+    }
+
+    public void deleteHW (String _hwid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM hw WHERE hwid = '"+_hwid+"';");
     }
 
     //test table 관련 함수
@@ -161,7 +173,12 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public void UpdateTest (String _testid, String _testname, String _testdday){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE test SET testname = '"+_testname+"',testdday'"+_testdday+"' WHERE testid ='"+_testid+"';");
+        db.execSQL("UPDATE test SET testname = '"+_testname+"',testdday = '"+_testdday+"' WHERE testid ='"+_testid+"';");
+    }
+
+    public void deleteTest (String _testid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM test WHERE testid ='" + _testid+"';");
     }
 
     /// 여기부터 license table과 관련된 함수
