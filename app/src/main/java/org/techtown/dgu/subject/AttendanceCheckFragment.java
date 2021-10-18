@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,23 +21,27 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.MainActivity;
 import org.techtown.dgu.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AttendanceCheckFragment extends Fragment {
     private  ViewGroup view;
 
-    private String subName;                //과목 이름
-    Subject_DB db;   //DB
 
+    DGUDB DB;   //DB
+    private String subid;
+    private String subName;                //과목 이름
     private int WEEK;           //몇주차인지
     private int DAY_A_WEEK;     //한 주에 몇번 수업하는지
 
-    //0:attendance, 1:late, 2:absent, null : no value
+    //TODO : 0:attendance, 1:late, 2:absent, -1 : no value
     public int[][] checklist;
+    public int[] attendancecheckcontent;
     //checklist.length하면 null도 포함해서 알려준다.
 
 
@@ -49,13 +54,52 @@ public class AttendanceCheckFragment extends Fragment {
 
     private ImageView imgview[][];        //each cell imageview
 
+    public void setSubid(String _subid) {
+        this.subid=_subid;
+    }
+
+    public void setInit(String _subid){
+
+        Log.v("AttendanceCheckFragment",subid);
+        String info[] = DB.getSubjectInfo(subid).split(",");
+
+        subName=info[0];
+        WEEK=Integer.parseInt(info[1]);
+        DAY_A_WEEK=Integer.parseInt(info[2]);
+        checklist = new int[WEEK][DAY_A_WEEK];
+        attendancecheckcontent=new int[WEEK*DAY_A_WEEK];
+
+        if(!DB.isExistAttendancecheck(subid)){
+            //존재하지 않음
+            for(int i=0;i<WEEK;i++){
+                for(int j=0;j<DAY_A_WEEK;j++){
+                    checklist[i][j]=-1;
+                    attendancecheckcontent[i*DAY_A_WEEK+j]=-1;
+                }
+            }
+            DB.InsertAttendancecheck(subid, Arrays.toString(attendancecheckcontent));
+        }else{
+            //이미 존재함
+            String [] AttendancecheckcontentStrings = DB.getAttendanceCheckcontent(subid).replaceAll("\\[", "")
+                    .replaceAll("]", "").replaceAll(" ","").split(",");
+
+            for(int i=0;i<WEEK;i++){
+                for(int j=0;j<DAY_A_WEEK;j++){
+                    checklist[i][j]=Integer.parseInt(AttendancecheckcontentStrings[i*DAY_A_WEEK+j]);
+                }
+            }
+
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        db = new Subject_DB(getContext());
-
+        DB = new DGUDB(getContext());
         view = (ViewGroup) inflater.inflate(R.layout.attendancecheck, container,false);
         TextView tv = view.findViewById(R.id.Tv_attendancecheck);
+
+        setInit(subid);
+
         tv.setText(""+subName+" 출석체크");
 
         //BackButton1을 누르면 실행되는 함수
@@ -70,9 +114,7 @@ public class AttendanceCheckFragment extends Fragment {
             }
         });
 
-        ///attendancechecktable 내용 옮겨옴.
-        //WEEK , DAY_OF_WEEK, checklist 초기화
-        Init();
+
 
         ///Start checkresult write
         //Text view for displaying the number of attendance, late, and absent days
@@ -191,11 +233,7 @@ public class AttendanceCheckFragment extends Fragment {
         this.subName=subName;
     }
 
-    private void Init() {
-        WEEK=db.Output_week(subName);
-        DAY_A_WEEK=db.Output_weekFre(subName);
-        checklist = db.Output_AttendanceCheck_subname(subName);
-    }
+
 
 
     //출석,지각,결석한 날짜수 표시용 텍스트뷰 채워넣기
@@ -298,9 +336,15 @@ public class AttendanceCheckFragment extends Fragment {
                                 getResources().getColor(imgview_setTint(i,k))
                         ));
 
+                        for(int i=0;i<WEEK;i++){
+                            for(int j=0;j<DAY_A_WEEK;j++){
+                                attendancecheckcontent[i*DAY_A_WEEK+j]=checklist[i][j];
+                            }
+                        }
+
                         ///여기 id계산하는거 헷갈림
-                        db.UpdateAttendanceCheck(subName,i*DAY_A_WEEK+j+1, checklist[i][j]);
                         ///End UPDATE
+                        DB.UpdateAttendancecheck(subid,Arrays.toString(attendancecheckcontent));
                     }
                 });
         builder.setNegativeButton("Cancel",

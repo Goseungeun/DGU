@@ -177,9 +177,9 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                         @Override
                         public void onClick(DialogInterface dialogInterface, int position) {
                             if(position==0){
+                                Log.v("Att111",studysub.getId());
                                 AttendanceCheckFragment attendanceCheck = new AttendanceCheckFragment();
-                                String name = studysub.getSubname();
-                                attendanceCheck.setSubName(name);
+                                attendanceCheck.setSubid(studysub.getId());
                                 ((MainActivity)view.getContext()).replaceFragment(attendanceCheck);    // 새로 불러올 Fragment의 Instance를 Main으로 전달
                             }
                             else if(position==1){
