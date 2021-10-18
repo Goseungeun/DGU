@@ -575,6 +575,23 @@ public class DGUDB extends SQLiteOpenHelper {
         else{return true;}
     }
 
+    public int[] getMostStudytimeIdArray(String _date){
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
+                "WHERE date LIKE '"+_date+"%'  ORDER BY studytime DESC",null);
+
+        int result[] = new int[cursor.getCount()];
+
+        int i=0;
+        while(cursor.moveToNext()&&i<3){
+            result[i] = cursor.getInt(cursor.getColumnIndex("studytimeid"));
+            Log.d("등수","result: " + result[i]);
+            i++;
+        }
+        cursor.close();
+        return result;
+    }
 
 
 

@@ -1,3 +1,4 @@
+/*
 package org.techtown.dgu.subject;
 
 import android.app.AlertDialog;
@@ -20,6 +21,7 @@ import java.util.Date;
 import static java.lang.Integer.parseInt;
 
 
+*/
 /*public class InputSchoolSubject extends Fragment {
     EditText subjectNameInput;
     EditText weekInput;
@@ -49,7 +51,8 @@ import static java.lang.Integer.parseInt;
             }
         });
     }
-}*/
+}*//*
+
 
 
 
@@ -135,7 +138,8 @@ public class SubjectInputDialog extends DialogFragment {
         return builder.create();
     }
 
-    /*public static InputSchoolSubject newInstance() {
+    */
+/*public static InputSchoolSubject newInstance() {
         return new InputSchoolSubject();
     }
 
@@ -144,6 +148,7 @@ public class SubjectInputDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_subject_input, container, false);
 
-    }*/
+    }*//*
 
-}
+
+}*/

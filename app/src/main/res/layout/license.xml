@@ -34,7 +34,8 @@
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="+자격증 추가하기" />
+                android:text="+자격증 추가하기"
+                android:textSize="20sp" />
 
         </LinearLayout>
     </ScrollView>

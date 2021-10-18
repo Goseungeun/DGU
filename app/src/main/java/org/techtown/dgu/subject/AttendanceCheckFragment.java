@@ -1,3 +1,4 @@
+
 package org.techtown.dgu.subject;
 
 import android.app.AlertDialog;
@@ -360,5 +361,6 @@ public class AttendanceCheckFragment extends Fragment {
 
 
 }
+
 
 
