@@ -98,6 +98,11 @@ public class DGUDB extends SQLiteOpenHelper {
         return _id;
     }
 
+    public void Updatesubject (String _subid, String _subname, int _week, int _weekfre){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE subject SET subname = '"+_subname+"',week'"+_week+"',weekfre '"+_weekfre+"' WHERE subid ='"+_subid+"';");
+    }
+
     //homework table 관련 함수
     public ArrayList<homework> gethwList(String sub_id){
         ArrayList<homework> hwList = new ArrayList<>();
@@ -124,6 +129,11 @@ public class DGUDB extends SQLiteOpenHelper {
         return _id;
     }
 
+    public void UpdateHw (String _hwid, String _hwname, String _hwdday){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE hw SET hwname = '"+_hwname+"',hwdday'"+_hwdday+"' WHERE hwid ='"+_hwid+"';");
+    }
+
     //test table 관련 함수
     public ArrayList<SubTestItem> gettestList(String sub_id){
         ArrayList<SubTestItem> testList = new ArrayList<>();
@@ -147,6 +157,11 @@ public class DGUDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO test VALUES('"+ _id+"','"+ _subid+"','" +_testname + "','" +_testdday+"');");
         return _id;
+    }
+
+    public void UpdateTest (String _testid, String _testname, String _testdday){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE test SET testname = '"+_testname+"',testdday'"+_testdday+"' WHERE testid ='"+_testid+"';");
     }
 
     /// 여기부터 license table과 관련된 함수
