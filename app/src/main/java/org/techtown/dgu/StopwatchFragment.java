@@ -89,7 +89,6 @@ public class StopwatchFragment extends Fragment {
         Today.setText(DB.give_Today());
         if(subid!=null){
             //과목
-            //TODO 과목이랑 db연결해야함.
             EachCategory.setText("과목");
             EachName.setText(DB.getSubjectName(subid));
         }else{
