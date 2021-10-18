@@ -34,7 +34,7 @@
             android:layout_margin="0dp"
             android:layout_weight="0"
             android:paddingLeft="10dp"
-            android:text="00 출석체크"
+            android:text="00  출석체크"
             android:textColor="@color/deepgreen"
             android:textSize="23sp" />
 
