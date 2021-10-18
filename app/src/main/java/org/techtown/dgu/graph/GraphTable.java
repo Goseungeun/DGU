@@ -111,11 +111,35 @@ public class GraphTable extends Fragment {
         saveButtonAction();
 
         //과목 불러오기 버튼 연결
-        //ImportSubjecButtonAction();
+        ImportSubjecButtonAction();
 
 
         return view;
 
+    }
+
+    private void ImportSubjecButtonAction() {
+
+        String[] subjectName=DB.getSubjectNameList();
+
+        Tv_Import_subject = view.findViewById(R.id.Import_subject);
+        String[] finalSubjectName = subjectName;
+        Tv_Import_subject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index=0;
+                for(int i=DB.Output_SubgraphCount(semesterName[cur_semester_index])-1 ; (i<ROW) && (index<subjectName.length) ; i++,index++){
+                    if(DB.FindAlreadyExistsSubjectName(semesterName[cur_semester_index], finalSubjectName[index])){
+                        //이미 존재
+                        i--;
+                    }else{
+                        DB.Insertsubgraph(semesterName[cur_semester_index], finalSubjectName[index] ,0,"A+");
+                    }
+                }
+                //db에 들어간대로 테이블에 업데이트 해주기
+                DB.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
+            }
+        });
     }
 
     //각 학기별 평균 학점을 저장할 doubldlist 초기화
@@ -155,12 +179,6 @@ public class GraphTable extends Fragment {
                     }
                 }
                 Toast.makeText(getActivity(),"성적을 저장하였습니다.", Toast.LENGTH_SHORT).show();
-
-                //db에 들어간대로 테이블에 업데이트 해주기
-                DB.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
-
-                //평균학점 계산하기
-                CalculateGPA();
 
                 //graph chart 업데이트 하기
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.

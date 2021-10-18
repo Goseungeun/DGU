@@ -212,6 +212,21 @@ public class DGUDB extends SQLiteOpenHelper {
 
     }
 
+    public String[] getSubjectNameList(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("select subname from subject" ,null);
+        String[] result = new String[cursor.getCount()];
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                result[i]=cursor.getString(cursor.getColumnIndex("subname"));
+                i++;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
     public String insertHw (String _subid,String _hwname,String _hwdday){
         String _id = give_id();
         SQLiteDatabase db = getWritableDatabase();
@@ -753,6 +768,31 @@ public class DGUDB extends SQLiteOpenHelper {
 
         if(cursor.getCount()!=0){cursor.close();return false;}
         else{cursor.close();return true;}
+    }
+
+    //해당학기의 row수 구하기
+    public int Output_SubgraphCount(String _subsemester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph where subsemester='"+_subsemester+"'",null);
+        int result = cursor.getCount();
+
+        cursor.close();
+        return result;
+    }
+
+    //(과목명) 이미 존재하는 행인지 아닌지 판단. (존재하는 행이 있다면 true, 없다면 false)
+    public boolean FindAlreadyExistsSubjectName(String  _subsemester,String _subname){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph where subname ='"+_subname+"' and subsemester='"+_subsemester+"'",null);
+
+        if(cursor.getCount()==0){
+            //RowID ='"+_RowID+"'인게 없다면,
+            cursor.close();
+            return false;
+        }else{
+            cursor.close();
+            return true;
+        }
     }
 
 }
