@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -29,29 +31,92 @@ public class DGUDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS subject (subid TEXT PRIMARY KEY, subname TEXT NOT NULL, week INTEGER NOT NULL, weekfre INTEGER NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid TEXT PRIMARY KEY, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
-                + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
+                + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS test (testid TEXT PRIMARY KEY, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
-                + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
+                + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE )");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS subgraph (subgraphid INTEGER PRIMARY KEY AUTOINCREMENT, subsemester TEXT NOT NULL, subname TEXT NOT NULL,"
-                + "subcredit INTEGER NOT NULL, subscore FLOAT NOT NULL)");
+                + "subcredit INTEGER NOT NULL, subscore TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS license (licenseid TEXT PRIMARY KEY, licensename TEXT NOT NULL, licensedday TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS studytime (studytimeid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT , licenseid TEXT, date TEXT NOT NULL, studytime TEXT default'"+"00:00:00"+"'," +
-                "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid)," +
-                "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid))");
+                "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE," +
+                "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid) ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa INTEGER)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa FLOAT)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS attendancecheck (subid TEXT PRIMARY KEY, attendancecheckcontent TEXT NOT NULL)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);
     }
+
+    //여기부터 attendancecheck와 관련된 함수
+
+    public void InsertAttendancecheck(String _subid, String _attendancecheckcontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO attendancecheck VALUES('"+ _subid+"','" +_attendancecheckcontent +"');'");
+    }
+
+    public void UpdateAttendancecheck(String _subid, String _attendancecheckcontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE attendancecheck SET attendancecheckcontent = '"+_attendancecheckcontent+"' WHERE subid ='"+_subid+"';");
+    }
+
+    public void deleteAttendancecheck(String _subid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM attendancecheck WHERE subid = '"+_subid+"';");
+    }
+
+    //subid를 입력하면 존재하는지 알아보기, 존재하면 true, 존재하지 않으면 false
+    public boolean isExistAttendancecheck(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM attendancecheck WHERE subid = '"+_subid+"'",null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        if(count==0){ return false; }
+        else{return true;}
+    }
+
+    public String getAttendanceCheckcontent(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM attendancecheck " +
+                "WHERE subid ='"+_subid+"';",null);
+
+        String result="";
+        while(cursor.moveToNext()){
+            result = cursor.getString(cursor.getColumnIndex("attendancecheckcontent"));
+        }
+        cursor.close();
+        return result;
+    }
+
+    public String getSubjectInfo(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subject WHERE subid ='"+_subid+"';",null);
+        String result="";
+        if (cursor.getCount() != 0){
+            cursor.moveToNext();
+
+            String subname = cursor.getString(cursor.getColumnIndex("subname"));
+            String week = cursor.getString(cursor.getColumnIndex("week"));
+            String weekfre = cursor.getString(cursor.getColumnIndex("weekfre"));
+
+            result = subname+","+week+","+weekfre;
+
+        }
+        cursor.close();
+        return result;
+    }
+
+
 
     //subject와 license의 id를 부여하는 함수
     public String give_id(){
@@ -100,7 +165,15 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public void Updatesubject (String _subid, String _subname, int _week, int _weekfre){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE subject SET subname = '"+_subname+"',week'"+_week+"',weekfre '"+_weekfre+"' WHERE subid ='"+_subid+"';");
+        db.execSQL("UPDATE subject SET subname = '"+_subname+"',week = '"+_week+"',weekfre = '"+_weekfre+"' WHERE subid ='"+_subid+"';");
+    }
+
+    public void deleteSubject (String _subid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM subject WHERE subid = '"+_subid+"';");
+        db.execSQL("DELETE FROM hw WHERE subid ='"+_subid+"';");
+        db.execSQL("DELETE FROM test WHERE subid ='"+_subid+"';");
+        deleteAttendancecheck(_subid);
     }
 
     //homework table 관련 함수
@@ -122,6 +195,38 @@ public class DGUDB extends SQLiteOpenHelper {
         return hwList;
     }
 
+    public String getSubjectName(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subject WHERE subid = '"+_subid+"'",null);
+
+        if(cursor.getCount()==0){
+            //과목이 삭제된 경우
+            cursor.close();
+            return null;
+        }else{
+            cursor.moveToNext();
+            String subname = cursor.getString(cursor.getColumnIndex("subname"));
+            cursor.close();
+            return subname;
+        }
+
+    }
+
+    public String[] getSubjectNameList(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("select subname from subject" ,null);
+        String[] result = new String[cursor.getCount()];
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                result[i]=cursor.getString(cursor.getColumnIndex("subname"));
+                i++;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
     public String insertHw (String _subid,String _hwname,String _hwdday){
         String _id = give_id();
         SQLiteDatabase db = getWritableDatabase();
@@ -131,7 +236,12 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public void UpdateHw (String _hwid, String _hwname, String _hwdday){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE hw SET hwname = '"+_hwname+"',hwdday'"+_hwdday+"' WHERE hwid ='"+_hwid+"';");
+        db.execSQL("UPDATE hw SET hwname = '"+_hwname+"',hwdday ='"+_hwdday+"' WHERE hwid ='"+_hwid+"';");
+    }
+
+    public void deleteHW (String _hwid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM hw WHERE hwid = '"+_hwid+"';");
     }
 
     //test table 관련 함수
@@ -161,7 +271,12 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public void UpdateTest (String _testid, String _testname, String _testdday){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE test SET testname = '"+_testname+"',testdday'"+_testdday+"' WHERE testid ='"+_testid+"';");
+        db.execSQL("UPDATE test SET testname = '"+_testname+"',testdday = '"+_testdday+"' WHERE testid ='"+_testid+"';");
+    }
+
+    public void deleteTest (String _testid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM test WHERE testid ='" + _testid+"';");
     }
 
     /// 여기부터 license table과 관련된 함수
@@ -213,12 +328,18 @@ public class DGUDB extends SQLiteOpenHelper {
     public String getLicenseName(String _licenseid){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM license WHERE licenseid = '"+_licenseid+"'",null);
-        cursor.moveToNext();
 
-        String licensename = cursor.getString(cursor.getColumnIndex("licensename"));
+        if(cursor.getCount()==0){
+            //자격증이 삭제된 경우
+            cursor.close();
+            return null;
+        }else{
+            cursor.moveToNext();
+            String licensename = cursor.getString(cursor.getColumnIndex("licensename"));
+            cursor.close();
+            return licensename;
+        }
 
-        cursor.close();
-        return licensename;
     }
 
     /*    //하루지나면 초기화
@@ -241,6 +362,15 @@ public class DGUDB extends SQLiteOpenHelper {
     public String give_Today(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(" SELECT strftime('%Y-%m-%d','now','localtime');",null);
+        cursor.moveToNext();
+        String result = cursor.getString(0);
+        cursor.close();
+        return result;
+    }
+
+    public String give_Yesterday(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(" SELECT strftime('%Y-%m-%d','now','localtime','-1 day');",null);
         cursor.moveToNext();
         String result = cursor.getString(0);
         cursor.close();
@@ -344,23 +474,20 @@ public class DGUDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String result="";
 
-        //과목 또는 자격증이 삭제된 경우
-        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
-                "where studytimeid ='"+_studytimeid+"'and subid = '"+null+"'and licenseid = '"+null+"'",null);
-
-        cursor.moveToNext();
-        if(cursor.getCount()!=0){
-            result= "삭제된 과목 또는 자격증입니다.";
-        }
-
         //과목인경우
         Cursor cursor1 = db.rawQuery("SELECT * FROM studytime " +
                 "where studytimeid ='"+_studytimeid+"'and licenseid = '"+null+"'",null);
 
         cursor1.moveToNext();
         if(cursor1.getCount()!=0){
-            //TODO 과목과 연결할것.
-            result= "과목,"+"과목연결안됨";
+            String subID = cursor1.getString(cursor1.getColumnIndex("subid"));
+            if(getSubjectName(subID)==null){
+                //삭제된 과목일 경우
+                result= "과목,삭제됨";
+            }else{
+                result= "과목,"+getSubjectName(subID);
+            }
+
         }
 
         //자격증인 경우
@@ -370,10 +497,16 @@ public class DGUDB extends SQLiteOpenHelper {
         cursor2.moveToNext();
         if(cursor2.getCount()!=0){
             String licenseID = cursor2.getString(cursor2.getColumnIndex("licenseid"));
-            result= "자격증,"+getLicenseName(licenseID);
+
+            if(getLicenseName(licenseID)==null){
+                //삭제된 과목일 경우
+                result= "자격증,삭제됨";
+                Log.v("licenseIDnull",result);
+            }else{
+                result= "자격증,"+getLicenseName(licenseID);
+            }
         }
 
-        cursor.close();
         cursor1.close();
         cursor2.close();
         return result;
@@ -409,6 +542,7 @@ public class DGUDB extends SQLiteOpenHelper {
                 " WHERE timetableid = '"+_timetableid+"'" );
     }
 
+    //TODO deletetimetable 수정필요
     public void DeleteTimeTable(String _timetableid, String _timetablecontent){
         SQLiteDatabase db = getWritableDatabase();
 
@@ -461,5 +595,219 @@ public class DGUDB extends SQLiteOpenHelper {
 
 
 
+    //여기부터 subgraph와 graph관련 함수들
+
+    //timetable과 관련된 함수 시작
+    public void Insertgraph(String _semester, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO graph (semester,gpa) VALUES('"+ _semester+"','" +_gpa+"');");
+    }
+
+    public void Updategraph(String _semester, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE graph SET gpa='"+_gpa+"'" +
+                " WHERE semester = '"+_semester+"'" );
+    }
+
+    //TODO deletegraph 수정필요
+    public void Deletegraph(String _semester){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
+        db.execSQL("DELETE FROM graph WHERE semester = '"+_semester+"'");
+    }
+
+    public float[] getGraph_gpa(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM graph",null);
+
+        float[] result= new float[cursor.getCount()];;
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                result[i]=(cursor.getFloat(cursor.getColumnIndex("gpa")));
+                i++;
+            }
+        }
+        cursor.close();
+
+        return  result;
+    }
+
+    //timetable과 관련된 함수 시작
+
+    //ID를 반환해준다.
+    public int Insertsubgraph(String _subsemester, String _subname, int _subcredit, String _subscore){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO subgraph (subsemester,subname,subcredit,subscore) " +
+                "VALUES('"+ _subsemester+"','" +_subname+"','" +_subcredit+"','" +_subscore+"');");
+
+        SQLiteDatabase db1 = getReadableDatabase();
+        Cursor cursor = db1.rawQuery("SELECT * FROM subgraph " +
+                "where subsemester ='"+_subsemester+"'and subname ='"+_subname+"'and subcredit ='"+_subcredit+"'and subscore ='"+_subscore+"'",null);
+
+        int result=0;
+        cursor.moveToNext();
+        result = cursor.getInt(cursor.getColumnIndex("subgraphid"));
+
+        cursor.close();
+        return result;
+    }
+
+    public void Updatesubgraph(String _subgraphid, String _subname, int _subcredit, String _subscore){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE subgraph SET subname='"+_subname+"' and subcredit='"+_subcredit+"' and subscore='"+_subscore+"'" +
+                " WHERE subgraphid = '"+_subgraphid+"'" );
+    }
+
+    //해당 semester에 해당하는 모든 행 삭제
+    public void Deletesubgraph(String _subsemester){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
+        db.execSQL("DELETE FROM subgraph WHERE subsemester = '"+_subsemester+"'");
+    }
+
+    //table 내용 보여주기
+    public void ViewGraphTable(String _subsemester, EditText[] subject_name, EditText[] credit, TextView[] score){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph " +
+                "where subsemester = '"+_subsemester+"'",null);
+
+        //table 초기화
+        for(int i=0;i<subject_name.length;i++){
+            subject_name[i].setText("");
+            credit[i].setText("");
+            score[i].setText("");
+        }
+
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                subject_name[i].setText(cursor.getString(cursor.getColumnIndex("subname")));
+                credit[i].setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("subcredit"))));
+                score[i].setText(cursor.getString(cursor.getColumnIndex("subscore")));
+                i++;
+            }
+        }
+        cursor.close();
+    }
+
+    //학기 평균 학점계산하기
+    public float CalculateGPA(String _subsemester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit,subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
+
+        float GPA=0.00f;
+        if(cursor.getCount()!=0){
+            //table안에 내용이 들어있다면 내부수행
+            //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
+            GPA=(float)(sum_Of_m_credit_times_m_score(_subsemester)/sum_Of_m_credit(_subsemester));
+        }
+
+        cursor.close();
+
+        //graphscoreDB에 업데이트
+        Updategraph(_subsemester, GPA);
+        return GPA;
+    }
+
+    //m_credit과 m_score을 곱한값들을 다 더해서
+    public float sum_Of_m_credit(String _subsemester) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit, subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
+        float m_credit;
+        float result=0f;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
+                result += m_credit;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+    //sum_credit으로 나눠준다.
+    public double sum_Of_m_credit_times_m_score(String _subsemester) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit, subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
+        float m_credit, m_score;
+        float result=0f;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
+                m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("subscore")));
+                result += m_credit*m_score;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+    private float m_score_Calculate(String score) {
+        //score의 NP, P, F는 0.0점으로 계산.
+        switch(score){
+            case "A+" :
+                return 4.5f;
+            case "A0" :
+                return 4.0f;
+            case "B+" :
+                return 3.5f;
+            case "B0" :
+                return 3.0f;
+            case "C+" :
+                return 2.5f;
+            case "C0" :
+                return 2.0f;
+            case "D+" :
+                return 1.5f;
+            default :
+                return 1.0f;     //D0
+        }
+    }
+
+    //학기별로 내용이 들어가있는지 아닌지 판단 ( true : 없음 , false : 있음)
+    public boolean IsEmptySubgraph(String _subsemester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph where subsemester='"+_subsemester+"'",null);
+
+        if(cursor.getCount()!=0){cursor.close();return false;}
+        else{cursor.close();return true;}
+    }
+
+    //학기별로 내용이 들어가있는지 아닌지 판단 ( true : 없음 , false : 있음)
+    public boolean IsEmptygraph(String _semester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM graph where semester='"+_semester+"'",null);
+
+        if(cursor.getCount()!=0){cursor.close();return false;}
+        else{cursor.close();return true;}
+    }
+
+    //해당학기의 row수 구하기
+    public int Output_SubgraphCount(String _subsemester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph where subsemester='"+_subsemester+"'",null);
+        int result = cursor.getCount();
+
+        cursor.close();
+        return result;
+    }
+
+    //(과목명) 이미 존재하는 행인지 아닌지 판단. (존재하는 행이 있다면 true, 없다면 false)
+    public boolean FindAlreadyExistsSubjectName(String  _subsemester,String _subname){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph where subname ='"+_subname+"' and subsemester='"+_subsemester+"'",null);
+
+        if(cursor.getCount()==0){
+            //RowID ='"+_RowID+"'인게 없다면,
+            cursor.close();
+            return false;
+        }else{
+            cursor.close();
+            return true;
+        }
+    }
 
 }

@@ -31,7 +31,7 @@ public class Setting extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                builder.setTitle("어플 정보").setMessage("충북대학교 소프트웨어학과 \n2021년 캡스톤디자인 졸업작품");
+                builder.setTitle("어플 정보").setMessage("충북대학교 소프트웨어학과 \n2021년 졸업작품");
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return false;
@@ -46,41 +46,12 @@ public class Setting extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                builder.setTitle("개발자 정보").setMessage("캡스톤 디자인 [01-05]팀\n\n2018019016 가을\n2018019009 고승은\n2018019025 임지현");
+                builder.setTitle("개발자 정보").setMessage("[01-05]팀\n\n2018019016 가을\n2018019009 고승은\n2018019025 임지현");
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return false;
             }
         });
-
-        //진동과 소리중 하나만 선택할 수 있도록 만들기
-        SwitchPreferenceCompat Sound = findPreference("sound");
-        SwitchPreferenceCompat Vibrate = findPreference("vibrate");
-
-        Sound.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if(Sound.isChecked()) {
-                    Vibrate.setChecked(false);
-                }
-                return false;
-            }
-        });
-        Vibrate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if(Vibrate.isChecked()) {
-                    Sound.setChecked(false);
-                }
-                return false;
-            }
-        });
-
-
-
-
-
-
 
     }
 

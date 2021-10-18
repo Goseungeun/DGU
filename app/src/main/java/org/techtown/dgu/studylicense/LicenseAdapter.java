@@ -137,8 +137,6 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
 
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
                     LicenseItem item = items.get(cusPos);
-                    //TODO ? 아래줄이 왜 있는지 모르겠음
-                    //items.set(cusPos,stopwatch.button_click(item, startbutton, studytime));
 
                     AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
                     StopwatchFragment fragment = new StopwatchFragment(null,item.getLicenseid());

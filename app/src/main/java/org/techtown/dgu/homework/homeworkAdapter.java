@@ -64,13 +64,10 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                 //수정하기
                                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.homework_input);
-
                                 EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
                                 EditText homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
-
                                 homeworkNameInput.setText(homework.getHwname());
                                 homeworkDdayInput.setText(homework.getHwDday());
-
                                 Button homeworkbtn_ok=dialog.findViewById(R.id.homeworkInputButton);
                                 homeworkbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override
@@ -79,15 +76,12 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                         String hwname=homeworkNameInput.getText().toString();
                                         String hwDday=homeworkDdayInput.getText().toString();
                                         String id = homework.getId();
-
+                                        db.UpdateHw(id,hwname,hwDday);
                                         //update UI
                                         homework.setHwname(hwname);
                                         homework.setHwDday(hwDday);
-
                                         notifyItemChanged(curPos,homework);
                                         dialog.dismiss();
-                                        Toast.makeText(mContext,"과제 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
-
                                     }
                                 });
 
@@ -96,11 +90,10 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                             else if(position==1){
                                 //delete table
                                 String id = homework.getId();
-
+                                db.deleteHW(id);
                                 //delete UI
                                 homeworkList.remove(curPos);
                                 notifyItemRemoved(curPos);
-                                Toast.makeText(mContext,"과제 삭제가 완료되었습니다.",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

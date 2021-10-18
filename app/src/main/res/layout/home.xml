@@ -29,7 +29,7 @@
             android:layout_margin="20dp"
             android:background="@null"
             android:scaleType="fitCenter"
-            android:src="@drawable/gear"
+            android:src="@android:drawable/ic_dialog_info"
             android:tint="@color/deepgreen" />
 
     </LinearLayout>

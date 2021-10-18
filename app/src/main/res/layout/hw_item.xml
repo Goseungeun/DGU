@@ -3,39 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="5dp"
-    app:cardUseCompatPadding="true" >
+    >
+
   <LinearLayout
       android:layout_width="match_parent"
-    android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:weightSum="6">
 
     <CheckBox
         android:id="@+id/homeworkname"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_weight="1"
+        android:layout_weight="4"
+        android:singleLine="true"
         android:text="과제 이름" />
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/homeworkdday"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="right"
-        android:text="D-DAY"
         android:inputType="date"
+        android:text="D-DAY"
         android:textSize="18sp" />
 
-</LinearLayout>
+  </LinearLayout>
 </androidx.cardview.widget.CardView>
