@@ -463,14 +463,12 @@ public class DGUDB extends SQLiteOpenHelper {
 
         cursor1.moveToNext();
         if(cursor1.getCount()!=0){
-
             String subID = cursor1.getString(cursor1.getColumnIndex("subid"));
-
             if(getSubjectName(subID)==null){
                 //삭제된 과목일 경우
                 result= "과목,삭제됨";
             }else{
-                result= "과목,"+getLicenseName(subID);
+                result= "과목,"+getSubjectName(subID);
             }
 
         }
