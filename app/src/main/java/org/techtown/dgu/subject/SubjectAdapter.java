@@ -64,7 +64,7 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
         homeworkAdapter hwAdapter = new homeworkAdapter(mContext,homeworkList);
         SubTestAdapter testAdapter = new SubTestAdapter(mContext,subTestList);
 
-        if(db.SearchStudytimeID(subItem.getId(),null)!=null && subItem.getId()!=null){
+        if(db.SearchStudytimeID(subItem.getId(),null)!=0 && subItem.getId()!=null){
             //studytime 테이블에 정보 있으면 그 시간 불러오기
             subItem.setSubtime(db.getStudytime(db.SearchStudytimeID(subItem.getId(),null)));
         }else{
