@@ -122,6 +122,23 @@ public class DGUDB extends SQLiteOpenHelper {
         return hwList;
     }
 
+    public String getSubjectName(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subject WHERE subid = '"+_subid+"'",null);
+
+        if(cursor.getCount()==0){
+            //과목이 삭제된 경우
+            cursor.close();
+            return null;
+        }else{
+            cursor.moveToNext();
+            String subname = cursor.getString(cursor.getColumnIndex("subname"));
+            cursor.close();
+            return subname;
+        }
+
+    }
+
     public String insertHw (String _subid,String _hwname,String _hwdday){
         String _id = give_id();
         SQLiteDatabase db = getWritableDatabase();
@@ -213,12 +230,18 @@ public class DGUDB extends SQLiteOpenHelper {
     public String getLicenseName(String _licenseid){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM license WHERE licenseid = '"+_licenseid+"'",null);
-        cursor.moveToNext();
 
-        String licensename = cursor.getString(cursor.getColumnIndex("licensename"));
+        if(cursor.getCount()==0){
+            //자격증이 삭제된 경우
+            cursor.close();
+            return null;
+        }else{
+            cursor.moveToNext();
+            String licensename = cursor.getString(cursor.getColumnIndex("licensename"));
+            cursor.close();
+            return licensename;
+        }
 
-        cursor.close();
-        return licensename;
     }
 
     /*    //하루지나면 초기화
@@ -353,23 +376,22 @@ public class DGUDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String result="";
 
-        //과목 또는 자격증이 삭제된 경우
-        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
-                "where studytimeid ='"+_studytimeid+"'and subid = '"+null+"'and licenseid = '"+null+"'",null);
-
-        cursor.moveToNext();
-        if(cursor.getCount()!=0){
-            result= "삭제된 과목 또는 자격증입니다.";
-        }
-
         //과목인경우
         Cursor cursor1 = db.rawQuery("SELECT * FROM studytime " +
                 "where studytimeid ='"+_studytimeid+"'and licenseid = '"+null+"'",null);
 
         cursor1.moveToNext();
         if(cursor1.getCount()!=0){
-            //TODO 과목과 연결할것.
-            result= "과목,"+"과목연결안됨";
+
+            String subID = cursor1.getString(cursor1.getColumnIndex("subid"));
+
+            if(getSubjectName(subID)==null){
+                //삭제된 과목일 경우
+                result= "과목,삭제됨";
+            }else{
+                result= "과목,"+getLicenseName(subID);
+            }
+
         }
 
         //자격증인 경우
@@ -379,10 +401,16 @@ public class DGUDB extends SQLiteOpenHelper {
         cursor2.moveToNext();
         if(cursor2.getCount()!=0){
             String licenseID = cursor2.getString(cursor2.getColumnIndex("licenseid"));
-            result= "자격증,"+getLicenseName(licenseID);
+
+            if(getLicenseName(licenseID)==null){
+                //삭제된 과목일 경우
+                result= "자격증,삭제됨";
+                Log.v("licenseIDnull",result);
+            }else{
+                result= "자격증,"+getLicenseName(licenseID);
+            }
         }
 
-        cursor.close();
         cursor1.close();
         cursor2.close();
         return result;
