@@ -33,7 +33,7 @@
             android:layout_margin="0dp"
             android:layout_weight="0"
             android:paddingLeft="10dp"
-            android:text="Setting"
+            android:text="Info"
             android:textColor="@color/deepgreen"
             android:textSize="23sp" />
 
