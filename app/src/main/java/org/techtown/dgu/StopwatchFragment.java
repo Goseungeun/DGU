@@ -90,6 +90,8 @@ public class StopwatchFragment extends Fragment {
         if(subid!=null){
             //과목
             //TODO 과목이랑 db연결해야함.
+            EachCategory.setText("과목");
+            EachName.setText(DB.getSubjectName(subid));
         }else{
             //자격증
             EachCategory.setText("자격증");
