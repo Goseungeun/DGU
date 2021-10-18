@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -35,7 +37,7 @@ public class DGUDB extends SQLiteOpenHelper {
                 + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE )");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS subgraph (subgraphid INTEGER PRIMARY KEY AUTOINCREMENT, subsemester TEXT NOT NULL, subname TEXT NOT NULL,"
-                + "subcredit INTEGER NOT NULL, subscore FLOAT NOT NULL)");
+                + "subcredit INTEGER NOT NULL, subscore TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS license (licenseid TEXT PRIMARY KEY, licensename TEXT NOT NULL, licensedday TEXT NOT NULL)");
 
@@ -45,7 +47,7 @@ public class DGUDB extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa INTEGER)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa FLOAT)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS attendancecheck (subid TEXT PRIMARY KEY, attendancecheckcontent TEXT NOT NULL)");
     }
@@ -563,5 +565,194 @@ public class DGUDB extends SQLiteOpenHelper {
 
 
 
+    //여기부터 subgraph와 graph관련 함수들
+
+    //timetable과 관련된 함수 시작
+    public void Insertgraph(String _semester, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO graph (semester,gpa) VALUES('"+ _semester+"','" +_gpa+"');");
+    }
+
+    public void Updategraph(String _semester, float _gpa){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE graph SET gpa='"+_gpa+"'" +
+                " WHERE semester = '"+_semester+"'" );
+    }
+
+    //TODO deletegraph 수정필요
+    public void Deletegraph(String _semester){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
+        db.execSQL("DELETE FROM graph WHERE semester = '"+_semester+"'");
+    }
+
+    public float[] getGraph_gpa(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM graph",null);
+
+        float[] result= new float[cursor.getCount()];;
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                result[i]=(cursor.getFloat(cursor.getColumnIndex("gpa")));
+                i++;
+            }
+        }
+        cursor.close();
+
+        return  result;
+    }
+
+    //timetable과 관련된 함수 시작
+
+    //ID를 반환해준다.
+    public int Insertsubgraph(String _subsemester, String _subname, int _subcredit, String _subscore){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO subgraph (subsemester,subname,subcredit,subscore) " +
+                "VALUES('"+ _subsemester+"','" +_subname+"','" +_subcredit+"','" +_subscore+"');");
+
+        SQLiteDatabase db1 = getReadableDatabase();
+        Cursor cursor = db1.rawQuery("SELECT * FROM subgraph " +
+                "where subsemester ='"+_subsemester+"'and subname ='"+_subname+"'and subcredit ='"+_subcredit+"'and subscore ='"+_subscore+"'",null);
+
+        int result=0;
+        cursor.moveToNext();
+        result = cursor.getInt(cursor.getColumnIndex("subgraphid"));
+
+        cursor.close();
+        return result;
+    }
+
+    public void Updatesubgraph(String _subgraphid, String _subname, int _subcredit, String _subscore){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE subgraph SET subname='"+_subname+"' and subcredit='"+_subcredit+"' and subscore='"+_subscore+"'" +
+                " WHERE subgraphid = '"+_subgraphid+"'" );
+    }
+
+    //해당 semester에 해당하는 모든 행 삭제
+    public void Deletesubgraph(String _subsemester){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
+        db.execSQL("DELETE FROM subgraph WHERE subsemester = '"+_subsemester+"'");
+    }
+
+    //table 내용 보여주기
+    public void ViewGraphTable(String _subsemester, EditText[] subject_name, EditText[] credit, TextView[] score){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph " +
+                "where subsemester = '"+_subsemester+"'",null);
+
+        //table 초기화
+        for(int i=0;i<subject_name.length;i++){
+            subject_name[i].setText("");
+            credit[i].setText("");
+            score[i].setText("");
+        }
+
+        int i=0;
+        if(cursor.getCount()!=0){
+            while (cursor.moveToNext()){
+                subject_name[i].setText(cursor.getString(cursor.getColumnIndex("subname")));
+                credit[i].setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("subcredit"))));
+                score[i].setText(cursor.getString(cursor.getColumnIndex("subscore")));
+                i++;
+            }
+        }
+        cursor.close();
+    }
+
+    //학기 평균 학점계산하기
+    public float CalculateGPA(String _subsemester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit,subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
+
+        float GPA=0.00f;
+        if(cursor.getCount()!=0){
+            //table안에 내용이 들어있다면 내부수행
+            //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
+            GPA=(float)(sum_Of_m_credit_times_m_score(_subsemester)/sum_Of_m_credit(_subsemester));
+        }
+
+        cursor.close();
+
+        //graphscoreDB에 업데이트
+        Updategraph(_subsemester, GPA);
+        return GPA;
+    }
+
+    //m_credit과 m_score을 곱한값들을 다 더해서
+    public float sum_Of_m_credit(String _subsemester) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit, subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
+        float m_credit;
+        float result=0f;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
+                result += m_credit;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+    //sum_credit으로 나눠준다.
+    public double sum_Of_m_credit_times_m_score(String _subsemester) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit, subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
+        float m_credit, m_score;
+        float result=0f;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
+                m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("subscore")));
+                result += m_credit*m_score;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+    private float m_score_Calculate(String score) {
+        //score의 NP, P, F는 0.0점으로 계산.
+        switch(score){
+            case "A+" :
+                return 4.5f;
+            case "A0" :
+                return 4.0f;
+            case "B+" :
+                return 3.5f;
+            case "B0" :
+                return 3.0f;
+            case "C+" :
+                return 2.5f;
+            case "C0" :
+                return 2.0f;
+            case "D+" :
+                return 1.5f;
+            default :
+                return 1.0f;     //D0
+        }
+    }
+
+    //학기별로 내용이 들어가있는지 아닌지 판단 ( true : 없음 , false : 있음)
+    public boolean IsEmptySubgraph(String _subsemester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subgraph where subsemester='"+_subsemester+"'",null);
+
+        if(cursor.getCount()!=0){cursor.close();return false;}
+        else{cursor.close();return true;}
+    }
+
+    //학기별로 내용이 들어가있는지 아닌지 판단 ( true : 없음 , false : 있음)
+    public boolean IsEmptygraph(String _semester){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM graph where semester='"+_semester+"'",null);
+
+        if(cursor.getCount()!=0){cursor.close();return false;}
+        else{cursor.close();return true;}
+    }
 
 }

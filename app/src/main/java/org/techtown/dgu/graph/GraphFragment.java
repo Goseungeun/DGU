@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 
 import java.util.ArrayList;
@@ -27,16 +28,19 @@ import java.util.ArrayList;
 public class GraphFragment extends Fragment {
     private LineChart chart;
     private ArrayList<Entry> values = new ArrayList<>();    //그래프에 표시할 값을 가지고 있는 arrayList
-    private final static int SEMESTER_NUM=9;                                        //학기 개수
+    private final static int SEMESTER_NUM=9;//학기 개수
 
     String[] semesterName={"1-1", "1-2", "2-1", "2-2" , "3-1", "3-2", "4-1", "4-2", "기타"};          //학기 이름 담을 리스트
     float[] semester_score_list= new float[SEMESTER_NUM];    //학기별 평점 담을 리스트
 
+    DGUDB DB;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.graph,container,false);
+
+        DB=new DGUDB(getContext());
 
         initUI(view);
 
@@ -138,8 +142,7 @@ public class GraphFragment extends Fragment {
 
     //그래프에 들어갈 값을 입력한다.
     private void InputValues() {
-        GraphTable_DB G_db = new GraphTable_DB(getContext());
-        semester_score_list=G_db.Output_GPA();
+        semester_score_list=DB.getGraph_gpa();
 
         //values값 초기화
         for(int i=0;i<values.size();i++){
