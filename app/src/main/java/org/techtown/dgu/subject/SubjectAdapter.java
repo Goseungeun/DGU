@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.MainActivity;
 import org.techtown.dgu.R;
@@ -214,12 +216,29 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                                 dialog.show();
                             }
                             else if(position==2){
-                                //delete table
-                                String id = studysub.getId();
-                                db.deleteSubject(id);
-                                //delete UI
-                                subList.remove(curPos);
-                                notifyItemRemoved(curPos);
+                                AlertDialog.Builder builder2 = new AlertDialog.Builder(mContext);
+                                builder2.setTitle("안내");
+                                builder2.setMessage("과목에 해당된 과제와 시험이 삭제됩니다. \n 삭제하시겠습니까?");
+                                builder2.setIcon(android.R.drawable.ic_dialog_alert);
+                                builder2.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //delete table
+                                        String id = studysub.getId();
+                                        db.deleteSubject(id);
+                                        //delete UI
+                                        subList.remove(curPos);
+                                        notifyItemRemoved(curPos);
+                                    }
+                                });
+
+                                builder2.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                                AlertDialog alertDialog = builder2.create();
+                                alertDialog.show();
                             }
                         }
                     });
