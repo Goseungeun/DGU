@@ -30,7 +30,7 @@
             android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/gear"
-            android:tint="@color/green" />
+            android:tint="@color/deepgreen" />
 
     </LinearLayout>
 
@@ -72,7 +72,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/homeMonthTotalStudytimeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,7 +87,7 @@
                 android:textColor="@color/white" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/homeMonthTotalStudytime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

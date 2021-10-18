@@ -2,6 +2,7 @@ package org.techtown.dgu;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.techtown.dgu.studylicense.LicenseAdapter;
+import org.techtown.dgu.studylicense.LicenseItem;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class Timetable extends Fragment {
@@ -26,12 +34,15 @@ public class Timetable extends Fragment {
     String receiveday;
 
     TextView TodayStudyTime;
-    Stopwatch_DB stopwatch_db;
+    DGUDB DB;
 
     String tt_year;        //타임테이블 년도
     String tt_month;       //타임테이블 월
     String tt_day;         //타임테이블 일
     TextView Tv_title;
+
+    //과목 불러오기 관련
+
 
 
     @Override
@@ -48,29 +59,29 @@ public class Timetable extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = (ViewGroup) inflater.inflate(R.layout.timetable, container,false);
-        stopwatch_db= new Stopwatch_DB(context);
+        DB= new DGUDB(context);
 
         // 캘린더에서 날짜 가져오기
-        if(activity.dayBundle!=null){
-            Bundle daybundle = activity.dayBundle;
-            receiveday=daybundle.getString("selectday");
+        Bundle daybundle = activity.dayBundle;
+        receiveday=daybundle.getString("selectday");
 
-            //날짜를 String->int로 변경
-            tt_year=receiveday.substring(0,4);
-            tt_month=receiveday.substring(4,6);
-            tt_day=receiveday.substring(6,8);
+        //날짜를 String->int로 변경
+        tt_year=receiveday.substring(0,4);
+        tt_month=receiveday.substring(4,6);
+        tt_day=receiveday.substring(6,8);
 
-            // 타임테이블 날짜 표시하기
-            Tv_title=view.findViewById(R.id.title);
-            Tv_title.setText(tt_year+"년\n"+tt_month+"월 "+tt_day+"일");
-            activity.dayBundle=null;
+        // 타임테이블 날짜 표시하기
+        Tv_title=view.findViewById(R.id.title);
+        Tv_title.setText(tt_year+"년 "+tt_month+"월 "+tt_day+"일");
+        activity.dayBundle=null;
 
-            TodayStudyTime = view.findViewById(R.id.TodayStudyTime);
-            String date = ""+tt_year+"-"+tt_month+"-"+tt_day;
-            TodayStudyTime.setText(stopwatch_db.getStudyTime(date));
+        String date = ""+tt_year+"-"+tt_month+"-"+tt_day;
 
+        //총 공부시간 불러오기
+        Fill_TodayStudyTime(date);
 
-        }
+        //그날 공부한 과목, 자격증 불러오기
+        Fill_rv_study(date);
 
         //gridview 초기화
         GridView timetable=view.findViewById(R.id.timetable_gridview);
@@ -80,15 +91,36 @@ public class Timetable extends Fragment {
 
 
         //gridview 내용 채워넣기 시작
+        int timetablecontent[] =new int[24*60];
+        //타임테이블 내용 디비에서 가져오기
+        if(!DB.isExistTodayTimeTable(date)){
+            //timetable에 기존 값이 없는 경우
+            for(int i=0;i<timetablecontent.length;i++){
+                timetablecontent[i]=0;
+            }
+        }else{
+            String [] timetablecontentStrings = DB.getTimeTableContent(date).replaceAll("\\[", "")
+                    .replaceAll("]", "").replaceAll(" ","").split(",");
 
+            for(int i=0;i<timetablecontentStrings.length;i++){
+                timetablecontent[i]=Integer.parseInt(timetablecontentStrings[i]);
+            }
+        }
 
-
-        //타임테이블 옆 시간 채워넣기
         //타임테이블에 들어있는 뷰마다 시간 지정해주기
         for (int hour=0;hour<24;hour++){
             hour_adapter.addItem(new timetable_hour_Item(hour));
             for(int min=0;min<60;min++){
-                adapter.addItem(new Timetable_Item(hour,min));
+                int i=hour*60+min;
+                if(timetablecontent[i]==0){
+                    //공부안함
+                    Log.v("timetable","hour : "+hour+" min : "+min+" timetablecontent[i] : "+timetablecontent[i]);
+                    adapter.addItem(new Timetable_Item(hour,min,false));
+                }else{
+                    //공부함
+                    adapter.addItem(new Timetable_Item(hour,min,true));
+                }
+
             }
         }
 
@@ -123,5 +155,49 @@ public class Timetable extends Fragment {
 
         return view;
 
+    }
+
+    private void Fill_TodayStudyTime(String date) {
+        TodayStudyTime = view.findViewById(R.id.TodayStudyTime);
+        if(DB.DateTotalStudyTime(date)!=null){
+            TodayStudyTime.setText(DB.DateTotalStudyTime(date));
+        }else{TodayStudyTime.setText("00:00:00");}
+    }
+
+    private void Fill_rv_study(String date) {
+        TimetableStudyAdapter mAdapter;
+        ArrayList<TimetableStudyitem> Items = new ArrayList<TimetableStudyitem>();
+        RecyclerView rv_study =(RecyclerView)view.findViewById(R.id.timetable_recycler);
+        rv_study.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
+
+        int Ids[] = DB.getStudytimeIdArray(date);
+
+        for(int i=0;i<Ids.length;i++){
+            Log.v("StringIds","i:"+i+", Ids[i]:"+Ids[i]);
+
+            String studytime=DB.getStudytime(Ids[i]);
+
+            String str = DB.getSubjectnameOrLicensename(Ids[i]);
+            String strs[]=str.split(",");
+            String category=null;
+            String name = null;
+
+            Log.v("teststrs",strs+"  "+strs[0].getClass().getName()+"  "+null);
+
+            if(strs.length==1) {
+                name = strs[0];
+            }else{
+                category=strs[0];
+                name=strs[1];
+            }
+
+
+
+            TimetableStudyitem item = new TimetableStudyitem(Ids[i],name, studytime,category);
+            Items.add(item);
+        }
+
+        mAdapter = new TimetableStudyAdapter(Items,this.getContext());
+        rv_study.setAdapter(mAdapter);
     }
 }
