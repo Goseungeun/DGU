@@ -46,12 +46,75 @@ public class DGUDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa INTEGER)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS attendancecheck (subid TEXT PRIMARY KEY, attendancecheckcontent TEXT NOT NULL)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);
     }
+
+    //여기부터 attendancecheck와 관련된 함수
+
+    public void InsertAttendancecheck(String _subid, String _attendancecheckcontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO attendancecheck VALUES('"+ _subid+"','" +_attendancecheckcontent +"');'");
+    }
+
+    public void UpdateAttendancecheck(String _subid, String _attendancecheckcontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE attendancecheck SET attendancecheckcontent = '"+_attendancecheckcontent+"' WHERE subid ='"+_subid+"';");
+    }
+
+    public void deleteAttendancecheck(String _subid){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM attendancecheck WHERE subid = '"+_subid+"';");
+    }
+
+    //subid를 입력하면 존재하는지 알아보기, 존재하면 true, 존재하지 않으면 false
+    public boolean isExistAttendancecheck(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM attendancecheck WHERE subid = '"+_subid+"'",null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        if(count==0){ return false; }
+        else{return true;}
+    }
+
+    public String getAttendanceCheckcontent(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM attendancecheck " +
+                "WHERE subid ='"+_subid+"';",null);
+
+        String result="";
+        while(cursor.moveToNext()){
+            result = cursor.getString(cursor.getColumnIndex("attendancecheckcontent"));
+        }
+        cursor.close();
+        return result;
+    }
+
+    public String getSubjectInfo(String _subid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM subject WHERE subid ='"+_subid+"';",null);
+        String result="";
+        if (cursor.getCount() != 0){
+            cursor.moveToNext();
+
+            String subname = cursor.getString(cursor.getColumnIndex("subname"));
+            String week = cursor.getString(cursor.getColumnIndex("week"));
+            String weekfre = cursor.getString(cursor.getColumnIndex("weekfre"));
+
+            result = subname+","+week+","+weekfre;
+
+        }
+        cursor.close();
+        return result;
+    }
+
+
 
     //subject와 license의 id를 부여하는 함수
     public String give_id(){
@@ -108,6 +171,7 @@ public class DGUDB extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM subject WHERE subid = '"+_subid+"';");
         db.execSQL("DELETE FROM hw WHERE subid ='"+_subid+"';");
         db.execSQL("DELETE FROM test WHERE subid ='"+_subid+"';");
+        deleteAttendancecheck(_subid);
     }
 
     //homework table 관련 함수
@@ -463,6 +527,7 @@ public class DGUDB extends SQLiteOpenHelper {
                 " WHERE timetableid = '"+_timetableid+"'" );
     }
 
+    //TODO deletetimetable 수정필요
     public void DeleteTimeTable(String _timetableid, String _timetablecontent){
         SQLiteDatabase db = getWritableDatabase();
 
