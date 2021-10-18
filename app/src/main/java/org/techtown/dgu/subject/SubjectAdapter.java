@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,13 +24,16 @@ import com.google.android.material.snackbar.Snackbar;
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.MainActivity;
 import org.techtown.dgu.R;
+import org.techtown.dgu.StopwatchFragment;
 import org.techtown.dgu.homework.homework;
 import org.techtown.dgu.homework.homeworkAdapter;
 import org.techtown.dgu.homework.homework_DB;
+import org.techtown.dgu.studylicense.LicenseItem;
 import org.techtown.dgu.test.SubTestItem;
 import org.techtown.dgu.test.SubTestAdapter;
 import org.techtown.dgu.test.SubTest_DB;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,6 +76,7 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
         }else{
             //데이터 없으면 초기 값 "00:00:00" 입력
             subItem.setSubtime("00:00:00");}
+
         //subject 아이템 set
         StudysubviewHolder.setSubItem(subItem,hwAdapter,testAdapter);
 
@@ -144,7 +149,7 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
 
 
     public class studysubViewHolder extends RecyclerView.ViewHolder{
-        protected ImageView image;
+        protected ImageView startbutton;
         protected TextView subjectname;
         protected TextView subjecttime;
         protected TextView addhw;
@@ -154,14 +159,27 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
 
         public studysubViewHolder(View view){
             super(view);
-            this.image = (ImageView) view.findViewById(R.id.startbutton_sub);
+            this.startbutton = (ImageView) view.findViewById(R.id.startbutton_sub);
             this.subjectname = (TextView)view.findViewById(R.id.subjectname);
             this.subjecttime = (TextView)view.findViewById(R.id.subjecttime);
-
             this.addhw = (TextView)view.findViewById(R.id.addhw);
             this.hwrecycler = (RecyclerView)view.findViewById(R.id.hwrecycler);
             this.addtest = (TextView)view.findViewById(R.id.addtest);
             this.testrecycler = (RecyclerView)view.findViewById(R.id.testrecycler);
+//// startbutton 클릭 시 실행
+            startbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
+                    SubjectItem item = subList.get(cusPos);
+
+                    AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
+                    StopwatchFragment fragment = new StopwatchFragment(item.getId(),null);
+                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment).commit();
+
+                    notifyItemChanged(cusPos,item);
+                }
+            });
 
 ////과목 리사이클러뷰 선택시 실행
             view.setOnClickListener(new View.OnClickListener(){
