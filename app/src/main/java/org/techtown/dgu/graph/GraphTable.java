@@ -23,6 +23,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import org.techtown.dgu.DGUDB;
+import org.techtown.dgu.Home;
+import org.techtown.dgu.MainActivity;
 import org.techtown.dgu.R;
 import org.techtown.dgu.subject.Subject_DB;
 
@@ -116,33 +118,6 @@ public class GraphTable extends Fragment {
 
     }
 
-/*    private void ImportSubjecButtonAction() {
-
-        int length = subject_db.getSubjectNameList().length;
-        String[] subjectName=new String[length];
-        subjectName=subject_db.getSubjectNameList();
-
-
-        Tv_Import_subject = view.findViewById(R.id.Import_subject);
-        String[] finalSubjectName = subjectName;
-        Tv_Import_subject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int index=0;
-                for(int i=table_dbs.Output_GraphTableRow(semesterName[cur_semester_index])-1 ; (i<ROW) && (index<length) ; i++,index++){
-                    if(table_dbs.FindAlreadyExistsSubjectName(semesterName[cur_semester_index], finalSubjectName[index])){
-                        //이미 존재
-                        i--;
-                    }else{
-                        table_dbs.InsertGraphTable(semesterName[cur_semester_index],i, finalSubjectName[index] ,0,"A+");
-                    }
-                }
-                //db에 들어간대로 테이블에 업데이트 해주기
-                table_dbs.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
-            }
-        });
-    }*/
-
     //각 학기별 평균 학점을 저장할 doubldlist 초기화
     private void init_semester_score_list() {
         for(int i=0;i<semester_score_list.length;i++){
@@ -188,6 +163,8 @@ public class GraphTable extends Fragment {
                 CalculateGPA();
 
                 //graph chart 업데이트 하기
+                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
+                ((MainActivity)getActivity()).replaceFragment(new GraphFragment());    // 새로 불러올 Fragment의 Instance를 Main으로 전달
 
             }
         });
