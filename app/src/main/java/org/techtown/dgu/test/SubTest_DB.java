@@ -31,7 +31,7 @@ public class SubTest_DB extends SQLiteOpenHelper {
                 //cursor에 담긴 값이 없을 때 까지 내부 수행
 
                 //cursor에 담긴 값을 옮기자.
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String id = cursor.getString(cursor.getColumnIndex("id"));
                 String subtestname = cursor.getString(cursor.getColumnIndex("subtestname"));
                 String testDday = cursor.getString(cursor.getColumnIndex("testDday"));
 

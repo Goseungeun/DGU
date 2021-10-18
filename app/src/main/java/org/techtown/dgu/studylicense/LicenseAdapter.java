@@ -54,7 +54,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         LicenseItem item = items.get(position);
 
-        if(mDBHelper.SearchStudytimeID(null,item.getLicenseid())!=null && item.getLicenseid()!=null){
+        if(mDBHelper.SearchStudytimeID(null,item.getLicenseid())!=0 && item.getLicenseid()!=null){
             item.setLicensestudytime(mDBHelper.getStudytime(mDBHelper.SearchStudytimeID(null,item.getLicenseid())));
         }else{item.setLicensestudytime("00:00:00");}
 
@@ -111,7 +111,6 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
         //DB에 insert해주면서 item에 id를 settting해준다.
         item.setLicenseid(mDBHelper.InsertLicense(item.getLicensename(),item.getLicensedday()));
         items.add(item);
-        notifyItemInserted(0);
     }
 
 

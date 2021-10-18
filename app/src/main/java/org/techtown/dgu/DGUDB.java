@@ -8,7 +8,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.techtown.dgu.homework.homework;
 import org.techtown.dgu.studylicense.LicenseItem;
+import org.techtown.dgu.subject.SubjectItem;
+import org.techtown.dgu.test.SubTestItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,10 +28,10 @@ public class DGUDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         db.execSQL("CREATE TABLE IF NOT EXISTS subject (subid TEXT PRIMARY KEY, subname TEXT NOT NULL, week INTEGER NOT NULL, weekfre INTEGER NOT NULL)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
+        db.execSQL("CREATE TABLE IF NOT EXISTS hw (hwid TEXT PRIMARY KEY, subid TEXT NOT NULL, hwname TEXT NOT NULL, hwdday TEXT NOT NULL,"
                 + "CONSTRAINT hw_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS test (testid INTEGER PRIMARY KEY AUTOINCREMENT, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
+        db.execSQL("CREATE TABLE IF NOT EXISTS test (testid TEXT PRIMARY KEY, subid TEXT NOT NULL, testname TEXT NOT NULL, testdday TEXT NOT NULL,"
                 + "CONSTRAINT test_fk_id FOREIGN KEY (subid) REFERENCES subject(subid))");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS subgraph (subgraphid INTEGER PRIMARY KEY AUTOINCREMENT, subsemester TEXT NOT NULL, subname TEXT NOT NULL,"
@@ -40,7 +43,7 @@ public class DGUDB extends SQLiteOpenHelper {
                 "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid)," +
                 "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid))");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid INTEGER PRIMARY KEY AUTOINCREMENT, timetablecontent TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa INTEGER)");
     }
@@ -60,9 +63,93 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
+    // subject table 조작 함수
+    public ArrayList<SubjectItem> getsubjectlist(){
+        ArrayList<SubjectItem> subList = new ArrayList<>();
+        ArrayList<homework> hwList;
+        ArrayList<SubTestItem> testList;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor sub_cursor = db.rawQuery("SELECT * FROM subject;",null);
+        if(sub_cursor.getCount() != 0){
+            //커서 안에 데이터 존재하고, 커서가 첫번째 아이템에 위치하고 있을 때
+            while (sub_cursor.moveToNext()){
+                //커서의 끝까지 진행
+                String sub_id = sub_cursor.getString(sub_cursor.getColumnIndex("subid"));
+                String sub_name = sub_cursor.getString(sub_cursor.getColumnIndex("subname"));
+                int week = sub_cursor.getInt(sub_cursor.getColumnIndex("week"));
+                int weekfre = sub_cursor.getInt(sub_cursor.getColumnIndex("weekfre"));
+                hwList = gethwList(sub_id);
+                Log.d("확인","hwList = "+ hwList);
+                testList = gettestList(sub_id);
+
+                SubjectItem subjectItem = new SubjectItem(sub_id,sub_name,week,weekfre,hwList,testList);
+                subList.add(subjectItem);
+            }
+        }
+        sub_cursor.close();
+        return subList;
+    }
+
+    public String InsertSubject (String _subname,int _week, int _weekfre){
+        String _id= give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO subject VALUES('"+ _id+"','" +_subname + "','" +_week+"','"+_weekfre+"');'");
+        return _id;
+    }
+
+    //homework table 관련 함수
+    public ArrayList<homework> gethwList(String sub_id){
+        ArrayList<homework> hwList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor hw_cursor = db.rawQuery("SELECT * FROM hw WHERE subid ='"+sub_id+"';",null);
+        if (hw_cursor.getCount() != 0){
+            while (hw_cursor.moveToNext()){
+                String hwId = hw_cursor.getString(hw_cursor.getColumnIndex("hwid"));
+                String hwname = hw_cursor.getString(hw_cursor.getColumnIndex("hwname"));
+                String hwdday = hw_cursor.getString(hw_cursor.getColumnIndex("hwdday"));
+                Log.d("확인","hwid: " + hwId);
+                homework hwitem = new homework(hwId,hwname,hwdday);
+                hwList.add(hwitem);
+            }
+        }
+        hw_cursor.close();
+        return hwList;
+    }
+
+    public String insertHw (String _subid,String _hwname,String _hwdday){
+        String _id = give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO hw  VALUES('"+ _id+"','" +_subid + "','" +_hwname+"','"+_hwdday+"');'");
+        return _id;
+    }
+
+    //test table 관련 함수
+    public ArrayList<SubTestItem> gettestList(String sub_id){
+        ArrayList<SubTestItem> testList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor test_cursor = db.rawQuery("SELECT * FROM test WHERE subid ='"+sub_id+"';",null);
+        if (test_cursor.getCount() != 0){
+            while (test_cursor.moveToNext()){
+                String testid = test_cursor.getString(test_cursor.getColumnIndex("testid"));
+                String testname = test_cursor.getString(test_cursor.getColumnIndex("testname"));
+                String testdday = test_cursor.getString(test_cursor.getColumnIndex("testdday"));
+                SubTestItem testitem = new SubTestItem(testid,testname,testdday);
+                testList.add(testitem);
+            }
+        }
+        test_cursor.close();
+        return testList;
+    }
+
+    public String insertTest (String _subid,String _testname,String _testdday){
+        String _id = give_id();
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO test VALUES('"+ _id+"','"+ _subid+"','" +_testname + "','" +_testdday+"');");
+        return _id;
+    }
+
     /// 여기부터 license table과 관련된 함수
-
-
 
     //SELECT 문 / LicenseFragment.java와 연결됨.
     public ArrayList<LicenseItem> getlicenselist(){
@@ -145,18 +232,18 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-    public String SearchStudytimeID(String _subid, String _licenseid){
+    public int SearchStudytimeID(String _subid, String _licenseid){
         SQLiteDatabase db1 = getReadableDatabase();
         Cursor cursor = db1.rawQuery("SELECT studytimeid FROM studytime " +
                 "where date ='"+give_Today()+"'and subid ='"+_subid+"' and licenseid ='"+_licenseid+"'",null);
 
         if(cursor.getCount()==0){
             cursor.close();
-            return null;
+            return 0;
         }else{
-            String id=null;
+            int id = 0;
             while(cursor.moveToNext()){
-                id = cursor.getString(cursor.getColumnIndex("studytimeid"));
+                id = cursor.getInt(cursor.getColumnIndex("studytimeid"));
             }
             cursor.close();
             return id;
@@ -164,22 +251,22 @@ public class DGUDB extends SQLiteOpenHelper {
 
     }
 
-    public String InsertStudyTime(String _subid, String _licenseid){
+    public int InsertStudyTime(String _subid, String _licenseid){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO studytime (subid ,licenseid, date, studytime) VALUES('"+ _subid+"','" +_licenseid + "','" +give_Today()+"','" +"00:00:00"+"');");
 
         SQLiteDatabase db1 = getReadableDatabase();
         Cursor cursor = db1.rawQuery("SELECT * FROM studytime",null);
-        String id=null;
+        int id=0;
         while(cursor.moveToNext()){
-             id= cursor.getString(cursor.getColumnIndex("studytimeid"));
-             Log.v("studytime id" , id);
+             id= cursor.getInt(cursor.getColumnIndex("studytimeid"));
+             Log.v("studytime id" , ""+id);
         }
         cursor.close();
         return id;
     }
 
-    public void UpdateStudyTime(String _studytimeid, String _studytime){
+    public void UpdateStudyTime(int _studytimeid, String _studytime){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE studytime SET studytime='"+_studytime+"' WHERE studytimeid = '"+_studytimeid+"'" );
     }
@@ -193,7 +280,8 @@ public class DGUDB extends SQLiteOpenHelper {
     }
 
     //이미 존재하는 행인지 아닌지 판단.
-    public String getStudytime(String _studytimeid){
+    public String getStudytime(int _studytimeid){
+        Log.v("getstudytime",""+_studytimeid);
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
                 "where studytimeid ='"+_studytimeid+"'",null);
@@ -236,19 +324,110 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-
-    //StopwatchToday와 연결
-    public String getStudyTime(String _date){
+    //studytimeid를 입력하면 subjectname이나 licensename을 출력한다.
+    public String getSubjectnameOrLicensename(int _studytimeid){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM studytime where date ='"+_date+"'",null);
-        String result = "00:00:00";
+        String result="";
+
+        //과목 또는 자격증이 삭제된 경우
+        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
+                "where studytimeid ='"+_studytimeid+"'and subid = '"+null+"'and licenseid = '"+null+"'",null);
+
         cursor.moveToNext();
         if(cursor.getCount()!=0){
-            result = cursor.getString(cursor.getColumnIndex("studytime"));
+            result= "삭제된 과목 또는 자격증입니다.";
+        }
+
+        //과목인경우
+        Cursor cursor1 = db.rawQuery("SELECT * FROM studytime " +
+                "where studytimeid ='"+_studytimeid+"'and licenseid = '"+null+"'",null);
+
+        cursor1.moveToNext();
+        if(cursor1.getCount()!=0){
+            //TODO 과목과 연결할것.
+            result= "과목,"+"과목연결안됨";
+        }
+
+        //자격증인 경우
+        Cursor cursor2 = db.rawQuery("SELECT * FROM studytime " +
+                "where studytimeid ='"+_studytimeid+"'and subid = '"+null+"'",null);
+
+        cursor2.moveToNext();
+        if(cursor2.getCount()!=0){
+            String licenseID = cursor2.getString(cursor2.getColumnIndex("licenseid"));
+            result= "자격증,"+getLicenseName(licenseID);
+        }
+
+        cursor.close();
+        cursor1.close();
+        cursor2.close();
+        return result;
+    }
+
+    //date를 입력하면 date와 같은 값을 가지는 행의 공부id string 배열을 출력한다.
+    public int[] getStudytimeIdArray(String _date){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
+                "where date ='"+_date+"'",null);
+
+        int result[] = new int[cursor.getCount()];
+        int i=0;
+        while(cursor.moveToNext()){
+            result[i] = cursor.getInt(cursor.getColumnIndex("studytimeid"));
+            i++;
+        }
+
+        cursor.close();
+        return result;
+    }
+
+
+    //timetable과 관련된 함수 시작
+    public void InsertTimeTable(String _timetableid, String _timetablecontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO timetable (timetableid , timetablecontent) VALUES('"+ _timetableid+"','" +_timetablecontent+"');");
+    }
+
+    public void UpdateTimeTable(String _timetableid, String _timetablecontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE timetable SET timetablecontent='"+_timetablecontent+"'" +
+                " WHERE timetableid = '"+_timetableid+"'" );
+    }
+
+    public void DeleteTimeTable(String _timetableid, String _timetablecontent){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //id를 기준으로 삭제하고자 하는 행을 찾은 후 삭제
+        db.execSQL("DELETE FROM timetable WHERE timetableid = '"+_timetableid+"'");
+    }
+
+    public String getTimeTableContent(String _timetableid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM timetable " +
+                "where timetableid = '"+_timetableid+"'",null);
+
+        String result="";
+        while(cursor.moveToNext()){
+            result = cursor.getString(cursor.getColumnIndex("timetablecontent"));
         }
         cursor.close();
         return result;
     }
+
+    //date를 입력하면 date와 같은 행이 존재하는지 알아보기, 존재하면 true, 존재하지 않으면 false
+    public boolean isExistTodayTimeTable(String _timetableid){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM timetable " +
+                "where timetableid = '"+_timetableid+"'",null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        if(count==0){ return false; }
+        else{return true;}
+    }
+
+
+
 
 
 }

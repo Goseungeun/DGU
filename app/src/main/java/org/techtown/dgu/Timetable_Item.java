@@ -5,12 +5,12 @@ import android.graphics.Color;
 public class Timetable_Item {
     int hour;
     int min;
-    Boolean study;
+    boolean study;
 
-    public Timetable_Item(int hour, int min){
+    public Timetable_Item(int hour, int min,boolean study){
         this.hour=hour;
         this.min=min;
-        this.study=false;
+        this.study=study;
     }
 
     public Boolean getStudy(){
