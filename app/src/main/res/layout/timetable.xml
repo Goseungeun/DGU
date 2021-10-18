@@ -67,21 +67,22 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="2"
-            android:orientation="horizontal">
+            android:background="#37AAB8A6"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <GridView
                 android:id="@+id/timetable_hourname"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:background="#37AAB8A6"
-                android:horizontalSpacing="1dp"
+                android:layout_margin="1dp"
                 android:numColumns="1"
-                android:verticalSpacing="1dp">
+                android:paddingRight="1dp">
 
             </GridView>
 
@@ -89,11 +90,9 @@
                 android:id="@+id/timetable_gridview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
-                android:background="#37AAB8A6"
-                android:horizontalSpacing="1dp"
-                android:numColumns="60"
-                android:verticalSpacing="1dp">
+                android:numColumns="60">
 
             </GridView>
 
