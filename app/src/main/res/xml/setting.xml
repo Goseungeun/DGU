@@ -4,31 +4,6 @@
     >
 
     <PreferenceCategory
-        app:key="notifications_category"
-        app:title="알림설정"
-        app:iconSpaceReserved="false">
-        <SwitchPreferenceCompat
-            app:key="vibrate"
-            app:title="진동 알림"
-            app:summaryOn="마감기한 하루 전에 진동으로 알림을 받습니다."
-            app:summaryOff="마감기한 하루 전에 진동으로 알림을 받지 않습니다."
-            app:defaultValue="true"
-            app:enabled="true"
-            app:iconSpaceReserved="false"/>
-
-        <SwitchPreferenceCompat
-            app:key="sound"
-            app:title="소리 알림"
-            app:summaryOn="마감기한 하루 전에 소리로 알림을 받습니다."
-            app:summaryOff="마감기한 하루 전에 소리로 알림을 받지 않습니다."
-            app:defaultValue="false"
-            app:enabled="true"
-            app:iconSpaceReserved="false"/>
-
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         app:key="project_summary"
         app:title="DGU"
         app:iconSpaceReserved="false">
