@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -41,6 +42,7 @@ public class StatsFragment extends Fragment {
         mDBHelper = new DGUDB(getContext());
 
 
+
         TextView month=view.findViewById(R.id.sta_month);
 
         //가장 많이한 공부
@@ -51,7 +53,9 @@ public class StatsFragment extends Fragment {
         TextView gold2 = view.findViewById(R.id.gold2);
         TextView silver2 = view.findViewById(R.id.silver2);
         TextView bronze2 = view.findViewById(R.id.bronze2);
-
+        ProgressBar goldprogress=view.findViewById(R.id.progressBargold);
+        ProgressBar silverprogress=view.findViewById(R.id.progressBarsilver);
+        ProgressBar bronzeprogress=view.findViewById(R.id.progressBarbronze);
 
         int mname[] = mDBHelper.getMostStudytimeIdArray();
 
@@ -60,20 +64,21 @@ public class StatsFragment extends Fragment {
 
             String studytime = mDBHelper.getStudytime(mname[i]);
 
+
             String str[] = mDBHelper.getSubjectnameOrLicensename(mname[i]).split(",");
             if(str[0]==null){ str[0]=""; str[1]="-";}
             if(i==0)
             {
                 gold.setText(str[1]);
-                gold2.setText("["+str[0]+"]");
+                gold2.setText(studytime);
             }
             else if(i==1){
                 silver.setText(str[1]);
-                silver2.setText("["+str[0]+"]");
+                silver2.setText(studytime);
             }
             else if(i==2) {
                 bronze.setText(str[1]);
-                bronze2.setText("["+str[0]+"]");
+                bronze2.setText(studytime);
             }
 
 
