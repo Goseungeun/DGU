@@ -60,13 +60,10 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                                 //수정하기
                                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.test_input);
-
                                 EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
                                 EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
-
                                 subtestNameInput.setText(subtest.getSubtestname());
                                 subtestDdayInput.setText(subtest.getTestDday());
-
                                 Button subtestbtn_ok=dialog.findViewById(R.id.subtestInputButton);
                                 subtestbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override
@@ -74,20 +71,13 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                                         //update table
                                         String subtestname=subtestNameInput.getText().toString();
                                         String subtestdday=subtestDdayInput.getText().toString();
-
-                                        String beforesubtestname=subtest.getSubtestname();
-
-                                        String currentTime=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                                        String id = subtest.getId();
-
+                                        String id=subtest.getId();
+                                        db.UpdateTest(id,subtestname,subtestdday);
                                         //update UI
                                         subtest.setSubtestname(subtestname);
                                         subtest.setTestDday(subtestdday);
-
                                         notifyItemChanged(curPos,subtest);
                                         dialog.dismiss();
-                                        Toast.makeText(mContext,"시험 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
-
                                     }
                                 });
 
@@ -96,7 +86,7 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                             else if(position==1){
                                 //delete table
                                 String id = subtest.getId();
-
+                                db.deleteTest(id);
                                 //delete UI
                                 subTestList.remove(curPos);
                                 notifyItemRemoved(curPos);
@@ -105,11 +95,8 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                         }
                     });
                     builder.show();
-
                 }
             });
-
-            ///
         }
     }
 
