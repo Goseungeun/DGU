@@ -247,6 +247,15 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
+    public String give_Yesterday(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(" SELECT strftime('%Y-%m-%d','now','localtime','-1 day');",null);
+        cursor.moveToNext();
+        String result = cursor.getString(0);
+        cursor.close();
+        return result;
+    }
+
     public int SearchStudytimeID(String _subid, String _licenseid){
         SQLiteDatabase db1 = getReadableDatabase();
         Cursor cursor = db1.rawQuery("SELECT studytimeid FROM studytime " +
