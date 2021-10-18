@@ -2,6 +2,7 @@ package org.techtown.dgu;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,16 +38,52 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.statsfragment, container, false);
+        mDBHelper = new DGUDB(getContext());
+
+
+        TextView month=view.findViewById(R.id.sta_month);
+
+        //가장 많이한 공부
         lineChart = view.findViewById(R.id.moststudytime);
         TextView gold = view.findViewById(R.id.gold);
         TextView silver = view.findViewById(R.id.silver);
         TextView bronze = view.findViewById(R.id.bronze);
+        TextView gold2 = view.findViewById(R.id.gold2);
+        TextView silver2 = view.findViewById(R.id.silver2);
+        TextView bronze2 = view.findViewById(R.id.bronze2);
 
-        gold.setText("C Programing");
-        silver.setText("Python");
-        bronze.setText("TOEIC");
+
+        int mname[] = mDBHelper.getMostStudytimeIdArray();
+
+        for (int i = 0; i < mname.length; i++) {
+            Log.v("StringIds", "i:" + i + ", name[i]:" + mname[i]);
+
+            String studytime = mDBHelper.getStudytime(mname[i]);
+
+            String str[] = mDBHelper.getSubjectnameOrLicensename(mname[i]).split(",");
+            if(str[0]==null){ str[0]=""; str[1]="-";}
+            if(i==0)
+            {
+                gold.setText(str[1]);
+                gold2.setText("["+str[0]+"]");
+            }
+            else if(i==1){
+                silver.setText(str[1]);
+                silver2.setText("["+str[0]+"]");
+            }
+            else if(i==2) {
+                bronze.setText(str[1]);
+                bronze2.setText("["+str[0]+"]");
+            }
 
 
+        }
+
+
+
+
+
+        //요일별 공부시간
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(1, 1));
         entries.add(new Entry(2, 5));
