@@ -130,8 +130,9 @@ public class StopwatchFragment extends Fragment {
         TimetableEndTime = System.currentTimeMillis();
         EndTimeString=LongToString(TimetableEndTime);
 
+        String today = DB.give_Today();
         //timetable 내용 업데이트
-        FillTimeTable();
+        FillTimeTable(today);
 
 
         //화면전환
@@ -157,6 +158,13 @@ public class StopwatchFragment extends Fragment {
                 setStudytimeid(DB.InsertStudyTime(subid,licenseid));
                 TimeBuff =  StringToLong(DB.getStudytime(getStudytimeid()));
                 TimeBuffTotal = StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
+                TimetableEndTime = System.currentTimeMillis();
+                EndTimeString=LongToString(TimetableEndTime);
+
+                String yesterday = DB.give_Yesterday();
+                FillTimeTable(yesterday);
+
+                StartTimeString = "00:00:00";
             }
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
@@ -224,19 +232,17 @@ public class StopwatchFragment extends Fragment {
         this.studytimeid = studytimeid;
     }
 
-    private void FillTimeTable() {
+    private void FillTimeTable(String date) {
 
-        //timetablecontent초기화
-        String today = DB.give_Today();
         int timetablecontent[] =new int[24*60];
-        if(!DB.isExistTodayTimeTable(today)){
+        if(!DB.isExistTodayTimeTable(date)){
             //timetable에 기존 값이 없는 경우
             for(int i=0;i<timetablecontent.length;i++){
                 timetablecontent[i]=0;
             }
-            DB.InsertTimeTable(today, Arrays.toString(timetablecontent));
+            DB.InsertTimeTable(date, Arrays.toString(timetablecontent));
         }else{
-            String [] timetablecontentStrings = DB.getTimeTableContent(today).replaceAll("\\[", "")
+            String [] timetablecontentStrings = DB.getTimeTableContent(date).replaceAll("\\[", "")
                     .replaceAll("]", "").replaceAll(" ","").split(",");
 
             for(int i=0;i<timetablecontentStrings.length;i++){
@@ -268,7 +274,7 @@ public class StopwatchFragment extends Fragment {
         }
 
 
-        DB.UpdateTimeTable(today, Arrays.toString(timetablecontent));
+        DB.UpdateTimeTable(date, Arrays.toString(timetablecontent));
     }
 
 }
