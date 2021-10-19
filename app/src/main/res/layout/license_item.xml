@@ -39,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="D-day"
+                android:textColor="@color/deepgreen"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -57,6 +58,7 @@
                     android:maxLength="9"
                     android:singleLine="true"
                     android:text="자격증 이름"
+                    android:textColor="@color/deepgreen"
                     android:textSize="24sp" />
 
                 <TextView
@@ -69,8 +71,10 @@
                     android:singleLine="true"
                     android:text="00:00:00"
                     android:textAllCaps="false"
+                    android:textColor="@color/deepgreen"
                     android:textIsSelectable="false"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

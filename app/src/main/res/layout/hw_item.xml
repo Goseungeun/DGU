@@ -18,7 +18,8 @@
         android:layout_marginLeft="20dp"
         android:layout_weight="4"
         android:singleLine="true"
-        android:text="과제 이름" />
+        android:text="과제 이름"
+        android:textColor="@color/deepgreen" />
 
     <TextView
         android:id="@+id/homeworkdday"
@@ -30,6 +31,7 @@
         android:gravity="right"
         android:inputType="date"
         android:text="D-DAY"
+        android:textColor="@color/deepgreen"
         android:textSize="18sp" />
 
   </LinearLayout>
