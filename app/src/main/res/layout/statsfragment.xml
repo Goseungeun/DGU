@@ -12,78 +12,93 @@
     tools:context=".StatsFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/leftbutton"
-            android:layout_width="30dp"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/leftarrow" />
+            android:gravity="center"
+            android:text="통계"
+            android:textColor="@color/deepgreen"
+            android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/sta_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="bottom"
-            android:text="0000"
-            android:textColor="@color/green"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:text="년"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/sta_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="00"
-            android:textColor="@color/green"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:text="월"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/rightbutton"
-            android:layout_width="30dp"
+        <View
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/rightarrow" />
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/leftbutton"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/leftarrow"
+                android:tint="@color/deepgreen" />
+
+            <TextView
+                android:id="@+id/sta_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="0000"
+                android:textColor="@color/green"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="년"
+                android:textColor="@color/deepgreen"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sta_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="8dp"
+                android:gravity="bottom"
+                android:text="00"
+                android:textColor="@color/green"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="10dp"
+                android:text="월"
+                android:textColor="@color/deepgreen"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/rightbutton"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/rightarrow"
+                android:tint="@color/deepgreen" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -105,34 +120,29 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/stats_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15dp">
 
                 <TextView
                     android:id="@+id/textView14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
                     android:background="@drawable/calendar_title"
                     android:gravity="center"
                     android:paddingLeft="15dp"
                     android:paddingTop="5dp"
                     android:paddingRight="15dp"
                     android:paddingBottom="5dp"
-                    android:text="가장 많이한 공부는?"
+                    android:text="공부시간 순위"
                     android:textColor="@color/white"
-                    android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
                 <LinearLayout
 
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -146,24 +156,23 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:weightSum="3">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_margin="0dp"
                             android:layout_marginEnd="12dp"
                             android:layout_marginRight="12dp"
-                            android:layout_weight="2"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/gold"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:textColor="@color/deepgreen"
                                 android:textSize="20sp"
@@ -171,14 +180,14 @@
 
                             <TextView
                                 android:id="@+id/gold2"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
                                 android:gravity="center_vertical|end"
                                 android:textColor="@color/deepgreen"
-                                android:textSize="20sp" />
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
 
@@ -186,12 +195,12 @@
                             android:id="@+id/progressBargold"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
-                            android:layout_weight="1"
                             android:clickable="false"
                             android:progress="100" />
                     </LinearLayout>
@@ -200,12 +209,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -219,25 +224,24 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:weightSum="3">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_margin="0dp"
                             android:layout_marginEnd="12dp"
                             android:layout_marginRight="12dp"
-                            android:layout_weight="2"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/silver"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:textColor="@color/deepgreen"
                                 android:textSize="20sp"
@@ -245,26 +249,26 @@
 
                             <TextView
                                 android:id="@+id/silver2"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
                                 android:gravity="center_vertical|end"
                                 android:textColor="@color/deepgreen"
-                                android:textSize="20sp" />
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <ProgressBar
                             android:id="@+id/progressBarsilver"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
-                            android:layout_weight="1"
                             android:clickable="false"
                             android:progress="100" />
                     </LinearLayout>
@@ -273,13 +277,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -292,25 +291,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:weightSum="3">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_margin="0dp"
                             android:layout_marginEnd="12dp"
                             android:layout_marginRight="12dp"
-                            android:layout_weight="2"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/bronze"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:textColor="@color/deepgreen"
                                 android:textSize="20sp"
@@ -318,26 +316,26 @@
 
                             <TextView
                                 android:id="@+id/bronze2"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginLeft="5dp"
-                                android:layout_weight="1"
                                 android:gravity="center_vertical|end"
                                 android:textColor="@color/deepgreen"
-                                android:textSize="20sp" />
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <ProgressBar
                             android:id="@+id/progressBarbronze"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
-                            android:layout_weight="1"
                             android:clickable="false"
                             android:progress="100" />
                     </LinearLayout>
@@ -351,14 +349,14 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/stats_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15dp">
 
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
                     android:background="@drawable/calendar_title"
                     android:gravity="center"
                     android:paddingLeft="15dp"
@@ -367,16 +365,14 @@
                     android:paddingBottom="5dp"
                     android:text="공부가 가장 잘되는 시간"
                     android:textColor="@color/white"
-                    android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/moststudytime"
                     android:layout_width="match_parent"
                     android:layout_height="234dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="10dp"></com.github.mikephil.charting.charts.LineChart>
+                    android:layout_marginTop="15dp"></com.github.mikephil.charting.charts.LineChart>
 
             </LinearLayout>
 
@@ -386,14 +382,14 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/stats_background"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15dp">
 
                 <TextView
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
                     android:background="@drawable/calendar_title"
                     android:gravity="center"
                     android:paddingLeft="15dp"
@@ -402,16 +398,14 @@
                     android:paddingBottom="5dp"
                     android:text="요일별 공부시간"
                     android:textColor="@color/white"
-                    android:textSize="21sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/dayofweekstatics"
                     android:layout_width="match_parent"
                     android:layout_height="234dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"></com.github.mikephil.charting.charts.LineChart>
+                    android:layout_marginTop="15dp"></com.github.mikephil.charting.charts.LineChart>
             </LinearLayout>
 
         </LinearLayout>
