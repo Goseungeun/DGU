@@ -38,10 +38,10 @@ public class GraphFragment extends Fragment {
     private LineChart chart;
 
     //학기 이름 담을 리스트
-    private String[] semesterName={"1-1", "1-2", "2-1", "2-2" , "3-1", "3-2", "4-1", "4-2"};
+    private String[] semesterName={"1-1", "1-2", "2-1", "2-2" , "3-1", "3-2", "4-1", "4-2","기타"};
 
     DGUDB DB;
-    int color;
+    int BackgrounColor, MainColor;
 
 
     @Override
@@ -49,7 +49,9 @@ public class GraphFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.graph,container,false);
 
         DB=new DGUDB(getContext());
-        color = getResources().getColor(R.color.deepgreen);
+        int yellow= Color.rgb(246,189,51);
+        BackgrounColor= getResources().getColor(R.color.deepgreen);
+        MainColor= yellow;
         chart = view.findViewById(R.id.graph_chart);
 
         //차트 데이터 넣어주기
@@ -66,7 +68,7 @@ public class GraphFragment extends Fragment {
 
         float score[] = DB.getGraph_gpa ();
 
-        //TODO 점수넣는곳
+        //점수넣는곳
         for (int i = 0; i < score.length; i++) {
             values.add(new Entry((float)i, score[i]));
         }
@@ -78,9 +80,9 @@ public class GraphFragment extends Fragment {
         set1.setLineWidth(1.75f);
         set1.setCircleRadius(5f);
         set1.setCircleHoleRadius(2.5f);
-        set1.setColor(Color.WHITE);
-        set1.setCircleColor(Color.WHITE);
-        set1.setHighLightColor(Color.WHITE);
+        set1.setColor(MainColor);
+        set1.setCircleColor(MainColor);
+        set1.setHighLightColor(MainColor);
         set1.setDrawValues(false);
 
         // set color of filled area
@@ -108,7 +110,7 @@ public class GraphFragment extends Fragment {
 
     private void setupChart(LineData data) {
 
-        ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(getResources().getColor(R.color.deepgreen));
+        ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(BackgrounColor);
 
         // no description text
         //아래에 조만하게 쓰인 글씨(설명)
@@ -150,10 +152,11 @@ public class GraphFragment extends Fragment {
         {
             XAxis xAxis = chart.getXAxis();
             xAxis.setTextSize(11f);
-            xAxis.setTextColor(Color.WHITE);
+            xAxis.setTextColor(MainColor);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             xAxis.setDrawGridLines(false);
             xAxis.setDrawAxisLine(false);
+
             // create a dataset and give it a type
 
             //X축에 넣을 말 정하기
@@ -168,12 +171,12 @@ public class GraphFragment extends Fragment {
         //Y축 꾸미기
         {
             YAxis leftAxis = chart.getAxisLeft();
-            leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-            leftAxis.setGridColor(Color.WHITE);
+            leftAxis.setTextColor(MainColor);
+            leftAxis.setGridColor(MainColor);
             leftAxis.setAxisMaximum(4.5f);
             leftAxis.setAxisMinimum(0f);
             leftAxis.setDrawGridLines(true);
-
+            leftAxis.setDrawAxisLine(false);
 
             leftAxis.setGranularityEnabled(true);
 

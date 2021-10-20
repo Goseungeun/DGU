@@ -10,101 +10,169 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp">
 
-            <Button
+            <TextView
                 android:id="@+id/button1_1"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="1-1" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="1-1"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button1_2"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="1-2" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="1-2"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button2_1"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="2-1" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="2-1"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button2_2"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="2-2" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="2-2"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button3_1"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="3-1" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="3-1"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button3_2"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="3-2" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="3-2"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button4_1"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="4-1" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="4-1"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button4_2"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="4-2" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="4-2"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/button_etc"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:text="기타" />
+                android:background="@drawable/calendar_title"
+                android:paddingLeft="25dp"
+                android:paddingTop="10dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="10dp"
+                android:text="기타"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </LinearLayout>
     </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
@@ -141,7 +209,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
@@ -181,48 +253,51 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:orientation="vertical">
+
+        <GridLayout
+            android:id="@+id/g_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@color/green"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:orientation="horizontal">
 
-            <GridLayout
-                android:id="@+id/g_table"
-                android:layout_width="match_parent"
+            <View
+                android:id="@+id/view2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/green"
-                android:horizontalSpacing="1dp"
-                android:verticalSpacing="1dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/calendar_border"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp"
-                    android:text="저장"
-                    android:textColor="@color/deepgreen" />
-            </LinearLayout>
+                android:background="@drawable/calendar_border"
+                android:paddingLeft="15dp"
+                android:paddingTop="5dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="5dp"
+                android:text="저장"
+                android:textColor="@color/deepgreen" />
         </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

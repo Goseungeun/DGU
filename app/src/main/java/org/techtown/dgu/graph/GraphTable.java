@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +56,7 @@ public class GraphTable extends Fragment {
 
 
     //학기 버튼 (가로스크롤바)
-    private Button[] semester = new Button[SEMESTER_NUM];
+    private TextView[] semester = new TextView[SEMESTER_NUM];
     Integer[] semesterButtonIDs = {
             R.id.button1_1, R.id.button1_2 , R.id.button2_1, R.id.button2_2,
             R.id.button3_1, R.id.button3_2, R.id.button4_1, R.id.button4_2, R.id.button_etc
