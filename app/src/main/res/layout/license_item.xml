@@ -10,10 +10,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="87dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:background="@drawable/calendar_border"
-        android:padding="10dp">
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="17dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="17dp">
 
         <ImageView
             android:id="@+id/startbutton_lic"

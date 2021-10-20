@@ -14,7 +14,7 @@
         android:background="@drawable/calendar_border"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingTop="15dp"
+        android:paddingTop="17dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp">
 
