@@ -49,9 +49,8 @@ public class GraphFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.graph,container,false);
 
         DB=new DGUDB(getContext());
-        int yellow= Color.rgb(246,189,51);
         BackgrounColor= getResources().getColor(R.color.deepgreen);
-        MainColor= yellow;
+        MainColor= getResources().getColor(R.color.background);
         chart = view.findViewById(R.id.graph_chart);
 
         //차트 데이터 넣어주기
@@ -173,6 +172,7 @@ public class GraphFragment extends Fragment {
             YAxis leftAxis = chart.getAxisLeft();
             leftAxis.setTextColor(MainColor);
             leftAxis.setGridColor(MainColor);
+            leftAxis.enableGridDashedLine(10f, 10f, 0f);
             leftAxis.setAxisMaximum(4.5f);
             leftAxis.setAxisMinimum(0f);
             leftAxis.setDrawGridLines(true);
@@ -181,8 +181,6 @@ public class GraphFragment extends Fragment {
             leftAxis.setGranularityEnabled(true);
 
             leftAxis.setEnabled(true);
-            leftAxis.setSpaceTop(40);
-            leftAxis.setSpaceBottom(140);
             chart.getAxisRight().setEnabled(false);
         }
 
