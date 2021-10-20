@@ -7,17 +7,16 @@
 
   <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="46dp"
-      android:weightSum="7">
+      android:layout_height="46dp">
 
     <TextView
         android:id="@+id/subtestname"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_weight="5"
-        android:gravity="center_vertical"
+        android:layout_weight="1"
         android:singleLine="true"
         android:text="시험 이름"
         android:textColor="@color/deepgreen"
@@ -25,15 +24,15 @@
 
     <TextView
         android:id="@+id/subtestdday"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:layout_weight="2"
         android:gravity="right"
         android:singleLine="true"
-        android:text="D-Day"
-        android:textColor="@color/deepgreen"
+        android:text="D-DAY"
+        android:textColor="@color/green"
         android:textSize="18sp" />
   </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -8,30 +8,28 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:weightSum="6">
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp">
 
     <CheckBox
         android:id="@+id/homeworkname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_weight="4"
+        android:layout_weight="1"
         android:singleLine="true"
         android:text="과제 이름"
-        android:textColor="@color/deepgreen" />
+        android:textColor="@color/deepgreen"
+        android:textSize="18sp"
+        app:buttonTint="@color/deepgreen" />
 
     <TextView
         android:id="@+id/homeworkdday"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="2"
         android:gravity="right"
         android:inputType="date"
         android:text="D-DAY"
-        android:textColor="@color/deepgreen"
+        android:textColor="@color/green"
         android:textSize="18sp" />
 
   </LinearLayout>
