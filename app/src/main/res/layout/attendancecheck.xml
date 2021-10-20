@@ -8,7 +8,9 @@
     android:background="#00FFFFFF"
     android:gravity="right"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp"
     tools:context=".subject.AttendanceCheckFragment">
 
     <LinearLayout
