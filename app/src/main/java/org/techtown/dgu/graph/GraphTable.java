@@ -433,7 +433,7 @@ public class GraphTable extends Fragment {
                         selectedItems.add(which);   //선택한 항목을 selectedItem에 집어넣는다.
                     }
                 });
-        builder.setPositiveButton("Save",
+        builder.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
