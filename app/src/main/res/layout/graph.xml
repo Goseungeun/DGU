@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingLeft="20dp"
@@ -25,20 +25,37 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="성적 그래프"
-                android:textColor="@color/deepgreen"
-                android:textSize="24sp" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/graph_chart"
-                android:layout_width="match_parent"
-                android:layout_height="234dp"
-                android:layout_gravity="center"
+                android:layout_margin="22dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
 
-            </com.github.mikephil.charting.charts.LineChart>
+                android:layout_marginBottom="10dp"
+                android:text="성적 관리"
+                android:textColor="@color/deepgreen"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/calendar_title"
+                android:padding="10dp">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/graph_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                </com.github.mikephil.charting.charts.LineChart>
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="fill_parent"
