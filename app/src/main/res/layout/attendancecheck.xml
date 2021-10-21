@@ -8,11 +8,15 @@
     android:background="#00FFFFFF"
     android:gravity="right"
     android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp"
     tools:context=".subject.AttendanceCheckFragment">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="74dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <ImageButton
@@ -20,7 +24,6 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
             android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/arrow"
@@ -56,8 +59,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
             android:layout_weight="0"
             android:orientation="horizontal">
 
@@ -68,7 +69,6 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="0"
-                android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="출석 :"
                 android:textColor="@color/deepgreen"
@@ -152,9 +152,7 @@
         android:id="@+id/actable_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="22dp"
-        android:paddingRight="22dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/check_result"
@@ -179,8 +177,7 @@
                     android:id="@+id/check_table"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/green"
-                    >
+                    android:background="@color/green">
 
                 </GridLayout>
             </LinearLayout>

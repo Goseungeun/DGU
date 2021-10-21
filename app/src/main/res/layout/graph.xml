@@ -6,6 +6,9 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp"
     tools:context=".graph.GraphFragment">
 
 
@@ -22,8 +25,10 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_margin="22dp"
                 android:layout_marginTop="10dp"
+
                 android:layout_marginBottom="10dp"
                 android:text="성적 관리"
                 android:textColor="@color/deepgreen"
