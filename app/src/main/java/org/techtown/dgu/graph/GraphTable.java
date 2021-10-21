@@ -48,9 +48,8 @@ public class GraphTable extends Fragment {
     private TextView[] score=new TextView[ROW];                                     //column 기준 2 = 성적
     private String[] scorelist=new String[ROW];                                     //성적에 들어갈 값들
     private TextView Tv_semester;                                                   //학기를 나타내 주는 Textview
-    private TextView Tv_semester_score;                                             //학기 평균 학점을 나타내 주는 Textview
+    private TextView Tv_semester_score, Tv_semester_grades;                                             //학기 평점, 학점을 나타내 주는 Textview
     private float[] semester_score_list=new float[SEMESTER_NUM];                    //각 학기별 평균 학점을 저장할 doubldlist
-    private TextView Tv_total_score;                                                //전체 평균학점을 나타내 주는 Textview
     private TextView save;                                                          //저장버튼
     private int cur_semester_index=0;                                                 //현재 표시해야할 semester의 index값이 무엇인지.
     private TextView Tv_Import_subject;                                             //과목 불러오기 버튼
@@ -71,6 +70,9 @@ public class GraphTable extends Fragment {
         this.cur_semester_index=_index;
     }
 
+    public String[] getSemesterName(){
+        return semesterName;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -83,7 +85,7 @@ public class GraphTable extends Fragment {
         table.setRowCount(ROW+1);
 
         Tv_semester_score=view.findViewById(R.id.semester_score);
-        Tv_total_score=view.findViewById(R.id.total_score);
+        Tv_semester_grades=view.findViewById(R.id.semester_grades);
 
         //현재 표시해야할 semester의 index값 초기화
         //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
@@ -192,27 +194,17 @@ public class GraphTable extends Fragment {
 
     private void CalculateGPA() {
 
-        //학기 평균 학점 계산하기
+        //학기 평점 계산하기
         semester_score_list[cur_semester_index] = (float)(Math.round(DB.CalculateGPA(semesterName[cur_semester_index])*100)/100.0);
         DB.Updategraph(semesterName[cur_semester_index],semester_score_list[cur_semester_index]);
 
-        //학기 평균 학점 보여주기
-        Tv_semester_score.setText("학기 평균 학점 : "+semester_score_list[cur_semester_index]+"점");
+        //학기 평점 보여주기
+        Tv_semester_score.setText("평점 : "+semester_score_list[cur_semester_index]);
 
-        //전체 평균 학점 계산하기
-        double total_score=0.0;
+        //학기 학점 보여주기
+        Tv_semester_grades.setText("학점 : "+DB.getSemesterGrades(semesterName[cur_semester_index]));
 
-        double sum_of_m_credit_times_m_score=0.0;
-        double sum_of_m_credit=0.0;
-        for(int i=0;i<semesterName.length;i++){
-            sum_of_m_credit_times_m_score+=DB.sum_Of_m_credit_times_m_score(semesterName[i]);
-            sum_of_m_credit+=DB.sum_Of_m_credit(semesterName[i]);
-        }
-        if(sum_of_m_credit!=0.0&&sum_of_m_credit_times_m_score!=0.0){
-            total_score=sum_of_m_credit_times_m_score/sum_of_m_credit;
-        }
-        //전체 평균 학점 보여주기
-        Tv_total_score.setText("전체 평균 학점 : "+Math.round(total_score*100)/100.0+"점");
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

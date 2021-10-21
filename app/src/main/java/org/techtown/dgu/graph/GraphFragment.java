@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -40,8 +41,10 @@ public class GraphFragment extends Fragment {
     //학기 이름 담을 리스트
     private String[] semesterName={"1-1", "1-2", "2-1", "2-2" , "3-1", "3-2", "4-1", "4-2","기타"};
 
-    DGUDB DB;
-    int BackgrounColor, MainColor;
+    private DGUDB DB;
+    private int BackgrounColor, MainColor;
+    private TextView Tv_total_score;
+    private TextView Tv_total_grades;
 
 
     @Override
@@ -52,6 +55,8 @@ public class GraphFragment extends Fragment {
         BackgrounColor= getResources().getColor(R.color.deepgreen);
         MainColor= getResources().getColor(R.color.background);
         chart = view.findViewById(R.id.graph_chart);
+        Tv_total_score=view.findViewById(R.id.total_score);
+        Tv_total_grades=view.findViewById(R.id.total_grades);
 
         //차트 데이터 넣어주기
         LineData lineData = getData();
@@ -59,7 +64,19 @@ public class GraphFragment extends Fragment {
         //차트 꾸미기
         setupChart(lineData);
 
+        //평점, 학점 계산
+        CalculateGPA();
+
         return view;
+    }
+
+    private void CalculateGPA() {
+
+        //전체 평점 보여주기
+        Tv_total_score.setText(""+(float)(Math.round(DB.CalculatetotalGPA()*100)/100.0));
+
+        //전체 학점 보여주기
+        Tv_total_grades.setText(""+DB.getTotalGrades());
     }
 
     private LineData getData() {

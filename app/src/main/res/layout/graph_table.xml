@@ -190,7 +190,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="22dp"
         android:layout_marginRight="22dp"
-        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -208,16 +207,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Import_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/calendar_border"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:paddingLeft="15dp"
-            android:paddingTop="5dp"
+            android:paddingTop="7dp"
             android:paddingRight="15dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="7dp"
             android:text="과목 불러오기"
             android:textColor="@color/deepgreen" />
 
@@ -228,7 +230,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="22dp"
         android:layout_marginRight="22dp"
         android:layout_marginBottom="10dp"
@@ -240,12 +241,13 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
+
             <TextView
-                android:id="@+id/total_score"
-                android:layout_width="wrap_content"
+                android:id="@+id/semester_score"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="전체 평균학점 : 0.00점"
+                android:text="평점 : 0.00"
                 android:textColor="@color/deepgreen" />
 
             <View
@@ -256,13 +258,12 @@
                 android:layout_marginRight="10dp"
                 android:background="#37AAB8A6" />
 
-
             <TextView
-                android:id="@+id/semester_score"
-                android:layout_width="wrap_content"
+                android:id="@+id/semester_grades"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="학기 평균 학점 : 0.00점"
+                android:text="학점 : 00"
                 android:textColor="@color/deepgreen" />
 
         </LinearLayout>
@@ -305,10 +306,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/calendar_border"
+                android:includeFontPadding="false"
                 android:paddingLeft="15dp"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:paddingRight="15dp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="7dp"
                 android:text="저장"
                 android:textColor="@color/deepgreen" />
         </LinearLayout>
