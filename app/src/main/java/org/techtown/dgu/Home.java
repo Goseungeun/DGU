@@ -54,6 +54,7 @@ public class Home extends Fragment {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         String date = format.format(Calendar.getInstance().getTime());
 
+        //월 총 공부시간
         TextView homeMonthTotalStudytime= view.findViewById(R.id.homeMonthTotalStudytime);
         String homeMonthTotalStudytimeText = DB.MonthTotalStudyTime
                 (date+"-01",
@@ -63,6 +64,9 @@ public class Home extends Fragment {
         }else{
             homeMonthTotalStudytime.setText("00:00:00");
         }
+
+        //전날대비 공부량 비교
+
 
 
 
