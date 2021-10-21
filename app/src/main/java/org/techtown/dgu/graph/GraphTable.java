@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.techtown.dgu.DGUDB;
@@ -51,7 +52,7 @@ public class GraphTable extends Fragment {
     private float[] semester_score_list=new float[SEMESTER_NUM];                    //각 학기별 평균 학점을 저장할 doubldlist
     private TextView Tv_total_score;                                                //전체 평균학점을 나타내 주는 Textview
     private TextView save;                                                          //저장버튼
-    private int cur_semester_index;                                                 //현재 표시해야할 semester의 index값이 무엇인지.
+    private int cur_semester_index=0;                                                 //현재 표시해야할 semester의 index값이 무엇인지.
     private TextView Tv_Import_subject;                                             //과목 불러오기 버튼
 
 
@@ -64,7 +65,11 @@ public class GraphTable extends Fragment {
 
     DGUDB DB;           //DB
 
-    private String[] semesterName = new String[SEMESTER_NUM];                         //학기 이름(db table 이름)
+    private String[] semesterName = new String[SEMESTER_NUM];//학기 이름(db table 이름)
+
+    public void setCur_semester_index(int _index){
+        this.cur_semester_index=_index;
+    }
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -73,8 +78,7 @@ public class GraphTable extends Fragment {
         view = (ViewGroup) inflater.inflate(R.layout.graph_table, container,false);
         DB = new DGUDB(getContext());
 
-
-        table=(GridLayout)view.findViewById(R.id.g_table);
+        table=view.findViewById(R.id.g_table);
         table.setColumnCount(COLUMN);
         table.setRowCount(ROW+1);
 
@@ -83,7 +87,6 @@ public class GraphTable extends Fragment {
 
         //현재 표시해야할 semester의 index값 초기화
         //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
-        cur_semester_index=0;
         for (int i=0;i<semesterButtonIDs.length;i++){
             semester[i]=view.findViewById(semesterButtonIDs[i]);
             semesterName[i]=semester[i].getText().toString();
@@ -95,7 +98,6 @@ public class GraphTable extends Fragment {
 
         }
 
-
         //table 초기화
         init_table(table);
 
@@ -103,7 +105,9 @@ public class GraphTable extends Fragment {
         Tv_semester = view.findViewById(R.id.tv_semester);
 
         //학기 버튼 연결
-        semesterButtonConnection();
+        for (int i=0;i<semesterButtonIDs.length;i++){
+            semesterButtonConnection(semester[i]);
+        }
 
         //각 학기별 평균 학점을 저장할 doubldlist 초기화
         init_semester_score_list();
@@ -153,9 +157,6 @@ public class GraphTable extends Fragment {
     private void saveButtonAction() {
         save = view.findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
-
-            //delete를 했는지 안했는지 표시해주는 상태 값 (0:안함 , 1: 한번이상 함)
-            int state_delete = 0;
             @Override
             public void onClick(View v) {
 
@@ -351,36 +352,46 @@ public class GraphTable extends Fragment {
     }
 
     //학기 버튼 연결
-    private void semesterButtonConnection() {
-        for (int i=0;i<semesterButtonIDs.length;i++){
+    private void semesterButtonConnection(TextView _semester) {
 
             //학기 버튼을 누르면 table 채워지도록
-            int finalI = i;
-            semester[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //현재 표시해야할 semester의 index값
-                    //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타학기
-                    cur_semester_index=finalI;
+        _semester.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    //학기 버튼에 따라 몇학년 몇학기인지 표시하기
-                    String semester_name;
-                    if(finalI==8){
-                        //기타학기인 경우
-                        semester_name="기타 학기";
+                //눌린것만 색깔 바꾸기
+                for(int i=0;i<semester.length;i++){
+                    if(semester[i]==_semester){
+                        //눌린거
+                        setCur_semester_index(i);
+                        semester[i].setBackground(ContextCompat.getDrawable(getContext(), R.drawable.calendar_title));
+                        semester[i].setTextColor(Color.WHITE);
                     }else{
-                        semester_name= (String) ""+semester[finalI].getText().charAt(0)+"학년 "+semester[finalI].getText().charAt(2)+"학기";
+                        //안눌린거
+                        semester[i].setBackground(ContextCompat.getDrawable(getContext(), R.drawable.calendar_border));
+                        semester[i].setTextColor(getResources().getColor(R.color.deepgreen));
                     }
-                    Tv_semester.setText(semester_name);
-
-                    //학기 버튼에 따라 디비 불러오기
-                    DB.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
-
-                    //학기 버튼에 따라 평균학점들 달라지게
-                    CalculateGPA();
                 }
-            });
-        }
+
+                //현재 표시해야할 semester의 index값
+                //0: 1-1, 1: 1-2, 2: 2-1, 3: 2-2 , 4:3-1, 5:3-2, 6:4-1, 7:4-2, 8:기타
+                //학기 버튼에 따라 몇학년 몇학기인지 표시하기
+                String semester_name;
+                if(_semester.getId()==R.id.button_etc){
+                    //기타학기인 경우
+                    semester_name="기타 학기";
+                }else{
+                    semester_name=""+_semester.getText().charAt(0)+"학년 "+_semester.getText().charAt(2)+"학기";
+                }
+                Tv_semester.setText(semester_name);
+
+                //학기 버튼에 따라 디비 불러오기
+                DB.ViewGraphTable(semesterName[cur_semester_index],subject_name,credit,score);
+
+                //학기 버튼에 따라 평균학점들 달라지게
+                CalculateGPA();
+            }
+        });
     }
 
 

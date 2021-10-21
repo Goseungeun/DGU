@@ -6,9 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp"
     tools:context=".graph.GraphFragment">
 
 
@@ -25,11 +22,11 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_margin="22dp"
-                android:layout_marginTop="10dp"
-
-                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:text="성적 관리"
                 android:textColor="@color/deepgreen"
                 android:textSize="24sp"
@@ -39,10 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="22dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginRight="22dp"
+                android:layout_margin="20dp"
                 android:background="@drawable/calendar_title"
                 android:padding="10dp">
 
@@ -60,8 +54,7 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="20dp">
 
                 <fragment
                     android:id="@+id/setting_container"
