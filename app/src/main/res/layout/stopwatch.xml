@@ -7,7 +7,8 @@
     android:background="@color/green"
     android:gravity="center"
     android:orientation="vertical"
-    app:layout_anchorGravity="center">
+    app:layout_anchorGravity="center"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/textView22"
@@ -32,7 +33,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="40dp"
-        android:tint="@color/white"
+        app:tint="@color/white"
         app:srcCompat="@drawable/pause" />
 
     <LinearLayout
@@ -113,7 +114,7 @@
 
             <TextView
                 android:id="@+id/stopwatchEachName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"

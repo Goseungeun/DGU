@@ -7,14 +7,17 @@
     android:orientation="vertical"
     android:id="@+id/activity_main_frame"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity">
+    android:clickable="true"
+    tools:context=".MainActivity"
+    >
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+>
 
         <FrameLayout
             android:id="@+id/container"

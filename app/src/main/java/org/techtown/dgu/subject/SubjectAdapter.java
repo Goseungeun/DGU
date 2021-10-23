@@ -175,7 +175,7 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
 
                     AppCompatActivity activity = (AppCompatActivity)itemView.getContext();
                     StopwatchFragment fragment = new StopwatchFragment(item.getId(),null);
-                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment).commit();
+                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.activity_main_frame,fragment,"StopwatchFragment").commit();
 
                     notifyItemChanged(cusPos,item);
                 }
