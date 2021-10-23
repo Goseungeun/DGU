@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -128,10 +129,18 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                 testInputBtn_ok.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        String sub_id = subItem.getId();
-                        SubTestItem testItem=new SubTestItem(subtestNameInput.getText().toString(),testdday);
-                        testAdapter.addtestItem(sub_id,testItem);
-                        dialog.dismiss();
+                        //시험명 또는 시험일자가 비어있으면 저장되지 않게
+                        String subtestNameInputString=subtestNameInput.getText().toString();
+                        if(!(subtestNameInputString.equals("")||testdday.equals(""))){
+                            String sub_id = subItem.getId();
+                            SubTestItem testItem=new SubTestItem(subtestNameInputString,testdday);
+                            testAdapter.addtestItem(sub_id,testItem);
+                            testdday = "";
+                            dialog.dismiss();
+                        }else{
+                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
 

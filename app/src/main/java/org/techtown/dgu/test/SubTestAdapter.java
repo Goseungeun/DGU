@@ -131,14 +131,19 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                                     @Override
                                     public void onClick(View v){
                                         //update table
-                                        String subtestname=subtestNameInput.getText().toString();
-                                        String id=subtest.getId();
-                                        db.UpdateTest(id,subtestname,testdday);
-                                        //update UI
-                                        subtest.setSubtestname(subtestname);
-                                        subtest.setTestDday(testdday);
-                                        notifyItemChanged(curPos,subtest);
-                                        dialog.dismiss();
+                                        //시험명 또는 시험일자가 비어있으면 저장되지 않게
+                                        String subtestNameInputString=subtestNameInput.getText().toString();
+                                        if(!(subtestNameInputString.equals("")||testdday.equals(""))) {
+                                            String id = subtest.getId();
+                                            db.UpdateTest(id, subtestNameInputString, testdday);
+                                            //update UI
+                                            subtest.setSubtestname(subtestNameInputString);
+                                            subtest.setTestDday(testdday);
+                                            notifyItemChanged(curPos, subtest);
+                                            dialog.dismiss();
+                                        }else{
+                                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
 
