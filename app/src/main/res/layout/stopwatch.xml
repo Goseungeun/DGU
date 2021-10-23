@@ -7,7 +7,8 @@
     android:background="@color/green"
     android:gravity="center"
     android:orientation="vertical"
-    app:layout_anchorGravity="center">
+    app:layout_anchorGravity="center"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/textView22"
