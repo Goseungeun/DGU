@@ -84,15 +84,38 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                 dialog.setContentView(R.layout.homework_input);
                 EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
-                EditText homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
+                TextView homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
                 Button homeworkInputBtn_ok=dialog.findViewById(R.id.homeworkInputButton);
+
+                homeworkDdayInput.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar calendar = Calendar.getInstance();
+                        DatePickerDialog pickerDialog = new DatePickerDialog(mContext,  new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                homeworkDdayInput.setText(""+year+"년 "+(monthOfYear+1)+"월 "+dayOfMonth+"일");
+                                hwdday = ""+year+String.format("%02d", monthOfYear+1)+String.format("%02d", dayOfMonth);
+                            }
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), (calendar.get(Calendar.DAY_OF_MONTH)));
+
+                        pickerDialog.show();
+                    }
+                });
+
                 homeworkInputBtn_ok.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        String sub_id = subItem.getId();
-                        homework hwItem=new homework(homeworkNameInput.getText().toString(),homeworkDdayInput.getText().toString());
-                        hwAdapter.addhwItem(sub_id,hwItem);
-                        dialog.dismiss();
+                        //과제명 또는 제출일자가 비어있으면 저장되지 않게
+                        String homeworkNameInputString=homeworkNameInput.getText().toString();
+                        if(!(homeworkNameInputString.equals("")||hwdday.equals(""))) {
+                            String sub_id = subItem.getId();
+                            homework hwItem = new homework(homeworkNameInputString,hwdday);
+                            hwAdapter.addhwItem(sub_id, hwItem);
+                            hwdday="";
+                            dialog.dismiss();
+                        }else{
+                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

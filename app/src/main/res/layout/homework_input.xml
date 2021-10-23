@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:text="과제"
+                android:text="과제명"
                 android:textColor="@color/deepgreen"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -61,7 +61,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:id="@+id/homeworkDdayInput"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
