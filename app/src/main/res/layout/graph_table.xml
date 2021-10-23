@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     android:orientation="vertical">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -29,13 +28,15 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/calendar_title"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="1-1"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button1_2"
@@ -44,14 +45,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="1-2"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button2_1"
@@ -60,14 +63,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="2-1"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button2_2"
@@ -76,14 +81,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="2-2"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button3_1"
@@ -92,14 +99,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="3-1"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button3_2"
@@ -108,14 +117,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="3-2"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button4_1"
@@ -124,14 +135,16 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="4-1"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button4_2"
@@ -140,28 +153,32 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="4-2"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/button_etc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/calendar_title"
+                android:background="@drawable/calendar_border"
+                android:duplicateParentState="false"
                 android:paddingLeft="25dp"
                 android:paddingTop="10dp"
                 android:paddingRight="25dp"
                 android:paddingBottom="10dp"
                 android:text="기타"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textColor="@color/deepgreen"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -173,7 +190,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="22dp"
         android:layout_marginRight="22dp"
-        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <TextView
@@ -191,19 +207,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/Import_subject"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/calendar_border"
-            android:paddingLeft="15dp"
-            android:paddingTop="5dp"
-            android:paddingRight="15dp"
-            android:paddingBottom="5dp"
-            android:text="과목 불러오기"
-            android:textColor="@color/deepgreen" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -211,24 +214,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="22dp"
         android:layout_marginRight="22dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:orientation="horizontal">
 
+
             <TextView
-                android:id="@+id/total_score"
+                android:id="@+id/semester_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="전체 평균학점 : 0.00점"
+                android:text="평점 : 0.00"
                 android:textColor="@color/deepgreen" />
 
             <View
@@ -239,27 +241,47 @@
                 android:layout_marginRight="10dp"
                 android:background="#37AAB8A6" />
 
-
             <TextView
-                android:id="@+id/semester_score"
+                android:id="@+id/semester_grades"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="학기 평균 학점 : 0.00점"
+                android:text="학점 : 00"
                 android:textColor="@color/deepgreen" />
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/Import_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/calendar_border"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="7dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="7dp"
+            android:text="과목 불러오기"
+            android:textColor="@color/deepgreen" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
         android:layout_marginEnd="22dp"
-        android:layout_marginRight="22dp"
         android:orientation="vertical">
 
         <GridLayout
@@ -274,7 +296,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="22dp"
             android:orientation="horizontal">
 
             <View
@@ -291,10 +312,11 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/calendar_border"
+                android:includeFontPadding="false"
                 android:paddingLeft="15dp"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:paddingRight="15dp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="7dp"
                 android:text="저장"
                 android:textColor="@color/deepgreen" />
         </LinearLayout>
