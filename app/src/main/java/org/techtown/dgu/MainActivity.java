@@ -1,9 +1,11 @@
 package org.techtown.dgu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     org.techtown.dgu.Home home;
     LicenseFragment license;
     StatsFragment statsfragment;
+    long waitTime = 0L;
 
     String category="category";
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
      /*   // 날짜를 출력하는 텍스트뷰에 오늘 날짜 설정.
         TextView tv = findViewById(R.id.editTextDate);
         Calendar cal = Calendar.getInstance();
@@ -163,6 +167,25 @@ public class MainActivity extends AppCompatActivity {
         this.dayBundle=bundle;
     }
 
+
+
+    @Override
+    public void onBackPressed() {
+        //stopwatch에서 뒤로가기 버튼 막기
+        StopwatchFragment fragment1 = (StopwatchFragment) getSupportFragmentManager().findFragmentByTag("StopwatchFragment");
+        if (fragment1 != null){
+            if(System.currentTimeMillis() - waitTime >=1500 ) {
+                waitTime = System.currentTimeMillis();
+                Toast.makeText(getApplicationContext(),"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+            } else {
+                finish(); // 액티비티 종료
+            }
+        }
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            Toast.makeText(getApplicationContext(),"시간 측정 중에는 뒤로 갈 수 없습니다.", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
 }

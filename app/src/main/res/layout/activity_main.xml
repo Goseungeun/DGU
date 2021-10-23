@@ -8,6 +8,7 @@
     android:id="@+id/activity_main_frame"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:clickable="true"
+    tools:context=".MainActivity"
     >
 
 
@@ -16,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+>
 
         <FrameLayout
             android:id="@+id/container"
