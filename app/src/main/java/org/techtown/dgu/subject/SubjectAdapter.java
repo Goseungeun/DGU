@@ -2,6 +2,7 @@ package org.techtown.dgu.subject;
 
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,16 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.MainActivity;
@@ -27,16 +26,11 @@ import org.techtown.dgu.R;
 import org.techtown.dgu.StopwatchFragment;
 import org.techtown.dgu.homework.homework;
 import org.techtown.dgu.homework.homeworkAdapter;
-import org.techtown.dgu.homework.homework_DB;
-import org.techtown.dgu.studylicense.LicenseItem;
 import org.techtown.dgu.test.SubTestItem;
 import org.techtown.dgu.test.SubTestAdapter;
-import org.techtown.dgu.test.SubTest_DB;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 import static java.lang.Integer.parseInt;
 
@@ -47,8 +41,9 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
     ArrayList<homework> homeworkList;
     ArrayList<SubTestItem> subTestList;
     private DGUDB db;
+    String testdday = "";
 
-    
+
     public SubjectAdapter(Context context, ArrayList<SubjectItem> subList){
         this.subList = subList;
         this.mContext = context;
@@ -111,13 +106,30 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                 dialog.setContentView(R.layout.test_input);
                 EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
-                EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
+                TextView subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
                 Button testInputBtn_ok=dialog.findViewById(R.id.subtestInputButton);
+
+                subtestDdayInput.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar calendar = Calendar.getInstance();
+                        DatePickerDialog pickerDialog = new DatePickerDialog(mContext,  new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                subtestDdayInput.setText(""+year+"년 "+(monthOfYear+1)+"월 "+dayOfMonth+"일");
+                                testdday = ""+year+String.format("%02d", monthOfYear+1)+String.format("%02d", dayOfMonth);
+                            }
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), (calendar.get(Calendar.DAY_OF_MONTH)));
+
+                        pickerDialog.show();
+                    }
+                });
+
+
                 testInputBtn_ok.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
                         String sub_id = subItem.getId();
-                        SubTestItem testItem=new SubTestItem(subtestNameInput.getText().toString(),subtestDdayInput.getText().toString());
+                        SubTestItem testItem=new SubTestItem(subtestNameInput.getText().toString(),testdday);
                         testAdapter.addtestItem(sub_id,testItem);
                         dialog.dismiss();
                     }
