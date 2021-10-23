@@ -17,6 +17,15 @@ public class homework {
         this.hwDday = hwDday;
     }
 
+    public String getViewdday() {
+        return Viewdday;
+    }
+
+    public void setViewdday(String viewdday) {
+        Viewdday = viewdday;
+    }
+
+    String Viewdday;
 
 
     public homework() {
