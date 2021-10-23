@@ -105,9 +105,15 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                 EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
                                 TextView homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
                                 homeworkNameInput.setText(homework.getHwname());
-                                homeworkDdayInput.setText(homework.getHwDday());
                                 Button homeworkbtn_ok=dialog.findViewById(R.id.homeworkInputButton);
+
                                 hwdday=homework.getHwDday();
+
+                                String setTextHWdday= hwdday.substring(0,4)+"년 "
+                                        +hwdday.substring(4,6)+"월 "
+                                        +hwdday.substring(6,8)+"일";
+
+                                homeworkDdayInput.setText(setTextHWdday);
 
                                 homeworkDdayInput.setOnClickListener(new View.OnClickListener() {
                                     @Override

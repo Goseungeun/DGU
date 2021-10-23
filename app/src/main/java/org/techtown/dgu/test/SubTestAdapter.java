@@ -103,10 +103,10 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                                 TextView subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
                                 subtestNameInput.setText(subtest.getSubtestname());
 
-                                String getTestdday=subtest.getTestDday();
-                                String setTextTestdday = getTestdday.substring(0,4)+"년 "
-                                        +getTestdday.substring(4,6)+"월 "
-                                        +getTestdday.substring(6,8)+"일";
+                                testdday=subtest.getTestDday();
+                                String setTextTestdday = testdday.substring(0,4)+"년 "
+                                        +testdday.substring(4,6)+"월 "
+                                        +testdday.substring(6,8)+"일";
 
                                 subtestDdayInput.setText(setTextTestdday);
                                 Button subtestbtn_ok=dialog.findViewById(R.id.subtestInputButton);
