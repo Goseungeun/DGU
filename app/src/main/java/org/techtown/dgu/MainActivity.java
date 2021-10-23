@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     org.techtown.dgu.Home home;
     LicenseFragment license;
     StatsFragment statsfragment;
-    long waitTime = 0L;
+    long  backBtnTime = 0L;
 
     String category="category";
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
@@ -171,18 +171,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //stopwatch에서 뒤로가기 버튼 막기
+
         StopwatchFragment fragment1 = (StopwatchFragment) getSupportFragmentManager().findFragmentByTag("StopwatchFragment");
-        if (fragment1 != null){
-            if(System.currentTimeMillis() - waitTime >=1500 ) {
-                waitTime = System.currentTimeMillis();
-                Toast.makeText(getApplicationContext(),"뒤로가기 버튼을 한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
-            } else {
-                finish(); // 액티비티 종료
+        if (fragment1 == null){
+            //backbutton을 두번 눌러야 종료되게
+            long curTime = System.currentTimeMillis();
+            long gapTime = curTime - backBtnTime;
+
+            if(0 <= gapTime && 2000 >= gapTime) {
+                super.onBackPressed();
+                Log.v("onBackpressedTest","1번");
+            }
+            else {
+                backBtnTime = curTime;
+                Toast.makeText(this, "한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+                Log.v("onBackpressedTest","2번");
             }
         }
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+        else if (fragment1 != null && getSupportFragmentManager().getBackStackEntryCount() > 0){
+            //stopwatch에서 뒤로가기 버튼 막기
             Toast.makeText(getApplicationContext(),"시간 측정 중에는 뒤로 갈 수 없습니다.", Toast.LENGTH_LONG).show();
+            Log.v("onBackpressedTest","3번");
         }
 
     }
