@@ -97,8 +97,6 @@ public class StopwatchFragment extends Fragment{
             EachCategory.setText("자격증");
             EachName.setText(DB.getLicenseName(licenseid));
         }
-
-        //TODO 날이 지나면 초기화 되는거 구현해야함
         start();
 
         pause.setOnClickListener(new View.OnClickListener() {
