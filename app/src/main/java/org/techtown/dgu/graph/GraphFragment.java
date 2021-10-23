@@ -106,7 +106,6 @@ public class GraphFragment extends Fragment {
         return new LineData(set1);
     }
 
-
     private void setupChart(LineData data) {
 
         ((LineDataSet) data.getDataSetByIndex(0)).setCircleHoleColor(BackgrounColor);
