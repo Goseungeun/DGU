@@ -6,15 +6,13 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp"
     tools:context=".graph.GraphFragment">
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,11 +23,11 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_margin="22dp"
-                android:layout_marginTop="10dp"
-
-                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:text="성적 관리"
                 android:textColor="@color/deepgreen"
                 android:textSize="24sp"
@@ -39,12 +37,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="22dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginEnd="22dp"
-                android:layout_marginRight="22dp"
+                android:layout_margin="20dp"
                 android:background="@drawable/calendar_title"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/graph_chart"
@@ -55,13 +50,85 @@
                     android:layout_marginBottom="10dp">
 
                 </com.github.mikephil.charting.charts.LineChart>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/green_title"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="전체 평점"
+                            android:textColor="@color/background" />
+
+                        <TextView
+                            android:id="@+id/total_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="00.00"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#9BB595">
+
+                    </View>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="취득 학점"
+                            android:textColor="@color/background" />
+
+                        <TextView
+                            android:id="@+id/total_grades"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="00"
+                            android:textColor="@android:color/white"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="20dp">
 
                 <fragment
                     android:id="@+id/setting_container"

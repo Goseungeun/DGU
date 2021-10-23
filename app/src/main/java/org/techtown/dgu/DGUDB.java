@@ -698,11 +698,22 @@ public class DGUDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT subcredit,subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
 
+        float sum_Of_m_credit_times_m_score=0f;
+        float sum_Of_m_credit=0f;
+        float m_credit=0f;
+        float m_score=0f;
         float GPA=0.00f;
         if(cursor.getCount()!=0){
             //table안에 내용이 들어있다면 내부수행
             //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
-            GPA=(float)(sum_Of_m_credit_times_m_score(_subsemester)/sum_Of_m_credit(_subsemester));
+            while(cursor.moveToNext()){
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
+                m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("subscore")));
+                sum_Of_m_credit_times_m_score += m_credit*m_score;
+                sum_Of_m_credit += m_credit;
+            }
+
+            GPA=(sum_Of_m_credit_times_m_score/sum_Of_m_credit);
         }
 
         cursor.close();
@@ -710,39 +721,6 @@ public class DGUDB extends SQLiteOpenHelper {
         //graphscoreDB에 업데이트
         Updategraph(_subsemester, GPA);
         return GPA;
-    }
-
-    //m_credit과 m_score을 곱한값들을 다 더해서
-    public float sum_Of_m_credit(String _subsemester) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT subcredit, subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
-        float m_credit;
-        float result=0f;
-        if(cursor.getCount()!=0){
-            while(cursor.moveToNext()){
-                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
-                result += m_credit;
-            }
-        }
-        cursor.close();
-        return result;
-    }
-
-    //sum_credit으로 나눠준다.
-    public double sum_Of_m_credit_times_m_score(String _subsemester) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT subcredit, subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F' and subsemester='"+_subsemester+"'",null);
-        float m_credit, m_score;
-        float result=0f;
-        if(cursor.getCount()!=0){
-            while(cursor.moveToNext()){
-                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
-                m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("subscore")));
-                result += m_credit*m_score;
-            }
-        }
-        cursor.close();
-        return result;
     }
 
     private float m_score_Calculate(String score) {
@@ -808,6 +786,66 @@ public class DGUDB extends SQLiteOpenHelper {
             cursor.close();
             return true;
         }
+    }
+
+    //전체 평균 학점계산하기
+    public float CalculatetotalGPA(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit,subscore FROM subgraph where subscore !='NP' and subscore !='P' and subscore !='F'",null);
+
+        float m_credit=0f;
+        float m_score=0f;
+        float sum_Of_m_credit_times_m_score=0f;
+        float sum_Of_m_credit=0f;
+
+        float GPA=0.00f;
+        if(cursor.getCount()!=0){
+            //table안에 내용이 들어있다면 내부수행
+            //m_credit과 m_score을 곱한값들을 다 더해서 sum_credit으로 나눠준다.
+            while(cursor.moveToNext()){
+                m_credit= (float)cursor.getInt(cursor.getColumnIndex("subcredit"));
+                m_score= m_score_Calculate(cursor.getString(cursor.getColumnIndex("subscore")));
+                sum_Of_m_credit_times_m_score += m_credit*m_score;
+                sum_Of_m_credit += m_credit;
+            }
+            GPA=(sum_Of_m_credit_times_m_score/sum_Of_m_credit);
+        }
+
+        cursor.close();
+
+        return GPA;
+    }
+
+
+    //전체 학점구하기
+    public int getTotalGrades(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit FROM subgraph",null);
+        int result=0;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                result+= cursor.getInt(cursor.getColumnIndex("subcredit"));
+            }
+        }
+        Log.v("getTotalGrades",""+result);
+        cursor.close();
+        return result;
+    }
+
+    //학기학점구하기
+    public int getSemesterGrades(String _subsemester) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT subcredit FROM subgraph where subsemester='"+_subsemester+"'",null);
+        int m_credit=0;
+        int result=0;
+        if(cursor.getCount()!=0){
+            while(cursor.moveToNext()){
+                m_credit= cursor.getInt(cursor.getColumnIndex("subcredit"));
+                result += m_credit;
+            }
+        }
+        cursor.close();
+        return result;
     }
 
 }
