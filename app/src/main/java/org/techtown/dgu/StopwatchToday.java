@@ -50,10 +50,9 @@ public class StopwatchToday extends Fragment {
 
                 Log.v("kk",""+(TodayStudytimeLong-YesterdayStudytimeLong)+
                         ""+LongToString(TodayStudytimeLong-YesterdayStudytimeLong));
-                String result = LongToString((TodayStudytimeLong-YesterdayStudytimeLong));
                 if(TodayStudytimeLong>YesterdayStudytimeLong){
                     //어제보다 오늘 더 공부한 경우
-                    Tv_Time.setText(result);
+                    Tv_Time.setText(LongToString((TodayStudytimeLong-YesterdayStudytimeLong)));
 
                 }else if(TodayStudytimeLong==YesterdayStudytimeLong){
                     //어제와 오늘 공부한 시간이 같을 경우
@@ -64,7 +63,7 @@ public class StopwatchToday extends Fragment {
                 }else{
                     //어제보다 오늘 덜 공부한 경우
                     Log.v("stopwatchtoday",LongToString(TodayStudytimeLong));
-                    Tv_Time.setText(result);
+                    Tv_Time.setText(LongToString((YesterdayStudytimeLong-TodayStudytimeLong)));
                     Tv_Change.setText("만큼 덜 공부했어요 ✍");
                 }
 

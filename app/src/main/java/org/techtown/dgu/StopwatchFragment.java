@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class StopwatchFragment extends Fragment {
+public class StopwatchFragment extends Fragment implements OnBackPressedListener{
     //TODO 시간을 재는 도중에 뒤로가기 막아야함.
     private ViewGroup view;
     private DGUDB DB;
@@ -57,6 +58,7 @@ public class StopwatchFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.stopwatch, container, false);
+
 
         DB = new DGUDB(getContext());
 
@@ -276,6 +278,11 @@ public class StopwatchFragment extends Fragment {
 
 
         DB.UpdateTimeTable(date, Arrays.toString(timetablecontent));
+    }
+
+    @Override
+    public void onBackPressed(){
+        stop();
     }
 
 }
