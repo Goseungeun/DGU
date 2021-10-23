@@ -43,6 +43,7 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
     ArrayList<SubTestItem> subTestList;
     private DGUDB db;
     String testdday = "";
+    String hwdday="";
 
 
     public SubjectAdapter(Context context, ArrayList<SubjectItem> subList){
