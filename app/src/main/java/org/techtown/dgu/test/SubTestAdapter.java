@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
+import org.techtown.dgu.studylicense.LicenseItem;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +36,39 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
         this.mContext = context;
         this.subTestList = st;
         this.db = new DGUDB(mContext);
+    }
+
+    public String ddayCacultation(String testday) throws ParseException {
+
+        // Millisecond 형태의 하루(24 시간)
+        final int ONE_DAY = 24 * 60 * 60 * 1000;
+
+        int year= Integer.parseInt(testday.substring(0,4));
+        int month= Integer.parseInt(testday.substring(4,6));
+        int day= Integer.parseInt(testday.substring(6,8));
+
+        // D-day 설정
+        final Calendar ddayCalendar = Calendar.getInstance();
+        ddayCalendar.set(year, month-1, day);
+
+        // D-day 를 구하기 위해 millisecond 으로 환산하여 d-day 에서 today 의 차를 구한다.
+        final long dday = ddayCalendar.getTimeInMillis() / ONE_DAY;
+        final long today = Calendar.getInstance().getTimeInMillis() / ONE_DAY;
+        long result = dday - today;
+
+        // 출력 시 d-day 에 맞게 표시
+        String strFormat;
+        if (result > 0) {
+            strFormat = "D-%d";
+        } else if (result == 0) {
+            strFormat = "D-Day";
+        } else {
+            result *= -1;
+            strFormat = "D+%d";
+        }
+
+        String strCount = (String.format(strFormat, result));
+        return strCount;
     }
 
     public class subtestViewHolder extends RecyclerView.ViewHolder{
@@ -112,8 +148,17 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
     @Override
     public void onBindViewHolder(subtestViewHolder SubtestviewHolder,int position)
     {
+        SubTestItem item = subTestList.get(position);
+
+        try {
+            item.setViewdday(ddayCacultation(item.getTestDday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         SubtestviewHolder.subtestname.setText(subTestList.get(position).getSubtestname());
-        SubtestviewHolder.subtestdday.setText(subTestList.get(position).getTestDday());
+        SubtestviewHolder.subtestdday.setText(subTestList.get(position).getViewdday());
+
+
     }
 
     @Override

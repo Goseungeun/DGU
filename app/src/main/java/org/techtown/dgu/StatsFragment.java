@@ -238,7 +238,9 @@ public class StatsFragment extends Fragment {
         xAxis.setTextColor(MainColor);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
+        xAxis.setGridColor(MainColor);
         xAxis.setDrawAxisLine(true);
+        xAxis.setAxisLineColor(MainColor);
         xAxis.setAxisLineWidth(1.75f);
         xAxis.setTextSize(10f);
         xAxis.setLabelCount(24);
@@ -248,7 +250,9 @@ public class StatsFragment extends Fragment {
         yAxis.setGridColor(MainColor);
         yAxis.setAxisMinimum(0.0f);
         yAxis.setDrawGridLines(false);
-        yAxis.setDrawAxisLine(false);
+        yAxis.setDrawAxisLine(true);
+        yAxis.setAxisLineColor(MainColor);
+        yAxis.setAxisLineWidth(1.75f);
         yAxis.setGranularityEnabled(true);
         yAxis.setEnabled(true);
         lineChart.getAxisRight().setEnabled(false);
