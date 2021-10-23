@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class StopwatchFragment extends Fragment{
-    //TODO 시간을 재는 도중에 뒤로가기 막아야함.
     private ViewGroup view;
     private DGUDB DB;
 
