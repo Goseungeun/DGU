@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -25,6 +26,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
@@ -60,7 +64,7 @@ public class StatsFragment extends Fragment {
     ProgressBar bronzeprogress;
 
     int BackgroundColor,MainColor;
-
+    PieChart pieChart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,6 +145,53 @@ public class StatsFragment extends Fragment {
 
         float[] timeTableData = getTimeTableData(date);
         setTimeTableGraph(timeTableData);
+
+
+        //요일별 공부시간
+
+        pieChart = view.findViewById(R.id.dayofweekstatics);
+
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5,10,5,5);
+
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setHoleColor(Color.WHITE);
+        pieChart.setTransparentCircleRadius(61f);
+
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+        yValues.add(new PieEntry(34f,"Japen"));
+        yValues.add(new PieEntry(23f,"USA"));
+        yValues.add(new PieEntry(14f,"UK"));
+        yValues.add(new PieEntry(35f,"India"));
+        yValues.add(new PieEntry(40f,"Russia"));
+        yValues.add(new PieEntry(40f,"Korea"));
+
+       /* Description description = new Description();
+        description.setText("세계 국가"); //라벨
+        description.setTextSize(15);
+        pieChart.setDescription(description);*/
+
+       // pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
+
+        PieDataSet dataSet = new PieDataSet(yValues,"Countries");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(10f);
+        data.setValueTextColor(Color.YELLOW);
+
+        pieChart.setData(data);
+
+
+
+        mDBHelper.DayOfWeek(date+"-01",
+                date+"-"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         return view;
 
@@ -258,5 +309,8 @@ public class StatsFragment extends Fragment {
         lineChart.getAxisRight().setEnabled(false);
 
     }
+
+
+
 
 }

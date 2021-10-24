@@ -15,10 +15,7 @@ import org.techtown.dgu.studylicense.LicenseItem;
 import org.techtown.dgu.subject.SubjectItem;
 import org.techtown.dgu.test.SubTestItem;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DGUDB extends SQLiteOpenHelper {
 
@@ -455,6 +452,28 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
+    //요일별 공부시간 합산
+    // 0: 일요일 ~ 6 : 토요일 + 월별 공부시간 합산
+    public String[] DayOfWeek(String _startdate, String _enddate){
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db. rawQuery("SELECT strftime('%w',date) AS yo, time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS dow " +
+                "FROM studytime WHERE strftime('%s', date) BETWEEN strftime('%s', '"+_startdate+"') AND strftime('%s', '"+_enddate+"') GROUP BY strftime('%w',date) " ,null);
+
+
+        String result[] = new String[cursor.getCount()];
+        int i=0;
+        while(cursor.moveToNext()){
+
+            result[i] = cursor.getString(cursor.getColumnIndex("yo"))+","+ cursor.getString(cursor.getColumnIndex("dow"));
+            Log.d("요일"," 요일별 : "+cursor.getString(cursor.getColumnIndex("yo"))+","
+                    + cursor.getString(cursor.getColumnIndex("dow")));
+            i++;
+        }
+        return result;
+    }
+
+
     public String MonthTotalStudyTime(String _startdate, String _enddate){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db. rawQuery("SELECT time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS total " +
@@ -606,8 +625,6 @@ public class DGUDB extends SQLiteOpenHelper {
         cursor.close();
         return result;
     }
-
-
 
 
 

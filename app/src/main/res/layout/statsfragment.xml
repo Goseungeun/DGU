@@ -374,12 +374,12 @@
                     android:background="@drawable/calendar_title"
                     android:padding="10dp"
                     >
+
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/moststudytime"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
-                        android:layout_gravity="center">
-                    </com.github.mikephil.charting.charts.LineChart>
+                        android:layout_gravity="center"></com.github.mikephil.charting.charts.LineChart>
                 </LinearLayout>
             </LinearLayout>
 
@@ -407,12 +407,12 @@
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/dayofweekstatics"
                     android:layout_width="match_parent"
                     android:layout_height="234dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"></com.github.mikephil.charting.charts.LineChart>
+                    android:layout_marginTop="15dp"></com.github.mikephil.charting.charts.PieChart>
             </LinearLayout>
 
         </LinearLayout>
