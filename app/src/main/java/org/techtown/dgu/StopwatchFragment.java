@@ -1,9 +1,11 @@
 package org.techtown.dgu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,6 +51,7 @@ public class StopwatchFragment extends Fragment{
     String StartTimeString, EndTimeString = null;
 
     Handler handler = new Handler();
+    PowerManager.WakeLock wakeLock;
 
     public StopwatchFragment(String _subid, String _licenseid){
         this.subid=_subid;
@@ -60,6 +63,10 @@ public class StopwatchFragment extends Fragment{
 
 
         DB = new DGUDB(getContext());
+
+        PowerManager powerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
 
         //fragment에 있는 요소들과 연결
         FocuseTime = view.findViewById(R.id.stopwatchFocusTime);
@@ -119,6 +126,8 @@ public class StopwatchFragment extends Fragment{
     }
 
     public void start(){
+        wakeLock.acquire();
+
         StartTime = SystemClock.uptimeMillis();
         TimetableStartTime = System.currentTimeMillis();
         StartTimeString = LongToString(TimetableStartTime);
@@ -126,7 +135,10 @@ public class StopwatchFragment extends Fragment{
     }
 
     public void stop(){
+        wakeLock.release();
+
         handler.removeCallbacks(runnable);
+
         TimetableEndTime = System.currentTimeMillis();
         EndTimeString=LongToString(TimetableEndTime);
 
