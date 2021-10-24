@@ -285,6 +285,7 @@ public class StatsFragment extends Fragment {
         yAxis.setGranularityEnabled(true);
         yAxis.setEnabled(true);
         lineChart.getAxisRight().setEnabled(false);
+        lineChart.animateXY(1000,1000);
 
         lineChart.invalidate();
 
