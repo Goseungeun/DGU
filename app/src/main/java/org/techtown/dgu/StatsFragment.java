@@ -1,6 +1,5 @@
 package org.techtown.dgu;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,39 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.motion.utils.Easing;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
-import org.techtown.dgu.member.SettingFragment;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Integer.parseInt;
 
@@ -52,76 +38,55 @@ public class StatsFragment extends Fragment {
     TextView gold;
     TextView silver;
     TextView bronze;
-    TextView gold2;
-    TextView silver2;
-    TextView bronze2;
-    ProgressBar goldprogress;
-    ProgressBar silverprogress;
-    ProgressBar bronzeprogress;
+    TextView goldtime;
+    TextView silvertime;
+    TextView bronzetime;
+    TextView goldcategory;
+    TextView silvercategory;
+    TextView bronzecategory;
+    LinearLayout goldlayout;
+    LinearLayout silverlayout;
+    LinearLayout bronzelayout;
+
 
     int BackgroundColor,MainColor;
-
+    String date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.statsfragment, container, false);
         mDBHelper = new DGUDB(getContext());
 
-
         TextView year=view.findViewById(R.id.sta_year);
         TextView month=view.findViewById(R.id.sta_month);
-
-        //현재날짜
-        Calendar cal = Calendar.getInstance();
-
-        SimpleDateFormat forma = new SimpleDateFormat("yyyy");
-        year.setText(forma.format(cal.getTime()));
-
-        SimpleDateFormat formatter = new SimpleDateFormat("MM");
-        month.setText(formatter.format(cal.getTime()));
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
-        String date = format.format(cal.getTime());
-        Log.d("날짜","date"+date);
-
-        //가장 많이한 공부
         lineChart = view.findViewById(R.id.moststudytime);
         gold = view.findViewById(R.id.gold);
         silver = view.findViewById(R.id.silver);
         bronze = view.findViewById(R.id.bronze);
-        gold2 = view.findViewById(R.id.gold2);
-        silver2 = view.findViewById(R.id.silver2);
-        bronze2 = view.findViewById(R.id.bronze2);
-        goldprogress=view.findViewById(R.id.progressBargold);
-        silverprogress=view.findViewById(R.id.progressBarsilver);
-        bronzeprogress=view.findViewById(R.id.progressBarbronze);
+        goldtime = view.findViewById(R.id.goldtime);
+        silvertime = view.findViewById(R.id.silvertime);
+        bronzetime = view.findViewById(R.id.bronzetime);
+        goldcategory = view.findViewById(R.id.category_gold);
+        silvercategory = view.findViewById(R.id.category_silver);
+        bronzecategory = view.findViewById(R.id.category_bronze);
+        goldlayout = view.findViewById(R.id.goldlayout);
+        silverlayout = view.findViewById(R.id.silverlayout);
+        bronzelayout = view.findViewById(R.id.bronzelayout);
+
+
+        //현재날짜
+        Calendar cur_cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();      //<,>버튼 누를 때마다 바뀌는 값 계산하는 날짜
+        //현재날짜(year,month) 화면에 표시
+        year.setText(String.valueOf(cur_cal.get(Calendar.YEAR)));
+        month.setText(String.valueOf(cur_cal.get(Calendar.MONTH)+1));
+        Log.d("날짜","month"+cur_cal.get(Calendar.MONTH));
+        //현재날짜를 기준으로 date 설정
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        date = format.format(cur_cal.getTime());
+        Log.d("날짜","date"+date);
 
         moststudy(date);
-
-        ImageButton leftbutton = (ImageButton)view.findViewById(R.id.leftbutton);
-        leftbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cal.add(cal.MONTH,-1);
-                year.setText(forma.format(cal.getTime()));
-                month.setText(formatter.format(cal.getTime()));
-                Log.d("date","month: "+format.format(cal.getTime()));
-                moststudy(format.format(cal.getTime()));
-
-            }
-        });
-
-        ImageButton rightbutton = (ImageButton)view.findViewById(R.id.rightbutton);
-        rightbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cal.add(cal.MONTH,+1);
-                year.setText(forma.format(cal.getTime()));
-                month.setText(formatter.format(cal.getTime()));
-                moststudy(format.format(cal.getTime()));
-            }
-        });
-
 
         //공부 많이 한 시간
         BackgroundColor = getResources().getColor(R.color.deepgreen);
@@ -142,39 +107,94 @@ public class StatsFragment extends Fragment {
         float[] timeTableData = getTimeTableData(date);
         setTimeTableGraph(timeTableData);
 
+        ImageButton leftbutton = (ImageButton)view.findViewById(R.id.leftbutton);
+        leftbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cal.add(cal.MONTH,-1);
+                year.setText(String.valueOf(cal.get(Calendar.YEAR)));
+                month.setText(String.valueOf(cal.get(Calendar.MONTH)+1));
+                date = format.format(cal.getTime());
+                //통계 자료 다시 출력
+                moststudy(date);
+                float[] timeTableData = getTimeTableData(date);
+                setTimeTableGraph(timeTableData);
+            }
+        });
+
+        ImageButton rightbutton = (ImageButton)view.findViewById(R.id.rightbutton);
+        rightbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cal.add(cal.MONTH,+1);
+                year.setText(String.valueOf(cal.get(Calendar.YEAR)));
+                month.setText(String.valueOf(cal.get(Calendar.MONTH)+1));
+                date = format.format(cal.getTime());
+                //통계 자료 다시 출력
+                moststudy(date);
+                float[] timeTableData = getTimeTableData(date);
+                setTimeTableGraph(timeTableData);
+            }
+        });
+
         return view;
 
     }
 
     public void moststudy(String date){
 
-        int mname[] = mDBHelper.getMostStudytimeIdArray(date);
-
-        for (int i = 0; i < mname.length; i++) {
-            Log.v("StringIds", "i:" + i + ", name[i]:" + mname[i]);
-
-            String studytime = mDBHelper.getStudytime(mname[i]);
-
-
-            String str[] = mDBHelper.getSubjectnameOrLicensename(mname[i]).split(",");
-            if(str[0]==null){ str[0]=""; str[1]="-";}
-            if(i==0)
-            {
-                gold.setText(str[1]);
-                gold2.setText(studytime);
+        ArrayList<moststudyitem> msList = mDBHelper.getMostStudytimeArray(date);
+        for(int i = 0 ; i < msList.size() ; i++)
+        {
+            String id = msList.get(i).getId();
+            String type = msList.get(i).getType();
+            if (type.equals("과목")) {
+                msList.get(i).setName(mDBHelper.getSubjectName(id));
             }
-            else if(i==1){
-                silver.setText(str[1]);
-                silver2.setText(studytime);
+            else {
+                msList.get(i).setName(mDBHelper.getLicenseName(id));
             }
-            else if(i==2) {
-                bronze.setText(str[1]);
-                bronze2.setText(studytime);
-            }
-
-
         }
-
+        switch (msList.size()){
+            case 0:
+                goldlayout.setVisibility(View.GONE);
+                silverlayout.setVisibility(View.GONE);
+                bronzelayout.setVisibility(View.GONE);
+                break;
+            case 1:
+                goldlayout.setVisibility(View.VISIBLE);
+                gold.setText(msList.get(0).getName());
+                goldtime.setText(msList.get(0).getStudytime());
+                goldcategory.setText(msList.get(0).getType());
+                silverlayout.setVisibility(View.GONE);
+                bronzelayout.setVisibility(View.GONE);
+                break;
+            case 2:
+                goldlayout.setVisibility(View.VISIBLE);
+                gold.setText(msList.get(0).getName());
+                goldtime.setText(msList.get(0).getStudytime());
+                goldcategory.setText(msList.get(0).getType());
+                silverlayout.setVisibility(View.VISIBLE);
+                silver.setText(msList.get(1).getName());
+                silvertime.setText(msList.get(1).getStudytime());
+                silvercategory.setText(msList.get(1).getType());
+                bronzelayout.setVisibility(View.GONE);
+                break;
+            case 3:
+                goldlayout.setVisibility(View.VISIBLE);
+                gold.setText(msList.get(0).getName());
+                goldtime.setText(msList.get(0).getStudytime());
+                goldcategory.setText(msList.get(0).getType());
+                silverlayout.setVisibility(View.VISIBLE);
+                silver.setText(msList.get(1).getName());
+                silvertime.setText(msList.get(1).getStudytime());
+                silvercategory.setText(msList.get(1).getType());
+                bronzelayout.setVisibility(View.VISIBLE);
+                bronze.setText(msList.get(2).getName());
+                bronzetime.setText(msList.get(2).getStudytime());
+                bronzecategory.setText(msList.get(2).getType());
+                break;
+        }
     }
 
     public float[] getTimeTableData(String date){
@@ -183,23 +203,31 @@ public class StatsFragment extends Fragment {
         float[] total_sum = new float[24];
         ArrayList<String[]> tableContList = mDBHelper.getMonthlyTimeTable(date);           //스트링 배열의 리스트 리턴
         int size = tableContList.size();
-
-        for(int i = 0 ; i < size ; i++){
-            String [] t_content = tableContList.get(i);     //List의 i번째 스트링 배열 받아옴
-            int [] t_content_int = new int[ONEDAYTIME];
-            for(int j = 0; j < ONEDAYTIME ; j++){
-                t_content_int[j] = Integer.parseInt(t_content[j]);      //스트링 배열을 int 배열로 바꿔줌
-                sum[j] += t_content_int[j];     //sum에 계속 합계를 넣어줌
+        Log.d("확인","size : "+size);
+        if (size == 0)
+        {
+            //값이 하나도 없을 때
+            for ( int i = 0 ; i < 24 ; i++)
+            {
+                total_sum[i] = 0;
             }
         }
-        for (int z = 0; z < 24 ; z++){
-            for(int x = (60*z); x < (60*(z+1)) ; x++){
-                hour_sum[z] += sum[x];
+
+        else {
+            for (int i = 0; i < size; i++) {
+                String[] t_content = tableContList.get(i);     //List의 i번째 스트링 배열 받아옴
+                int[] t_content_int = new int[ONEDAYTIME];
+                for (int j = 0; j < ONEDAYTIME; j++) {
+                    t_content_int[j] = Integer.parseInt(t_content[j]);      //스트링 배열을 int 배열로 바꿔줌
+                    sum[j] += t_content_int[j];     //sum에 계속 합계를 넣어줌
+                }
             }
-            Log.d("hour","z"+z);
-            Log.d("hour","hour"+hour_sum[z]);
-            total_sum[z] = ((float)hour_sum[z]/(size * 60))*100;
-            Log.d("hour","total : "+total_sum[z]);
+            for (int z = 0; z < 24; z++) {
+                for (int x = (60 * z); x < (60 * (z + 1)); x++) {
+                    hour_sum[z] += sum[x];
+                }
+                total_sum[z] = ((float) hour_sum[z] / (size * 60)) * 100;
+            }
         }
         return total_sum;
     }
@@ -237,16 +265,17 @@ public class StatsFragment extends Fragment {
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setTextColor(MainColor);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(true);
-        xAxis.setGridColor(MainColor);
+        xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
         xAxis.setAxisLineColor(MainColor);
         xAxis.setAxisLineWidth(1.75f);
-        xAxis.setTextSize(10f);
-        xAxis.setLabelCount(24);
+        xAxis.setTextSize(9f);
+        xAxis.setAxisMaximum(24.0f);
+        xAxis.setLabelCount(12);
+        xAxis.setGranularity(1f);
 
         YAxis yAxis = lineChart.getAxisLeft();
-        yAxis.setTextColor(MainColor);
+        yAxis.setDrawLabels(false);
         yAxis.setGridColor(MainColor);
         yAxis.setAxisMinimum(0.0f);
         yAxis.setDrawGridLines(false);
@@ -256,6 +285,8 @@ public class StatsFragment extends Fragment {
         yAxis.setGranularityEnabled(true);
         yAxis.setEnabled(true);
         lineChart.getAxisRight().setEnabled(false);
+
+        lineChart.invalidate();
 
     }
 

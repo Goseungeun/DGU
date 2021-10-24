@@ -115,8 +115,6 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-
-
     //subject와 license의 id를 부여하는 함수
     public String give_id(){
         SQLiteDatabase db = getReadableDatabase();
@@ -201,7 +199,7 @@ public class DGUDB extends SQLiteOpenHelper {
         if(cursor.getCount()==0){
             //과목이 삭제된 경우
             cursor.close();
-            return null;
+            return "삭제됨";
         }else{
             cursor.moveToNext();
             String subname = cursor.getString(cursor.getColumnIndex("subname"));
@@ -279,7 +277,6 @@ public class DGUDB extends SQLiteOpenHelper {
     }
 
     /// 여기부터 license table과 관련된 함수
-
     //SELECT 문 / LicenseFragment.java와 연결됨.
     public ArrayList<LicenseItem> getlicenselist(){
         ArrayList<LicenseItem> study_licenses = new ArrayList<>();
@@ -331,7 +328,7 @@ public class DGUDB extends SQLiteOpenHelper {
         if(cursor.getCount()==0){
             //자격증이 삭제된 경우
             cursor.close();
-            return null;
+            return "삭제됨";
         }else{
             cursor.moveToNext();
             String licensename = cursor.getString(cursor.getColumnIndex("licensename"));
@@ -357,7 +354,6 @@ public class DGUDB extends SQLiteOpenHelper {
     }*/
 
     ///여기부터 studytime table과 관련된 함수
-
     public String give_Today(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(" SELECT strftime('%Y-%m-%d','now','localtime');",null);
@@ -589,25 +585,26 @@ public class DGUDB extends SQLiteOpenHelper {
         else{return true;}
     }
 
-    public int[] getMostStudytimeIdArray(String _date){
+    public ArrayList<moststudyitem> getMostStudytimeArray(String _date){
 
+        ArrayList<moststudyitem> mostStudyList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM studytime " +
-                "WHERE date LIKE '"+_date+"%'  ORDER BY studytime DESC",null);
+        Cursor cursor = db.rawQuery("SELECT subid AS id, time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS sum,'과목' AS type FROM studytime WHERE subid <> 'null' AND date LIKE '"+_date+"%' GROUP BY subid" +
+                " UNION ALL" +
+                " SELECT licenseid, time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch'),'자격증' FROM studytime WHERE licenseid <> 'null' AND date LIKE '"+_date+"%' GROUP BY licenseid" +
+                " ORDER BY sum DESC LIMIT 3",null);
+        if(cursor.getCount()!= 0)
+            while (cursor.moveToNext())
+            {
+                moststudyitem item = new moststudyitem();
+                item.setId(cursor.getString(cursor.getColumnIndex("id")));
+                item.setStudytime(cursor.getString(cursor.getColumnIndex("sum")));
+                item.setType(cursor.getString(cursor.getColumnIndex("type")));
 
-        int result[] = new int[cursor.getCount()];
-
-        int i=0;
-        while(cursor.moveToNext()&&i<3){
-            result[i] = cursor.getInt(cursor.getColumnIndex("studytimeid"));
-            Log.d("등수","result: " + result[i]);
-            i++;
-        }
-        cursor.close();
-        return result;
+                mostStudyList.add(item);
+            }
+        return mostStudyList;
     }
-
-
 
 
 
