@@ -21,8 +21,10 @@ import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.subject.SubjectItem;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static java.lang.Integer.parseInt;
@@ -39,6 +41,39 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
         this.db = new DGUDB(mContext);
     }
 
+    public String ddayCacultation(String testday) throws ParseException {
+
+        // Millisecond 형태의 하루(24 시간)
+        final int ONE_DAY = 24 * 60 * 60 * 1000;
+
+        int year= Integer.parseInt(testday.substring(0,4));
+        int month= Integer.parseInt(testday.substring(4,6));
+        int day= Integer.parseInt(testday.substring(6,8));
+
+        // D-day 설정
+        final Calendar ddayCalendar = Calendar.getInstance();
+        ddayCalendar.set(year, month-1, day);
+
+        // D-day 를 구하기 위해 millisecond 으로 환산하여 d-day 에서 today 의 차를 구한다.
+        final long dday = ddayCalendar.getTimeInMillis() / ONE_DAY;
+        final long today = Calendar.getInstance().getTimeInMillis() / ONE_DAY;
+        long result = dday - today;
+
+        // 출력 시 d-day 에 맞게 표시
+        String strFormat;
+        if (result > 0) {
+            strFormat = "D-%d";
+        } else if (result == 0) {
+            strFormat = "D-Day";
+        } else {
+            result *= -1;
+            strFormat = "D+%d";
+        }
+
+        String strCount = (String.format(strFormat, result));
+        return strCount;
+    }
+
     public class homeworkViewHolder extends RecyclerView.ViewHolder{
         protected CheckBox homeworkname;
         protected TextView homeworkdday;
@@ -48,7 +83,7 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
             super(view);
             homeworkname = view.findViewById(R.id.homeworkname);
             homeworkdday = view.findViewById(R.id.homeworkdday);
-            view.setOnClickListener(new View.OnClickListener(){
+            homeworkdday.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
                     int curPos=getAdapterPosition(); //현재 리스트 클릭한 아이템 위치
@@ -113,8 +148,16 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
 
     @Override
     public void onBindViewHolder(homeworkViewHolder HomeworkviewHolder, int position) {
+        homework item = homeworkList.get(position);
+
+
+        try {
+            item.setViewdday(ddayCacultation(item.getHwDday()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         HomeworkviewHolder.homeworkname.setText(homeworkList.get(position).getHwname());
-        HomeworkviewHolder.homeworkdday.setText(homeworkList.get(position).getHwDday());
+        HomeworkviewHolder.homeworkdday.setText(homeworkList.get(position).getViewdday());
     }
 
     @Override

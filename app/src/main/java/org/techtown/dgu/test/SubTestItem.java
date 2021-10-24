@@ -10,6 +10,16 @@ public class SubTestItem {
 
     }
 
+    public String getViewdday() {
+        return Viewdday;
+    }
+
+    public void setViewdday(String viewdday) {
+        Viewdday = viewdday;
+    }
+
+    String Viewdday;
+
     public SubTestItem(String id,String subtestname, String testDday){
         this.id = id;
         this.subtestname = subtestname;

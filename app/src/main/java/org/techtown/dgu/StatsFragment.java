@@ -1,6 +1,7 @@
 package org.techtown.dgu;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,21 +25,27 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.techtown.dgu.member.SettingFragment;
-
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Integer.parseInt;
 
 public class StatsFragment extends Fragment {
+    public final static int ONEDAYTIME = 1440;     //하루의 시간 상수로 정의
     private LineChart lineChart;
     private DGUDB mDBHelper;
 
@@ -50,6 +58,8 @@ public class StatsFragment extends Fragment {
     ProgressBar goldprogress;
     ProgressBar silverprogress;
     ProgressBar bronzeprogress;
+
+    int BackgroundColor,MainColor;
 
 
     @Override
@@ -113,52 +123,27 @@ public class StatsFragment extends Fragment {
         });
 
 
-        //요일별 공부시간
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, 1));
-        entries.add(new Entry(2, 5));
-        entries.add(new Entry(3, 0));
-        entries.add(new Entry(4, 3));
-        entries.add(new Entry(5, 0));
+        //공부 많이 한 시간
+        BackgroundColor = getResources().getColor(R.color.deepgreen);
+        MainColor = getResources().getColor(R.color.background);
 
+        lineChart.setBackgroundColor(BackgroundColor);
 
-        LineDataSet lineDataSet = new LineDataSet(entries, "공부시간");
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);     // 곡선형으로 바꾸기
-        lineDataSet.setLineWidth(2);
-        lineDataSet.setCircleRadius(6);
-        lineDataSet.setCubicIntensity(0.2f);
-        lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setDrawCircleHole(false);
-        lineDataSet.setDrawCircles(false);
-        lineDataSet.setDrawHorizontalHighlightIndicator(false);
-        lineDataSet.setDrawHighlightIndicators(false);
-        lineDataSet.setDrawValues(false);
-
-        LineData lineData = new LineData(lineDataSet);
-        lineChart.setData(lineData);
-
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.BLACK);
-        xAxis.enableGridDashedLine(8, 24, 0);
-
-        YAxis yLAxis = lineChart.getAxisLeft();
-        yLAxis.setTextColor(Color.BLACK);
-
-        YAxis yRAxis = lineChart.getAxisRight();
-        yRAxis.setDrawLabels(false);
-        yRAxis.setDrawAxisLine(false);
-        yRAxis.setDrawGridLines(false);
-
-        Description description = new Description();
-        description.setText("");
-
-        lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setTouchEnabled(false);
+        lineChart.setDragEnabled(false);
+        lineChart.setScaleEnabled(false);
+        lineChart.setPinchZoom(false);
         lineChart.setDrawGridBackground(false);
-        lineChart.setDescription(description);
-        lineChart.invalidate();
+
+        Legend l = lineChart.getLegend();
+        l.setEnabled(false);
+
+        float[] timeTableData = getTimeTableData(date);
+        setTimeTableGraph(timeTableData);
+
         return view;
+
     }
 
     public void moststudy(String date){
@@ -192,5 +177,86 @@ public class StatsFragment extends Fragment {
 
     }
 
+    public float[] getTimeTableData(String date){
+        int[] sum = new int[ONEDAYTIME];      //한달치 타임테이블 더한 값
+        int[] hour_sum = new int[24];
+        float[] total_sum = new float[24];
+        ArrayList<String[]> tableContList = mDBHelper.getMonthlyTimeTable(date);           //스트링 배열의 리스트 리턴
+        int size = tableContList.size();
+
+        for(int i = 0 ; i < size ; i++){
+            String [] t_content = tableContList.get(i);     //List의 i번째 스트링 배열 받아옴
+            int [] t_content_int = new int[ONEDAYTIME];
+            for(int j = 0; j < ONEDAYTIME ; j++){
+                t_content_int[j] = Integer.parseInt(t_content[j]);      //스트링 배열을 int 배열로 바꿔줌
+                sum[j] += t_content_int[j];     //sum에 계속 합계를 넣어줌
+            }
+        }
+        for (int z = 0; z < 24 ; z++){
+            for(int x = (60*z); x < (60*(z+1)) ; x++){
+                hour_sum[z] += sum[x];
+            }
+            Log.d("hour","z"+z);
+            Log.d("hour","hour"+hour_sum[z]);
+            total_sum[z] = ((float)hour_sum[z]/(size * 60))*100;
+            Log.d("hour","total : "+total_sum[z]);
+        }
+        return total_sum;
+    }
+
+    public void setTimeTableGraph(float[] data){
+        List<Entry> contents = new ArrayList<>();
+        for(int i = 0; i < 24; i++){
+            contents.add(new Entry(i, data[i]));
+        }
+
+        //data set type 정의
+        LineDataSet timeTableDataSet = new LineDataSet(contents, "공부시간");
+        timeTableDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);     // 곡선형으로 바꾸기
+        timeTableDataSet.setCubicIntensity(0.2f);
+        timeTableDataSet.setLineWidth(1.75f);
+        timeTableDataSet.setColor(MainColor);
+        timeTableDataSet.setDrawCircleHole(false);
+        timeTableDataSet.setDrawCircles(false);
+        timeTableDataSet.setDrawHorizontalHighlightIndicator(false);
+        timeTableDataSet.setDrawHighlightIndicators(false);
+        timeTableDataSet.setDrawValues(false);
+        timeTableDataSet.setDrawFilled(true);
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.timetablegraph_backgroun);
+        timeTableDataSet.setFillDrawable(drawable);
+
+        LineData timeTableData = new LineData(timeTableDataSet);
+
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setTouchEnabled(false);
+        lineChart.setData(timeTableData);
+        Legend l = lineChart.getLegend();
+        l.setEnabled(false);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setTextColor(MainColor);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(true);
+        xAxis.setGridColor(MainColor);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setAxisLineColor(MainColor);
+        xAxis.setAxisLineWidth(1.75f);
+        xAxis.setTextSize(10f);
+        xAxis.setLabelCount(24);
+
+        YAxis yAxis = lineChart.getAxisLeft();
+        yAxis.setTextColor(MainColor);
+        yAxis.setGridColor(MainColor);
+        yAxis.setAxisMinimum(0.0f);
+        yAxis.setDrawGridLines(false);
+        yAxis.setDrawAxisLine(true);
+        yAxis.setAxisLineColor(MainColor);
+        yAxis.setAxisLineWidth(1.75f);
+        yAxis.setGranularityEnabled(true);
+        yAxis.setEnabled(true);
+        lineChart.getAxisRight().setEnabled(false);
+
+    }
 
 }

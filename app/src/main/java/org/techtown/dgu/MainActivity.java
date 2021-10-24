@@ -1,9 +1,12 @@
 package org.techtown.dgu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     org.techtown.dgu.Home home;
     LicenseFragment license;
     StatsFragment statsfragment;
+    long  backBtnTime = 0L;
 
     String category="category";
     //Home의 calendar에서 Timetable로 전달할 날짜값을 받아주는 번들
@@ -35,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //중간에 화면꺼짐 방지지
+       getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         subject = new SubjectFragment();
         graph = new GraphFragment();
@@ -97,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
 
 
@@ -163,6 +171,34 @@ public class MainActivity extends AppCompatActivity {
         this.dayBundle=bundle;
     }
 
+
+
+    @Override
+    public void onBackPressed() {
+
+        StopwatchFragment fragment1 = (StopwatchFragment) getSupportFragmentManager().findFragmentByTag("StopwatchFragment");
+        if (fragment1 == null){
+            //backbutton을 두번 눌러야 종료되게
+            long curTime = System.currentTimeMillis();
+            long gapTime = curTime - backBtnTime;
+
+            if(0 <= gapTime && 2000 >= gapTime) {
+                super.onBackPressed();
+                Log.v("onBackpressedTest","1번");
+            }
+            else {
+                backBtnTime = curTime;
+                Toast.makeText(this, "한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+                Log.v("onBackpressedTest","2번");
+            }
+        }
+        else if (fragment1 != null && getSupportFragmentManager().getBackStackEntryCount() > 0){
+            //stopwatch에서 뒤로가기 버튼 막기
+            Toast.makeText(getApplicationContext(),"시간 측정 중에는 뒤로 갈 수 없습니다.", Toast.LENGTH_LONG).show();
+            Log.v("onBackpressedTest","3번");
+        }
+
+    }
 
 
 }

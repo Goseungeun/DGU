@@ -58,7 +58,6 @@ public class DGUDB extends SQLiteOpenHelper {
     }
 
     //여기부터 attendancecheck와 관련된 함수
-
     public void InsertAttendancecheck(String _subid, String _attendancecheckcontent){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO attendancecheck VALUES('"+ _subid+"','" +_attendancecheckcontent +"');'");
@@ -529,7 +528,6 @@ public class DGUDB extends SQLiteOpenHelper {
         return result;
     }
 
-
     //timetable과 관련된 함수 시작
     public void InsertTimeTable(String _timetableid, String _timetablecontent){
         SQLiteDatabase db = getWritableDatabase();
@@ -540,6 +538,22 @@ public class DGUDB extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE timetable SET timetablecontent='"+_timetablecontent+"'" +
                 " WHERE timetableid = '"+_timetableid+"'" );
+    }
+
+    public ArrayList<String[]> getMonthlyTimeTable(String _date){
+        ArrayList<String[]> tableList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT timetablecontent FROM timetable WHERE timetableid LIKE '"+_date+"%';",null);
+        if (cursor.getCount()!=0){
+            while ( cursor.moveToNext()){
+                String tableCont = cursor.getString(cursor.getColumnIndex("timetablecontent"));
+                String[] t_contList = tableCont.replaceAll("\\[", "")
+                        .replaceAll("]", "").replaceAll(" ","").split(",");
+                tableList.add(t_contList);
+            }
+        }
+        cursor.close();
+        return tableList;
     }
 
     //TODO deletetimetable 수정필요
@@ -595,9 +609,9 @@ public class DGUDB extends SQLiteOpenHelper {
 
 
 
-    //여기부터 subgraph와 graph관련 함수들
 
-    //timetable과 관련된 함수 시작
+
+    //여기부터 subgraph와 graph관련 함수들
     public void Insertgraph(String _semester, float _gpa){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO graph (semester,gpa) VALUES('"+ _semester+"','" +_gpa+"');");
@@ -633,8 +647,6 @@ public class DGUDB extends SQLiteOpenHelper {
 
         return  result;
     }
-
-    //timetable과 관련된 함수 시작
 
     //ID를 반환해준다.
     public int Insertsubgraph(String _subsemester, String _subname, int _subcredit, String _subscore){

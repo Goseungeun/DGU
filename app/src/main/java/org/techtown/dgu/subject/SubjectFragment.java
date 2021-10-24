@@ -3,28 +3,17 @@ package org.techtown.dgu.subject;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
-import org.techtown.dgu.homework.homework;
-import org.techtown.dgu.test.SubTestItem;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import static java.lang.Integer.parseInt;
 
 public class SubjectFragment extends Fragment {
@@ -34,17 +23,13 @@ public class SubjectFragment extends Fragment {
     ArrayList<SubjectItem> subjectList;
     private SubjectAdapter mAdapter;
 
-    public static SubjectFragment newInstance() {
-        return new SubjectFragment();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup)inflater.inflate(R.layout.subject, container,false); // Fragment로 불러올 xml파일을 view로 가져옵니다.
         subjectList = new ArrayList<>();
         db= new DGUDB(this.getContext());
         subrecyclerview= (RecyclerView)view.findViewById(R.id.subrecycler);
-        SubjectAdapter mAdapter = new SubjectAdapter(this.getContext(),subjectList);
+        mAdapter = new SubjectAdapter(this.getContext(),subjectList);
         subrecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
         subrecyclerview.setAdapter(mAdapter);
         // 여기서부터 화면만 보이게 만든거
