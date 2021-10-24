@@ -178,6 +178,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="5dp"
                             android:singleLine="true"
@@ -190,8 +191,8 @@
                         android:id="@+id/view5"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:background="@color/background" />
+                        android:layout_margin="10dp"
+                        android:background="@color/menugreen" />
 
                     <TextView
                         android:id="@+id/goldtime"
@@ -247,6 +248,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="5dp"
                             android:singleLine="true"
@@ -259,8 +261,8 @@
                         android:id="@+id/view7"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:background="@color/background" />
+                        android:layout_margin="10dp"
+                        android:background="@color/menugreen" />
 
                     <TextView
                         android:id="@+id/silvertime"
@@ -317,6 +319,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="5dp"
                             android:gravity="center_vertical"
                             android:paddingLeft="5dp"
                             android:singleLine="true"
@@ -329,8 +332,8 @@
                         android:id="@+id/view8"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:background="@color/background" />
+                        android:layout_margin="10dp"
+                        android:background="@color/menugreen" />
 
                     <TextView
                         android:id="@+id/bronzetime"
