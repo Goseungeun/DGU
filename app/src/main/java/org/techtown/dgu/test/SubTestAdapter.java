@@ -1,6 +1,7 @@
 package org.techtown.dgu.test;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
     private ArrayList<SubTestItem> subTestList;
     private Context mContext;
     private DGUDB db;
+    String testdday = "";
 
     public SubTestAdapter(Context context, ArrayList<SubTestItem> st) {
         this.mContext = context;
@@ -97,23 +100,50 @@ public class SubTestAdapter extends RecyclerView.Adapter<SubTestAdapter.subtestV
                                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.test_input);
                                 EditText subtestNameInput=dialog.findViewById(R.id.subtestNameInput);
-                                EditText subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
+                                TextView subtestDdayInput=dialog.findViewById(R.id.subtestDdayInput);
                                 subtestNameInput.setText(subtest.getSubtestname());
-                                subtestDdayInput.setText(subtest.getTestDday());
+
+                                testdday=subtest.getTestDday();
+                                String setTextTestdday = testdday.substring(0,4)+"년 "
+                                        +testdday.substring(4,6)+"월 "
+                                        +testdday.substring(6,8)+"일";
+
+                                subtestDdayInput.setText(setTextTestdday);
                                 Button subtestbtn_ok=dialog.findViewById(R.id.subtestInputButton);
+
+
+                                subtestDdayInput.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Calendar calendar = Calendar.getInstance();
+                                        DatePickerDialog pickerDialog = new DatePickerDialog(mContext,  new DatePickerDialog.OnDateSetListener() {
+                                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                                subtestDdayInput.setText(""+year+"년 "+(monthOfYear+1)+"월 "+dayOfMonth+"일");
+                                                testdday = ""+year+String.format("%02d", monthOfYear+1)+String.format("%02d", dayOfMonth);
+                                            }
+                                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), (calendar.get(Calendar.DAY_OF_MONTH)));
+
+                                        pickerDialog.show();
+                                    }
+                                });
+
                                 subtestbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override
                                     public void onClick(View v){
                                         //update table
-                                        String subtestname=subtestNameInput.getText().toString();
-                                        String subtestdday=subtestDdayInput.getText().toString();
-                                        String id=subtest.getId();
-                                        db.UpdateTest(id,subtestname,subtestdday);
-                                        //update UI
-                                        subtest.setSubtestname(subtestname);
-                                        subtest.setTestDday(subtestdday);
-                                        notifyItemChanged(curPos,subtest);
-                                        dialog.dismiss();
+                                        //시험명 또는 시험일자가 비어있으면 저장되지 않게
+                                        String subtestNameInputString=subtestNameInput.getText().toString();
+                                        if(!(subtestNameInputString.equals("")||testdday.equals(""))) {
+                                            String id = subtest.getId();
+                                            db.UpdateTest(id, subtestNameInputString, testdday);
+                                            //update UI
+                                            subtest.setSubtestname(subtestNameInputString);
+                                            subtest.setTestDday(testdday);
+                                            notifyItemChanged(curPos, subtest);
+                                            dialog.dismiss();
+                                        }else{
+                                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
 
