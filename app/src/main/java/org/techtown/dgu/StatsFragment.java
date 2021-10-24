@@ -269,8 +269,10 @@ public class StatsFragment extends Fragment {
         xAxis.setDrawAxisLine(true);
         xAxis.setAxisLineColor(MainColor);
         xAxis.setAxisLineWidth(1.75f);
-        xAxis.setTextSize(10f);
-        xAxis.setLabelCount(24);
+        xAxis.setTextSize(9f);
+        xAxis.setAxisMaximum(24.0f);
+        xAxis.setLabelCount(12);
+        xAxis.setGranularity(1f);
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setDrawLabels(false);
