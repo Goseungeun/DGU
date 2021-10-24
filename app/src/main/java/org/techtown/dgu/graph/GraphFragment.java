@@ -57,8 +57,8 @@ public class GraphFragment extends Fragment{
         BackgrounColor= getResources().getColor(R.color.deepgreen);
         MainColor= getResources().getColor(R.color.background);
         chart = view.findViewById(R.id.graph_chart);
-        Tv_total_score=view.findViewById(R.id.total_score);
-        Tv_total_grades=view.findViewById(R.id.total_grades);
+        Tv_total_score=view.findViewById(R.id.total_score1);
+        Tv_total_grades=view.findViewById(R.id.total_grades1);
 
         //차트 꾸미기
         setupChart();
