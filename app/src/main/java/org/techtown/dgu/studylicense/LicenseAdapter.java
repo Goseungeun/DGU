@@ -1,6 +1,7 @@
 package org.techtown.dgu.studylicense;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.dgu.DGUDB;
 import org.techtown.dgu.R;
 import org.techtown.dgu.StopwatchFragment;
+import org.techtown.dgu.homework.homework;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +38,7 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
     private ArrayList<LicenseItem> items;
     private Context mContext;
     private DGUDB mDBHelper;
+    String licenseDDAY="";
 
     public LicenseAdapter(ArrayList<LicenseItem> items, Context mContext){
         this.items = items;
@@ -131,10 +136,10 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
             touch_area=itemView.findViewById(R.id.touch_area_lic);
             studytime=itemView.findViewById(R.id.licensetime);
 
+
             startbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     int cusPos = getAdapterPosition();  //현재 리스트 아이템 위치
                     LicenseItem item = items.get(cusPos);
 
@@ -163,28 +168,57 @@ public class LicenseAdapter extends RecyclerView.Adapter<LicenseAdapter.ViewHold
                                 Dialog dialog = new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.activity_license_input);
                                 EditText et_name = dialog.findViewById(R.id.licenseNameInput);
-                                EditText et_dday = dialog.findViewById(R.id.editTextDate2);
+                                TextView et_dday = dialog.findViewById(R.id.editTextDate2);
                                 Button licensebtn_ok = dialog.findViewById(R.id.licensebtn_ok);
 
                                 et_name.setText(licenseItem.getLicensename());
-                                et_dday.setText(licenseItem.getLicensedday());
 
+                                //TODO 이거 여기들어가는거 맞나?
                                 et_name.setSelection(et_name.getText().length());
+
+                                licenseDDAY= licenseItem.getLicensedday();
+
+                                String setTextLicensedday= licenseDDAY.substring(0,4)+"년 "
+                                        +licenseDDAY.substring(4,6)+"월 "
+                                        +licenseDDAY.substring(6,8)+"일";
+
+                                et_dday.setText(setTextLicensedday);
+
+                                et_dday.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Calendar calendar = Calendar.getInstance();
+                                        DatePickerDialog pickerDialog = new DatePickerDialog(mContext,  new DatePickerDialog.OnDateSetListener() {
+                                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                                et_dday.setText(""+year+"년 "+(monthOfYear+1)+"월 "+dayOfMonth+"일");
+                                                licenseDDAY = ""+year+String.format("%02d", monthOfYear+1)+String.format("%02d", dayOfMonth);
+                                            }
+                                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), (calendar.get(Calendar.DAY_OF_MONTH)));
+
+                                        pickerDialog.show();
+                                    }
+                                });
 
                                 licensebtn_ok.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        //UPDATE table
-                                        String name = et_name.getText().toString();
-                                        String licensedday = et_dday.getText().toString();
-                                        String id = licenseItem.getLicenseid();
-                                        mDBHelper.UpdateLicense(id,name,licensedday);
+                                        //자격증명 또는 시험일자가 비어있으면 저장되지 않게
+                                        String LicenseNameInputString=et_name.getText().toString();
+                                        if(!(LicenseNameInputString.equals("")||licenseDDAY.equals(""))) {
+                                            //UPDATE table
+                                            String name =LicenseNameInputString;
+                                            String licensedday = licenseDDAY;
+                                            String id = licenseItem.getLicenseid();
+                                            mDBHelper.UpdateLicense(id, name, licensedday);
 
-                                        //update UI
-                                        licenseItem.setLicensename(name);
-                                        licenseItem.setLicensedday(licensedday);
-                                        notifyItemChanged(cusPos,licenseItem);
-                                        dialog.dismiss();
+                                            //update UI
+                                            licenseItem.setLicensename(name);
+                                            licenseItem.setLicensedday(licensedday);
+                                            notifyItemChanged(cusPos, licenseItem);
+                                            dialog.dismiss();
+                                        }else{
+                                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
 
