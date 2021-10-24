@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/calendar_border"
+                android:background="@drawable/timerbackground"
                 android:orientation="vertical"
                 android:padding="10dp">
 
@@ -129,14 +129,14 @@
                     android:gravity="center"
                     android:maxLength="9"
                     android:text="총 공부시간"
-                    android:textColor="@color/deepgreen"
+                    android:textColor="@color/background"
                     android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="2dp"
-                    android:background="@color/green" />
+                    android:background="@color/menugreen" />
 
                 <TextView
                     android:id="@+id/TodayStudyTime"
@@ -147,7 +147,7 @@
                     android:gravity="center"
                     android:text="00:00:00"
                     android:textAllCaps="false"
-                    android:textColor="@color/deepgreen"
+                    android:textColor="@color/white"
                     android:textIsSelectable="false"
                     android:textSize="18sp" />
             </LinearLayout>
