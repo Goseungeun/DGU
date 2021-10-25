@@ -51,6 +51,7 @@ public class StopwatchFragment extends Fragment{
     String StartTimeString, EndTimeString = null;
 
     Handler handler = new Handler();
+    PowerManager powerManager;
     PowerManager.WakeLock wakeLock;
 
     public StopwatchFragment(String _subid, String _licenseid){
@@ -64,7 +65,8 @@ public class StopwatchFragment extends Fragment{
 
         DB = new DGUDB(getContext());
 
-        PowerManager powerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
+        //스톱워치 돌아가는동안 절전모드 막기
+        powerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "MyApp::MyWakelockTag");
 
@@ -178,6 +180,20 @@ public class StopwatchFragment extends Fragment{
 
                 StartTimeString = "00:00:00";
             }
+
+            //screen을 껐는지 안껐는지 확인하기
+
+            boolean isScreenOn = powerManager.isScreenOn();
+            if(!isScreenOn){
+                //screen을 껐다
+                //처음으로 끈거 인식했을 때만 현재시간받아온 다음에
+
+            }else{
+                //screen을 켰다.ㄴ
+                //다시 켰을 때 현재시간 받아와서 빼서 버퍼로 쓰고 싶은디
+            }
+
+            Log.v("PowerManagerisScreenOn",""+powerManager.isScreenOn());
 
             MillisecondTime = SystemClock.uptimeMillis() - StartTime;
 
