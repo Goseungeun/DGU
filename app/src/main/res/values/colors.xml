@@ -16,15 +16,13 @@
     <color name="minus">#FFC107</color>
     <color name="xmark">#FF5722</color>
 
-<!--
-    <color name="deepgreen">#529783</color>
-    <color name="green">#56B33E</color>
-    <color name="yellow">#CFBF08</color>
-    <color name="menugreen">#39B39A</color>
-    <color name="checkmark">#C87D0B</color>
-    <color name="minus">#EFBD29</color>
-    <color name="mm">#099C5C</color>
--->
+    <color name="a">#529783</color>
+    <color name="b">#56B33E</color>
+    <color name="c">#8F8D03</color>
+    <color name="d">#1A6354</color>
+    <color name="e">#C87D0B</color>
+    <color name="f">#EFBD29</color>
+    <color name="g">#099C5C</color>
 
 
 
