@@ -454,11 +454,11 @@ public class DGUDB extends SQLiteOpenHelper {
 
     //요일별 공부시간 합산
     // 0: 일요일 ~ 6 : 토요일 + 월별 공부시간 합산
-    public String[] DayOfWeek(String _startdate, String _enddate){
+    public String[] DayOfWeek(String _date){
 
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db. rawQuery("SELECT strftime('%w',date) AS yo, time(sum(cast(strftime('%s',studytime) AS INTEGER)),'unixepoch') AS dow " +
-                "FROM studytime WHERE strftime('%s', date) BETWEEN strftime('%s', '"+_startdate+"') AND strftime('%s', '"+_enddate+"') GROUP BY strftime('%w',date) " ,null);
+        Cursor cursor = db. rawQuery("SELECT strftime('%w',date) AS yo,time(sum(cast((strftime('%s',studytime)) AS INTEGER)),'unixepoch') AS dow " +
+                "FROM studytime WHERE date LIKE '"+_date+"%' GROUP BY strftime('%w',date)",null);
 
 
         String result[] = new String[cursor.getCount()];

@@ -15,4 +15,17 @@
     <color name="checkmark">#4CAF50</color>
     <color name="minus">#FFC107</color>
     <color name="xmark">#FF5722</color>
+
+<!--
+    <color name="deepgreen">#529783</color>
+    <color name="green">#56B33E</color>
+    <color name="yellow">#CFBF08</color>
+    <color name="menugreen">#39B39A</color>
+    <color name="checkmark">#C87D0B</color>
+    <color name="minus">#EFBD29</color>
+    <color name="mm">#099C5C</color>
+-->
+
+
+
 </resources>

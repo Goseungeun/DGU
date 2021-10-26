@@ -66,6 +66,17 @@ public class StatsFragment extends Fragment {
     int BackgroundColor,MainColor;
     PieChart pieChart;
 
+    public static final int[] DGU_COLORS = {
+        Color.rgb(82,151,131),
+            Color.rgb(86,179,62),
+            Color.rgb(207,191,8),
+            Color.rgb(57,179,154),
+            Color.rgb(200,125,11),
+            Color.rgb(239,189,41),
+            Color.rgb(9,156,92)
+    };
+
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.statsfragment, container, false);
@@ -85,8 +96,11 @@ public class StatsFragment extends Fragment {
         month.setText(formatter.format(cal.getTime()));
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat tt = new SimpleDateFormat("yyyy-MM-DD  HH-MM-SS");
+
         String date = format.format(cal.getTime());
         Log.d("날짜","date"+date);
+
 
         //가장 많이한 공부
         lineChart = view.findViewById(R.id.moststudytime);
@@ -161,37 +175,54 @@ public class StatsFragment extends Fragment {
         pieChart.setHoleColor(Color.WHITE);
         pieChart.setTransparentCircleRadius(61f);
 
+
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        yValues.add(new PieEntry(34f,"Japen"));
-        yValues.add(new PieEntry(23f,"USA"));
-        yValues.add(new PieEntry(14f,"UK"));
-        yValues.add(new PieEntry(35f,"India"));
-        yValues.add(new PieEntry(40f,"Russia"));
-        yValues.add(new PieEntry(40f,"Korea"));
 
-       /* Description description = new Description();
-        description.setText("세계 국가"); //라벨
-        description.setTextSize(15);
-        pieChart.setDescription(description);*/
+        String dow[] = mDBHelper.DayOfWeek(date);;
 
-       // pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
+        for (int i = 0; i < dow.length; i++) {
+            Log.v("StringIds", "i:" + i + ", dow[i]:" + dow[i]);
 
-        PieDataSet dataSet = new PieDataSet(yValues,"Countries");
+            String day[]=dow[i].split(",");
+
+            String newday[]=day[1].split(":");
+
+
+            Integer dd=parseInt(newday[0])*60*60+parseInt(newday[1])*60+parseInt(newday[2]);
+            Log.d("새로운 날","new: "+dd);
+
+            if(parseInt(day[0])==0)
+                yValues.add(new PieEntry(dd,"일요일"));
+            else if(parseInt(day[0])==1)
+                yValues.add(new PieEntry(dd,"월요일"));
+            else if(parseInt(day[0])==2)
+                yValues.add(new PieEntry(dd,"화요일"));
+            else if(parseInt(day[0])==3)
+                yValues.add(new PieEntry(dd,"수요일"));
+            else if(parseInt(day[0])==4)
+                yValues.add(new PieEntry(dd,"목요일"));
+            else if(parseInt(day[0])==5)
+                yValues.add(new PieEntry(dd,"금요일"));
+            else if(parseInt(day[0])==6)
+                yValues.add(new PieEntry(dd,"토요일"));
+
+        }
+
+        pieChart.animateY(1000); //이션
+
+
+        PieDataSet dataSet = new PieDataSet(yValues, "요일");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(DGU_COLORS);
 
         PieData data = new PieData((dataSet));
-        data.setValueTextSize(10f);
-        data.setValueTextColor(Color.YELLOW);
+        data.setValueTextSize(13f);
+        data.setValueTextColor(Color.DKGRAY);
 
         pieChart.setData(data);
 
-
-
-        mDBHelper.DayOfWeek(date+"-01",
-                date+"-"+cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
         return view;
 
