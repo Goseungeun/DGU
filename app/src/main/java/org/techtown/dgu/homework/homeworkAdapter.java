@@ -1,6 +1,7 @@
 package org.techtown.dgu.homework;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
     private ArrayList<homework> homeworkList;
     private Context mContext;
     private DGUDB db;
+    String hwdday="";
 
     public homeworkAdapter(Context context, ArrayList<homework> homeworkList){
         this.homeworkList = homeworkList;
@@ -100,23 +103,49 @@ public class homeworkAdapter extends RecyclerView.Adapter<homeworkAdapter.homewo
                                 Dialog dialog=new Dialog(mContext, android.R.style.Theme_Material_Light_Dialog);
                                 dialog.setContentView(R.layout.homework_input);
                                 EditText homeworkNameInput=dialog.findViewById(R.id.homeworkNameInput);
-                                EditText homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
+                                TextView homeworkDdayInput=dialog.findViewById(R.id.homeworkDdayInput);
                                 homeworkNameInput.setText(homework.getHwname());
-                                homeworkDdayInput.setText(homework.getHwDday());
                                 Button homeworkbtn_ok=dialog.findViewById(R.id.homeworkInputButton);
+
+                                hwdday=homework.getHwDday();
+
+                                String setTextHWdday= hwdday.substring(0,4)+"년 "
+                                        +hwdday.substring(4,6)+"월 "
+                                        +hwdday.substring(6,8)+"일";
+
+                                homeworkDdayInput.setText(setTextHWdday);
+
+                                homeworkDdayInput.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Calendar calendar = Calendar.getInstance();
+                                        DatePickerDialog pickerDialog = new DatePickerDialog(mContext,  new DatePickerDialog.OnDateSetListener() {
+                                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                                homeworkDdayInput.setText(""+year+"년 "+(monthOfYear+1)+"월 "+dayOfMonth+"일");
+                                                hwdday = ""+year+String.format("%02d", monthOfYear+1)+String.format("%02d", dayOfMonth);
+                                            }
+                                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), (calendar.get(Calendar.DAY_OF_MONTH)));
+
+                                        pickerDialog.show();
+                                    }
+                                });
+
                                 homeworkbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override
                                     public void onClick(View v){
-                                        //update table
-                                        String hwname=homeworkNameInput.getText().toString();
-                                        String hwDday=homeworkDdayInput.getText().toString();
-                                        String id = homework.getId();
-                                        db.UpdateHw(id,hwname,hwDday);
-                                        //update UI
-                                        homework.setHwname(hwname);
-                                        homework.setHwDday(hwDday);
-                                        notifyItemChanged(curPos,homework);
-                                        dialog.dismiss();
+                                        String homeworkNameInputString=homeworkNameInput.getText().toString();
+                                        if(!(homeworkNameInputString.equals("")||hwdday.equals(""))) {
+                                            //update table
+                                            String id = homework.getId();
+                                            db.UpdateHw(id, homeworkNameInputString, hwdday);
+                                            //update UI
+                                            homework.setHwname(homeworkNameInputString);
+                                            homework.setHwDday(hwdday);
+                                            notifyItemChanged(curPos, homework);
+                                            dialog.dismiss();
+                                        }else{
+                                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
 
