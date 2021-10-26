@@ -20,6 +20,9 @@ import java.util.Calendar;
 
 
 public class Home extends Fragment {
+
+
+
     private CalendarView mcalendar; //달력
     private  ViewGroup view;
     String selectday; // 타임테이블에서 받을 예정, 달력에서 선택된 날짜

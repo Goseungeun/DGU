@@ -15,12 +15,31 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import org.techtown.dgu.member.SettingFragment;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -50,7 +69,22 @@ public class StatsFragment extends Fragment {
 
 
     int BackgroundColor,MainColor;
+    PieChart pieChart;
+
+    public static final int[] DGU_COLORS = {
+        Color.rgb(82,151,131),
+            Color.rgb(86,179,62),
+            Color.rgb(207,191,8),
+            Color.rgb(57,179,154),
+            Color.rgb(200,125,11),
+            Color.rgb(239,189,41),
+            Color.rgb(9,156,92)
+    };
+
+   
+    int BackgroundColor,MainColor;
     String date;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +93,7 @@ public class StatsFragment extends Fragment {
 
         TextView year=view.findViewById(R.id.sta_year);
         TextView month=view.findViewById(R.id.sta_month);
+
         lineChart = view.findViewById(R.id.moststudytime);
         gold = view.findViewById(R.id.gold);
         silver = view.findViewById(R.id.silver);
@@ -107,6 +142,71 @@ public class StatsFragment extends Fragment {
         float[] timeTableData = getTimeTableData(date);
         setTimeTableGraph(timeTableData);
 
+
+
+        //요일별 공부시간
+
+        pieChart = view.findViewById(R.id.dayofweekstatics);
+
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5,10,5,5);
+
+        pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setHoleColor(Color.WHITE);
+        pieChart.setTransparentCircleRadius(61f);
+
+
+        ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+
+        String dow[] = mDBHelper.DayOfWeek(date);;
+
+        for (int i = 0; i < dow.length; i++) {
+            Log.v("StringIds", "i:" + i + ", dow[i]:" + dow[i]);
+
+            String day[]=dow[i].split(",");
+
+            String newday[]=day[1].split(":");
+
+
+            Integer dd=parseInt(newday[0])*60*60+parseInt(newday[1])*60+parseInt(newday[2]);
+            Log.d("새로운 날","new: "+dd);
+
+            if(parseInt(day[0])==0)
+                yValues.add(new PieEntry(dd,"일요일"));
+            else if(parseInt(day[0])==1)
+                yValues.add(new PieEntry(dd,"월요일"));
+            else if(parseInt(day[0])==2)
+                yValues.add(new PieEntry(dd,"화요일"));
+            else if(parseInt(day[0])==3)
+                yValues.add(new PieEntry(dd,"수요일"));
+            else if(parseInt(day[0])==4)
+                yValues.add(new PieEntry(dd,"목요일"));
+            else if(parseInt(day[0])==5)
+                yValues.add(new PieEntry(dd,"금요일"));
+            else if(parseInt(day[0])==6)
+                yValues.add(new PieEntry(dd,"토요일"));
+
+        }
+
+        pieChart.animateY(1000); //이션
+
+
+        PieDataSet dataSet = new PieDataSet(yValues, "요일");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(DGU_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(13f);
+        data.setValueTextColor(Color.DKGRAY);
+
+        pieChart.setData(data);
+
+
         ImageButton leftbutton = (ImageButton)view.findViewById(R.id.leftbutton);
         leftbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +236,7 @@ public class StatsFragment extends Fragment {
                 setTimeTableGraph(timeTableData);
             }
         });
+
 
         return view;
 
@@ -290,5 +391,8 @@ public class StatsFragment extends Fragment {
         lineChart.invalidate();
 
     }
+
+
+
 
 }
