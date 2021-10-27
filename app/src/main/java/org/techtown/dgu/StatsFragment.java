@@ -270,7 +270,6 @@ public class StatsFragment extends Fragment {
         float[] total_sum = new float[24];
         ArrayList<String[]> tableContList = mDBHelper.getMonthlyTimeTable(date);           //스트링 배열의 리스트 리턴
         int size = tableContList.size();
-        Log.d("확인","size : "+size);
         if (size == 0)
         {
             //값이 하나도 없을 때
@@ -291,9 +290,9 @@ public class StatsFragment extends Fragment {
             }
             for (int z = 0; z < 24; z++) {
                 for (int x = (60 * z); x < (60 * (z + 1)); x++) {
-                    hour_sum[z] += sum[x];
+                    hour_sum[z] += sum[x];      //한시간 단위로 값 넣어줌
                 }
-                total_sum[z] = ((float) hour_sum[z] / (size * 60)) * 100;
+                total_sum[z] = ((float) hour_sum[z] / (size * 60)) * 100;       //값의 백분율 구하기
             }
         }
         return total_sum;
@@ -301,6 +300,7 @@ public class StatsFragment extends Fragment {
 
     public void setTimeTableGraph(float[] data){
         List<Entry> contents = new ArrayList<>();
+        ArrayList<String> xEntry = new ArrayList<>();
         for(int i = 0; i < 24; i++){
             contents.add(new Entry(i, data[i]));
         }
@@ -336,10 +336,9 @@ public class StatsFragment extends Fragment {
         xAxis.setDrawAxisLine(true);
         xAxis.setAxisLineColor(MainColor);
         xAxis.setAxisLineWidth(1.75f);
-        xAxis.setTextSize(9f);
-        xAxis.setAxisMaximum(24.0f);
-        xAxis.setLabelCount(12);
-        xAxis.setGranularity(1f);
+        xAxis.setAxisMaximum(23.0f);
+        xAxis.setLabelCount(13,true);
+
 
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setDrawLabels(false);

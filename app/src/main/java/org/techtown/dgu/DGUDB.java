@@ -42,11 +42,13 @@ public class DGUDB extends SQLiteOpenHelper {
                 "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE," +
                 "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid) ON DELETE CASCADE)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL);");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa FLOAT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa FLOAT);");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS attendancecheck (subid TEXT PRIMARY KEY, attendancecheckcontent TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS attendancecheck (subid TEXT PRIMARY KEY, attendancecheckcontent TEXT NOT NULL);");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS sublicensename(id TEXT PRIMARY KEY, name TEXT NOT NULL);");
     }
 
     @Override
@@ -153,13 +155,15 @@ public class DGUDB extends SQLiteOpenHelper {
     public String InsertSubject (String _subname,int _week, int _weekfre){
         String _id= give_id();
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO subject VALUES('"+ _id+"','" +_subname + "','" +_week+"','"+_weekfre+"');'");
+        db.execSQL("INSERT INTO subject VALUES('"+ _id+"','" +_subname + "','" +_week+"','"+_weekfre+"');");
+        db.execSQL("INSERT INTO sublicensename VALUES('"+_id+"','"+_subname+"');");
         return _id;
     }
 
     public void Updatesubject (String _subid, String _subname, int _week, int _weekfre){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE subject SET subname = '"+_subname+"',week = '"+_week+"',weekfre = '"+_weekfre+"' WHERE subid ='"+_subid+"';");
+        db.execSQL("UPDATE sublicensename SET name = '"+_subname+"' WHERE id = '"+_subid+"';");
     }
 
     public void deleteSubject (String _subid){
@@ -191,19 +195,15 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public String getSubjectName(String _subid){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM subject WHERE subid = '"+_subid+"'",null);
+        String subname = new String();
+        Cursor cursor = db.rawQuery("SELECT name FROM sublicensename WHERE id = '"+_subid+"'",null);
 
-        if(cursor.getCount()==0){
-            //과목이 삭제된 경우
-            cursor.close();
-            return "삭제됨";
-        }else{
+        if(cursor.getCount() != 0){
             cursor.moveToNext();
-            String subname = cursor.getString(cursor.getColumnIndex("subname"));
+            subname = cursor.getString(cursor.getColumnIndex("name"));
             cursor.close();
-            return subname;
         }
-
+        return subname;
     }
 
     public String[] getSubjectNameList(){
@@ -224,7 +224,7 @@ public class DGUDB extends SQLiteOpenHelper {
     public String insertHw (String _subid,String _hwname,String _hwdday){
         String _id = give_id();
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO hw  VALUES('"+ _id+"','" +_subid + "','" +_hwname+"','"+_hwdday+"');'");
+        db.execSQL("INSERT INTO hw  VALUES('"+ _id+"','" +_subid + "','" +_hwname+"','"+_hwdday+"');");
         return _id;
     }
 
@@ -303,6 +303,7 @@ public class DGUDB extends SQLiteOpenHelper {
         String _id= give_id();
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO license (licenseid ,licensename, licensedday) VALUES('"+ _id+"','" +_licensename + "','" +_licensedday+"');");
+        db.execSQL("INSERT INTO sublicensename VALUES('"+_id+"','"+_licensename+"');");
         return _id;
     }
 
@@ -310,6 +311,7 @@ public class DGUDB extends SQLiteOpenHelper {
     public void UpdateLicense(String _licenseid, String _licensename, String _licensedday){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("UPDATE license SET licensename ='"+_licensename+"',licensedday ='"+_licensedday+"' WHERE licenseid = '"+_licenseid+"'");
+        db.execSQL("UPDATE sublicensename SET name = '"+_licensename+"' WHERE id = '"+_licenseid+"';");
     }
 
     //DELETE 문
@@ -320,18 +322,15 @@ public class DGUDB extends SQLiteOpenHelper {
 
     public String getLicenseName(String _licenseid){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM license WHERE licenseid = '"+_licenseid+"'",null);
+        String subname = new String();
+        Cursor cursor = db.rawQuery("SELECT name FROM sublicensename WHERE id = '"+_licenseid+"'",null);
 
-        if(cursor.getCount()==0){
-            //자격증이 삭제된 경우
-            cursor.close();
-            return "삭제됨";
-        }else{
+        if(cursor.getCount() != 0){
             cursor.moveToNext();
-            String licensename = cursor.getString(cursor.getColumnIndex("licensename"));
+            subname = cursor.getString(cursor.getColumnIndex("name"));
             cursor.close();
-            return licensename;
         }
+        return subname;
 
     }
 
