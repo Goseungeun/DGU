@@ -722,7 +722,12 @@ public class DGUDB extends SQLiteOpenHelper {
                 sum_Of_m_credit += m_credit;
             }
 
-            GPA=(sum_Of_m_credit_times_m_score/sum_Of_m_credit);
+            //그래프 에러 해결 강구
+            if(sum_Of_m_credit==0f){
+                GPA=(float)0.0;
+            }else{
+                GPA=(sum_Of_m_credit_times_m_score/sum_Of_m_credit);
+            }
         }
 
         cursor.close();
@@ -817,7 +822,12 @@ public class DGUDB extends SQLiteOpenHelper {
                 sum_Of_m_credit_times_m_score += m_credit*m_score;
                 sum_Of_m_credit += m_credit;
             }
-            GPA=(sum_Of_m_credit_times_m_score/sum_Of_m_credit);
+
+            if(sum_Of_m_credit==0f){
+                GPA=(float)0.0;
+            }else{
+                GPA=(sum_Of_m_credit_times_m_score/sum_Of_m_credit);
+            }
         }
 
         cursor.close();
