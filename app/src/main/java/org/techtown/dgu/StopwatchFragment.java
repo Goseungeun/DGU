@@ -54,8 +54,6 @@ public class StopwatchFragment extends Fragment{
     PowerManager powerManager;
     PowerManager.WakeLock wakeLock;
 
-    boolean deviceScreenOn = true;
-
     public StopwatchFragment(String _subid, String _licenseid){
         this.subid=_subid;
         this.licenseid=_licenseid;
@@ -63,7 +61,6 @@ public class StopwatchFragment extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.stopwatch, container, false);
-
 
         DB = new DGUDB(getContext());
 
