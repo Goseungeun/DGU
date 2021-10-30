@@ -54,6 +54,8 @@ public class StopwatchFragment extends Fragment{
     PowerManager powerManager;
     PowerManager.WakeLock wakeLock;
 
+    boolean deviceScreenOn = true;
+
     public StopwatchFragment(String _subid, String _licenseid){
         this.subid=_subid;
         this.licenseid=_licenseid;
@@ -130,7 +132,7 @@ public class StopwatchFragment extends Fragment{
     public void start(){
         wakeLock.acquire();
 
-        StartTime = SystemClock.uptimeMillis();
+        StartTime = SystemClock.elapsedRealtime();
         TimetableStartTime = System.currentTimeMillis();
         StartTimeString = LongToString(TimetableStartTime);
         handler.postDelayed(runnable, 0);
@@ -138,7 +140,6 @@ public class StopwatchFragment extends Fragment{
 
     public void stop(){
         wakeLock.release();
-
         handler.removeCallbacks(runnable);
 
         TimetableEndTime = System.currentTimeMillis();
@@ -167,6 +168,7 @@ public class StopwatchFragment extends Fragment{
     public final Runnable runnable = new Runnable() {
 
         public void run() {
+
             //돌아가는 와중에 다른날로 넘어갈 시 공부시간을 초기화해준다.
             if(ChangeDate()){
                 setStudytimeid(DB.InsertStudyTime(subid,licenseid));
@@ -181,21 +183,7 @@ public class StopwatchFragment extends Fragment{
                 StartTimeString = "00:00:00";
             }
 
-            //screen을 껐는지 안껐는지 확인하기
-
-            boolean isScreenOn = powerManager.isScreenOn();
-            if(!isScreenOn){
-                //screen을 껐다
-                //처음으로 끈거 인식했을 때만 현재시간받아온 다음에
-
-            }else{
-                //screen을 켰다.ㄴ
-                //다시 켰을 때 현재시간 받아와서 빼서 버퍼로 쓰고 싶은디
-            }
-
-            Log.v("PowerManagerisScreenOn",""+powerManager.isScreenOn());
-
-            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+            MillisecondTime = SystemClock.elapsedRealtime() - StartTime;
 
             UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치
