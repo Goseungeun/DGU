@@ -158,7 +158,7 @@ public class StatsFragment extends Fragment {
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,13,5,13);
+        pieChart.setExtraOffsets(5,8,5,8);
 
         pieChart.setDragDecelerationFrictionCoef(0.97f);
 
@@ -168,9 +168,9 @@ public class StatsFragment extends Fragment {
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setEntryLabelTextSize(0f);
 
-        //Legend le = pieChart.getLegend();
+        Legend le = pieChart.getLegend();
         //le.setEnabled(false);
-
+        le.setTextSize(15f);
 
         piepie(date);
 
@@ -412,11 +412,12 @@ public class StatsFragment extends Fragment {
         dataSet.setValueLinePart1OffsetPercentage(90.f);
         dataSet.setValueLinePart1Length(0.8f);
         dataSet.setValueLinePart2Length(.2f);
+        dataSet.setValueLineColor(getResources().getColor(R.color.deepgreen));
 
         PieData data = new PieData((dataSet));
         data.setValueFormatter(new PercentFormatter(pieChart));
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.DKGRAY);
+        data.setValueTextColor(getResources().getColor(R.color.deepgreen));
 
         pieChart.setData(data);
     }
