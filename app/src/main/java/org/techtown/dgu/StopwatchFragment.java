@@ -1,9 +1,11 @@
 package org.techtown.dgu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,6 +51,8 @@ public class StopwatchFragment extends Fragment{
     String StartTimeString, EndTimeString = null;
 
     Handler handler = new Handler();
+    PowerManager powerManager;
+    PowerManager.WakeLock wakeLock;
 
     public StopwatchFragment(String _subid, String _licenseid){
         this.subid=_subid;
@@ -58,8 +62,12 @@ public class StopwatchFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.stopwatch, container, false);
 
-
         DB = new DGUDB(getContext());
+
+        //스톱워치 돌아가는동안 절전모드 막기
+        powerManager = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyApp::MyWakelockTag");
 
         //fragment에 있는 요소들과 연결
         FocuseTime = view.findViewById(R.id.stopwatchFocusTime);
@@ -119,14 +127,18 @@ public class StopwatchFragment extends Fragment{
     }
 
     public void start(){
-        StartTime = SystemClock.uptimeMillis();
+        wakeLock.acquire();
+
+        StartTime = SystemClock.elapsedRealtime();
         TimetableStartTime = System.currentTimeMillis();
         StartTimeString = LongToString(TimetableStartTime);
         handler.postDelayed(runnable, 0);
     }
 
     public void stop(){
+        wakeLock.release();
         handler.removeCallbacks(runnable);
+
         TimetableEndTime = System.currentTimeMillis();
         EndTimeString=LongToString(TimetableEndTime);
 
@@ -153,21 +165,26 @@ public class StopwatchFragment extends Fragment{
     public final Runnable runnable = new Runnable() {
 
         public void run() {
+
             //돌아가는 와중에 다른날로 넘어갈 시 공부시간을 초기화해준다.
             if(ChangeDate()){
+
                 setStudytimeid(DB.InsertStudyTime(subid,licenseid));
                 TimeBuff =  StringToLong(DB.getStudytime(getStudytimeid()));
                 TimeBuffTotal = StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
-                TimetableEndTime = System.currentTimeMillis();
-                EndTimeString=LongToString(TimetableEndTime);
+
+                EndTimeString="23:59:59";
+                TimetableEndTime=StringToLong(EndTimeString);
 
                 String yesterday = DB.give_Yesterday();
                 FillTimeTable(yesterday);
 
+                StartTime = SystemClock.elapsedRealtime();
                 StartTimeString = "00:00:00";
+                TimetableStartTime = StringToLong(StartTimeString);
             }
 
-            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+            MillisecondTime = SystemClock.elapsedRealtime() - StartTime;
 
             UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.techtown.dgu">
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -9,6 +10,8 @@
         android:roundIcon="@mipmap/ic_main_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DGU">
+
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@drawable/item_color" />
@@ -24,7 +27,7 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".Stopwatch" />
+
 
 
     </application>
