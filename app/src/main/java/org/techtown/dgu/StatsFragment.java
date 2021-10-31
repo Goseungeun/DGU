@@ -170,7 +170,7 @@ public class StatsFragment extends Fragment {
 
         Legend le = pieChart.getLegend();
         //le.setEnabled(false);
-        le.setTextSize(15f);
+        le.setTextSize(12f);
 
         piepie(date);
 
