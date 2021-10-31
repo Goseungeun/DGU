@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "org.techtown.dgu"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -48,7 +48,6 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'com.airbnb.android:lottie:3.0.7'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-
 }
 
 
