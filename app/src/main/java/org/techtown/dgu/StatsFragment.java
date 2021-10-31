@@ -1,6 +1,7 @@
 package org.techtown.dgu;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,12 +87,15 @@ public class StatsFragment extends Fragment {
         mDBHelper = new DGUDB(getContext());
 
         DGU_COLORS =new int[] {
-                getResources().getColor(R.color.deepgreen),
-                getResources().getColor(R.color.a),
+
+                getResources().getColor(R.color.aa),
+                getResources().getColor(R.color.b),
                 getResources().getColor(R.color.c),
                 getResources().getColor(R.color.d),
                 getResources().getColor(R.color.e),
                 getResources().getColor(R.color.f),
+                getResources().getColor(R.color.g)
+
 
         };
 
@@ -154,16 +158,18 @@ public class StatsFragment extends Fragment {
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setExtraOffsets(5,13,5,13);
 
-        pieChart.setDragDecelerationFrictionCoef(0.95f);
+        pieChart.setDragDecelerationFrictionCoef(0.97f);
 
         pieChart.setDrawHoleEnabled(false);
         pieChart.setHoleColor(Color.WHITE);
         pieChart.setTransparentCircleRadius(61f);
-        pieChart.setEntryLabelTextSize(16f);
-        Legend le = pieChart.getLegend();
-        le.setEnabled(false);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setEntryLabelTextSize(0f);
+
+        //Legend le = pieChart.getLegend();
+        //le.setEnabled(false);
 
 
         piepie(date);
@@ -376,19 +382,19 @@ public class StatsFragment extends Fragment {
             Log.d("새로운 날","new: "+dd);
 
             if(parseInt(day[0])==0)
-                yValues.add(new PieEntry(dd,"일요일"));
+                yValues.add(new PieEntry(dd,"일"));
             else if(parseInt(day[0])==1)
-                yValues.add(new PieEntry(dd,"월요일"));
+                yValues.add(new PieEntry(dd,"월"));
             else if(parseInt(day[0])==2)
-                yValues.add(new PieEntry(dd,"화요일"));
+                yValues.add(new PieEntry(dd,"화"));
             else if(parseInt(day[0])==3)
-                yValues.add(new PieEntry(dd,"수요일"));
+                yValues.add(new PieEntry(dd,"수"));
             else if(parseInt(day[0])==4)
-                yValues.add(new PieEntry(dd,"목요일"));
+                yValues.add(new PieEntry(dd,"목"));
             else if(parseInt(day[0])==5)
-                yValues.add(new PieEntry(dd,"금요일"));
+                yValues.add(new PieEntry(dd,"금"));
             else if(parseInt(day[0])==6)
-                yValues.add(new PieEntry(dd,"토요일"));
+                yValues.add(new PieEntry(dd,"토"));
 
         }
 
@@ -399,11 +405,18 @@ public class StatsFragment extends Fragment {
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
         dataSet.setColors(DGU_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+       // dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+
+        dataSet.setValueLinePart1OffsetPercentage(90.f);
+        dataSet.setValueLinePart1Length(0.8f);
+        dataSet.setValueLinePart2Length(.2f);
 
         PieData data = new PieData((dataSet));
         data.setValueFormatter(new PercentFormatter(pieChart));
-        data.setValueTextSize(13f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.DKGRAY);
 
         pieChart.setData(data);
     }

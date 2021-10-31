@@ -16,13 +16,23 @@
     <color name="minus">#FFC107</color>
     <color name="xmark">#FF5722</color>
 
+    <!--<color name="aa">#57715A</color>
+    <color name="d">#238772</color>
     <color name="a">#529783</color>
-    <color name="b">#56B33E</color>
-    <color name="c">#8F8D03</color>
-    <color name="d">#1A6354</color>
-    <color name="e">#C87D0B</color>
-    <color name="f">#EFBD29</color>
-    <color name="g">#099C5C</color>
+    <color name="b">#57A642</color>
+    <color name="c">#8EAC0B</color>
+    <color name="e">#BC7812</color>
+    <color name="g">#FF9901</color>
+    <color name="f">#EFBD29</color>-->
+    <color name="aa">#93C398</color>
+    <color name="a">#54BA92</color>
+    <color name="b">#4CBD9D</color>
+    <color name="c">#83C372</color>
+    <color name="d">#A5C129</color>
+    <color name="e">#CD9A4D</color>
+    <color name="f">#DAAD69</color>
+    <color name="g">#DCCC48</color>
+
 
 
 
