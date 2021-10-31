@@ -416,7 +416,7 @@ public class StatsFragment extends Fragment {
 
         PieData data = new PieData((dataSet));
         data.setValueFormatter(new PercentFormatter(pieChart));
-        data.setValueTextSize(11f);
+        data.setValueTextSize(12f);
         data.setValueTextColor(getResources().getColor(R.color.deepgreen));
 
         pieChart.setData(data);
