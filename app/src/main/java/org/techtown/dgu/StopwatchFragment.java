@@ -168,10 +168,11 @@ public class StopwatchFragment extends Fragment{
 
             //돌아가는 와중에 다른날로 넘어갈 시 공부시간을 초기화해준다.
             if(ChangeDate()){
-
                 setStudytimeid(DB.InsertStudyTime(subid,licenseid));
-                TimeBuff =  StringToLong(DB.getStudytime(getStudytimeid()));
-                TimeBuffTotal = StringToLong(DB.DateTotalStudyTime(DB.give_Today()));
+                TimeBuff =  StringToLong("00:00:00");
+                TimeBuffTotal = StringToLong("00:00:00");
+                TimeBuffFocus = StringToLong(LongToString(UpdateTimeFocus));
+                StartTime = SystemClock.elapsedRealtime();
 
                 EndTimeString="23:59:59";
                 TimetableEndTime=StringToLong(EndTimeString);
@@ -179,7 +180,7 @@ public class StopwatchFragment extends Fragment{
                 String yesterday = DB.give_Yesterday();
                 FillTimeTable(yesterday);
 
-                StartTime = SystemClock.elapsedRealtime();
+
                 StartTimeString = "00:00:00";
                 TimetableStartTime = StringToLong(StartTimeString);
             }
@@ -188,7 +189,7 @@ public class StopwatchFragment extends Fragment{
 
             UpdateTime = TimeBuff + MillisecondTime;            //개별 스톱워치
             UpdateTimeTotal = TimeBuffTotal + MillisecondTime;  //오늘 총 공부시간 스톱워치
-            UpdateTimeFocus = TimeBuffFocus+MillisecondTime;    //집중한 시간
+            UpdateTimeFocus = TimeBuffFocus+ MillisecondTime;    //집중한 시간
 
             String UpdateTimeString = LongToString(UpdateTime);
             String UpdateTimeTotalString = LongToString(UpdateTimeTotal);
