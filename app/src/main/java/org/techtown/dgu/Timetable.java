@@ -239,7 +239,7 @@ public class Timetable extends Fragment {
                 final EditText edittext = new EditText(getContext());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("피드백 작성");
-                edittext.setText(feedbackcontent);
+                edittext.setText(DB.getFeedBack(date));
                 builder.setView(edittext);
                 builder.setPositiveButton("저장",
                         new DialogInterface.OnClickListener() {
