@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DGU</string>
+    <string name="splash">splash</string>
+    <string name="appintro">appintro</string>
 </resources>
