@@ -239,7 +239,7 @@ public class Timetable extends Fragment {
                 final EditText edittext = new EditText(getContext());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("피드백 작성");
-                edittext.setText(feedbackcontent);
+                edittext.setText(DB.getFeedBack(date));
                 builder.setView(edittext);
                 builder.setPositiveButton("저장",
                         new DialogInterface.OnClickListener() {
@@ -263,7 +263,7 @@ public class Timetable extends Fragment {
             @Override
             public void onClick(View v){
                 DB.DeleteFeedBack(date);
-                feedback.setText("피트백 작성하기");
+                feedback.setText("피드백 작성하기");
                 feedback.setClickable(true);
                 fbmoddel.setVisibility(View.INVISIBLE);
             }
