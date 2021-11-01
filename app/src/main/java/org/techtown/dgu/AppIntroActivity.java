@@ -14,8 +14,6 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 public class AppIntroActivity extends AppIntro {
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +24,6 @@ public class AppIntroActivity extends AppIntro {
         addSlide(AppIntroFragment.newInstance("Third page","This is the Third Page Description",R.drawable.gear, ContextCompat.getColor(getApplicationContext(),R.color.deepgreen)));
         setFadeAnimation();
 
-        //최초접속시에만 intro화면 출력하도록
-        sharedPreferences = getApplicationContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
-        if(sharedPreferences != null){
-            boolean checkShared = sharedPreferences.getBoolean("checkStated", false);
-            if(checkShared == true){
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-            }
-        }
 
     }
 
@@ -44,7 +31,6 @@ public class AppIntroActivity extends AppIntro {
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
-        editor.putBoolean("checkStated", false).commit();
         finish();
     }
 
@@ -52,7 +38,6 @@ public class AppIntroActivity extends AppIntro {
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
-        editor.putBoolean("checkStated", false).commit();
         finish();
     }
 }
