@@ -55,7 +55,7 @@ public class SubjectFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         String subname = subjectNameInput.getText().toString();
-                        String week = weekFrequencyInput.getText().toString();
+                        String week = weekInput.getText().toString();
                         String weekfre = weekFrequencyInput.getText().toString();
                         if(!(subname.equals("")||week.equals("")||weekfre.equals(""))){
                             //Insert UI
