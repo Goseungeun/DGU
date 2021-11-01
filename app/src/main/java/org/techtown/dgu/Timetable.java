@@ -263,7 +263,7 @@ public class Timetable extends Fragment {
             @Override
             public void onClick(View v){
                 DB.DeleteFeedBack(date);
-                feedback.setText("피트백 작성하기");
+                feedback.setText("피드백 작성하기");
                 feedback.setClickable(true);
                 fbmoddel.setVisibility(View.INVISIBLE);
             }
