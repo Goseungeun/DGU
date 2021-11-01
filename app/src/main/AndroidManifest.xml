@@ -19,6 +19,8 @@
 
         <activity android:name=".SplashActivity">
             <intent-filter>
+               <!--스플래시 나오려면 추가하기, appinfo에서 삭제하기
+                <action android:name="android.intent.action.MAIN" />-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
