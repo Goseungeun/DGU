@@ -244,7 +244,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/feedback"
+                    android:id="@+id/fbadd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|center_horizontal|center_vertical"
@@ -253,6 +253,16 @@
                     android:gravity="center"
                     android:inputType="textMultiLine"
                     android:text="피드백 작성하기"
+                    android:textColor="@color/deepgreen"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/fbcontent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="TextView"
                     android:textColor="@color/deepgreen"
                     android:textSize="16sp" />
             </LinearLayout>
