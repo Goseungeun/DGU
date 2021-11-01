@@ -1,14 +1,19 @@
 package org.techtown.dgu;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -34,6 +39,10 @@ public class Timetable extends Fragment {
     String receiveday;
 
     TextView TodayStudyTime;
+    LinearLayout fbmoddel;
+    TextView fbmodify;
+    TextView fbdelete;
+    TextView feedback;
     DGUDB DB;
 
     String tt_year;        //타임테이블 년도
@@ -82,6 +91,9 @@ public class Timetable extends Fragment {
 
         //그날 공부한 과목, 자격증 불러오기
         Fill_rv_study(date);
+
+        //피드백 부분 구현
+        FeedBack(date);
 
         //gridview 초기화
         GridView timetable=view.findViewById(R.id.timetable_gridview);
@@ -200,4 +212,89 @@ public class Timetable extends Fragment {
         mAdapter = new TimetableStudyAdapter(Items,this.getContext());
         rv_study.setAdapter(mAdapter);
     }
+
+    public void FeedBack(String date){
+        feedback = view.findViewById(R.id.feedback);
+        fbmoddel = view.findViewById(R.id.fbmoddel);
+        fbmodify = view.findViewById(R.id.fbmodify);
+        fbdelete = view.findViewById(R.id.fbdelete);
+
+        String feedbackcontent = DB.getFeedBack(date);
+        if(feedbackcontent.equals("")){
+            fbmoddel.setVisibility(View.INVISIBLE);
+            feedback.setText("피드백 작성하기");
+            feedback.setClickable(true);
+            fbmodify.setClickable(false);
+            fbdelete.setClickable(false);
+        }
+        else{
+            fbmoddel.setVisibility(View.VISIBLE);
+            feedback.setText(feedbackcontent);
+            feedback.setClickable(false);
+        }
+
+        fbmodify.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                final EditText edittext = new EditText(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("피드백 작성");
+                builder.setView(edittext);
+                builder.setPositiveButton("저장",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String cont = edittext.getText().toString();
+                                if(cont.equals("")){
+                                    Toast.makeText(v.getContext(),"내용을 입력하세요", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    DB.UpdateFeedBack(date,cont);
+                                    feedback.setText(cont);
+                                }
+                            }
+                        });
+                builder.show();
+            }
+        });
+
+        fbdelete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                DB.DeleteFeedBack(date);
+                feedback.setText("피트백 작성하기");
+                feedback.setClickable(true);
+                fbmoddel.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText edittext = new EditText(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("피드백 작성");
+                builder.setView(edittext);
+                builder.setPositiveButton("저장",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String cont = edittext.getText().toString();
+                                if(cont.equals("")){
+                                    Toast.makeText(v.getContext(),"내용을 입력하세요", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    DB.InsertFeedBack(date,cont);
+                                    feedback.setText(cont);
+                                    fbmoddel.setVisibility(View.VISIBLE);
+                                    fbmodify.setClickable(true);
+                                    fbdelete.setClickable(true);
+                                }
+                            }
+                        });
+                builder.show();
+            }
+        });
+    }
+
 }

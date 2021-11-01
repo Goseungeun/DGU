@@ -185,7 +185,6 @@
                 android:paddingBottom="10dp">
 
                 <LinearLayout
-                    android:id="@+id/fbmoddel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -214,6 +213,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/fbmoddel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -244,7 +244,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/feedback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|center_horizontal|center_vertical"
@@ -252,7 +252,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:inputType="textMultiLine"
-                    android:text=" 가나다라마바사아자차카타파하호호호호호호호호호호호호호호호호호호호홓호호호호호호호홓"
+                    android:text="피드백 작성하기"
                     android:textColor="@color/deepgreen"
                     android:textSize="16sp" />
             </LinearLayout>

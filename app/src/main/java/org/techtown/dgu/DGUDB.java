@@ -42,7 +42,9 @@ public class DGUDB extends SQLiteOpenHelper {
                 "CONSTRAINT studytime_fk_id_subject FOREIGN KEY (subid) REFERENCES subject(subid) ON DELETE CASCADE," +
                 "CONSTRAINT studytime_fk_id_license FOREIGN KEY (licenseid) REFERENCES license(licenseid) ON DELETE CASCADE)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY,feedback TEXT, timetablecontent TEXT NOT NULL);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS timetable (timetableid TEXT PRIMARY KEY, timetablecontent TEXT NOT NULL);");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS feedback (date TEXT PRIMARY KEY, feedbackcontent TEXT);");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS graph (semester TEXT PRIMARY KEY, gpa FLOAT);");
 
@@ -540,6 +542,35 @@ public class DGUDB extends SQLiteOpenHelper {
 
         cursor.close();
         return result;
+    }
+    //feedback과 관련된 함수
+    public void InsertFeedBack(String _date, String _feedbackcontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("INSERT INTO feedback VALUES ('"+_date+"','"+_feedbackcontent+"');");
+    }
+
+    public void UpdateFeedBack(String _date, String _feedbackcontent){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE feedback SET feedbackcontent = '"+_feedbackcontent+"' WHERE date = '"+_date+"';");
+    }
+
+    public void DeleteFeedBack(String _date){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM feedback WHERE date = '"+_date+"';");
+    }
+
+    public String getFeedBack(String _date){
+        SQLiteDatabase db = getReadableDatabase();
+        String feedback = new String();
+        Cursor cursor = db.rawQuery("SELECT feedbackcontent FROM feedback WHERE date = '"+_date+"';",null);
+        if (cursor.getCount()!=0){
+            cursor.moveToFirst();
+            feedback = cursor.getString(cursor.getColumnIndex("feedbackcontent"));
+        }
+        else{
+            feedback = "";
+        }
+        return feedback;
     }
 
     //timetable과 관련된 함수 시작
