@@ -20,13 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.techtown.dgu.studylicense.LicenseAdapter;
-import org.techtown.dgu.studylicense.LicenseItem;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 
 public class Timetable extends Fragment {
 
@@ -42,7 +36,8 @@ public class Timetable extends Fragment {
     LinearLayout fbmoddel;
     TextView fbmodify;
     TextView fbdelete;
-    TextView feedback;
+    TextView fbadd;
+    TextView fbcontent;
     DGUDB DB;
 
     String tt_year;        //타임테이블 년도
@@ -214,7 +209,8 @@ public class Timetable extends Fragment {
     }
 
     public void FeedBack(String date){
-        feedback = view.findViewById(R.id.feedback);
+        fbadd = view.findViewById(R.id.fbadd);
+        fbcontent = view.findViewById(R.id.fbcontent);
         fbmoddel = view.findViewById(R.id.fbmoddel);
         fbmodify = view.findViewById(R.id.fbmodify);
         fbdelete = view.findViewById(R.id.fbdelete);
@@ -222,15 +218,15 @@ public class Timetable extends Fragment {
         String feedbackcontent = DB.getFeedBack(date);
         if(feedbackcontent.equals("")){
             fbmoddel.setVisibility(View.INVISIBLE);
-            feedback.setText("피드백 작성하기");
-            feedback.setClickable(true);
+            fbcontent.setVisibility(View.GONE);
+            fbadd.setClickable(true);
             fbmodify.setClickable(false);
             fbdelete.setClickable(false);
         }
         else{
             fbmoddel.setVisibility(View.VISIBLE);
-            feedback.setText(feedbackcontent);
-            feedback.setClickable(false);
+            fbadd.setVisibility(View.GONE);
+            fbcontent.setText(feedbackcontent);
         }
 
         fbmodify.setOnClickListener(new View.OnClickListener(){
@@ -251,7 +247,7 @@ public class Timetable extends Fragment {
                                 }
                                 else{
                                     DB.UpdateFeedBack(date,cont);
-                                    feedback.setText(cont);
+                                    fbcontent.setText(cont);
                                 }
                             }
                         });
@@ -263,13 +259,13 @@ public class Timetable extends Fragment {
             @Override
             public void onClick(View v){
                 DB.DeleteFeedBack(date);
-                feedback.setText("피드백 작성하기");
-                feedback.setClickable(true);
                 fbmoddel.setVisibility(View.INVISIBLE);
+                fbadd.setVisibility(View.VISIBLE);
+                fbcontent.setVisibility(View.GONE);
             }
         });
 
-        feedback.setOnClickListener(new View.OnClickListener() {
+        fbadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText edittext = new EditText(getContext());
@@ -286,8 +282,10 @@ public class Timetable extends Fragment {
                                 }
                                 else{
                                     DB.InsertFeedBack(date,cont);
-                                    feedback.setText(cont);
                                     fbmoddel.setVisibility(View.VISIBLE);
+                                    fbadd.setVisibility(View.GONE);
+                                    fbcontent.setVisibility(View.VISIBLE);
+                                    fbcontent.setText(cont);
                                     fbmodify.setClickable(true);
                                     fbdelete.setClickable(true);
                                 }
