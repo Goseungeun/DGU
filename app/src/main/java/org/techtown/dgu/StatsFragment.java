@@ -397,7 +397,11 @@ public class StatsFragment extends Fragment {
                 yValues.add(new PieEntry(dd,"토"));
 
         }
-
+        switch (yValues.size()){
+            case 0:
+                pieChart.setVisibility(View.GONE);
+                break;
+        }
         pieChart.animateY(1000); //애니메이션
 
 
