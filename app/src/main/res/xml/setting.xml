@@ -17,6 +17,7 @@
             app:title="개발자 정보"
             app:iconSpaceReserved="false"/>
         <Preference
+            app:key="opensourceinfo"
             app:title="오픈소스"
             app:iconSpaceReserved="false"/>
 
