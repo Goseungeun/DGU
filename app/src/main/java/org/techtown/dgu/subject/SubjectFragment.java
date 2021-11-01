@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,12 +54,21 @@ public class SubjectFragment extends Fragment {
                 subjectBtn_ok.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        //Insert UI
-                        SubjectItem item = new SubjectItem(subjectNameInput.getText().toString(),parseInt(weekInput.getText().toString()),parseInt(weekFrequencyInput.getText().toString()));
-                        mAdapter.addSubItem(item);
-                        loadRecentDB();
-                        dialog.dismiss();
-
+                        String subname = subjectNameInput.getText().toString();
+                        String week = weekFrequencyInput.getText().toString();
+                        String weekfre = weekFrequencyInput.getText().toString();
+                        if(!(subname.equals("")||week.equals("")||weekfre.equals(""))){
+                            //Insert UI
+                            Integer Week=parseInt(week);
+                            Integer WeekFre=parseInt(weekfre);
+                            SubjectItem item = new SubjectItem(subname,Week,WeekFre);
+                            mAdapter.addSubItem(item);
+                            loadRecentDB();
+                            dialog.dismiss();
+                        }
+                        else{
+                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

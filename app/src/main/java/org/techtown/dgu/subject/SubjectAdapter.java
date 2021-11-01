@@ -260,19 +260,27 @@ public class  SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.studysu
                                 subjectbtn_ok.setOnClickListener(new View.OnClickListener(){
                                     @Override
                                     public void onClick(View v){
-                                        //update table
                                         String subname = subjectNameInput.getText().toString();
-                                        Integer week=parseInt(weekInput.getText().toString());
-                                        Integer weekFre=parseInt(weekFrequencyInput.getText().toString());
-                                        String id = studysub.getId();
-                                        db.Updatesubject(id,subname,week,weekFre);
+                                        String week = weekFrequencyInput.getText().toString();
+                                        String weekfre = weekFrequencyInput.getText().toString();
+                                        if(!(subname.equals("")||week.equals("")||weekfre.equals(""))){
+                                            //update table
+                                            Integer Week=parseInt(week);
+                                            Integer WeekFre=parseInt(weekfre);
+                                            String id = studysub.getId();
+                                            db.Updatesubject(id,subname,Week,WeekFre);
 
-                                        //update UI
-                                        studysub.setSubname(subname);
-                                        studysub.setWeek(week);
-                                        studysub.setWeekFre(weekFre);
-                                        notifyItemChanged(curPos,studysub);
-                                        dialog.dismiss();
+                                            //update UI
+                                            studysub.setSubname(subname);
+                                            studysub.setWeek(Week);
+                                            studysub.setWeekFre(WeekFre);
+                                            notifyItemChanged(curPos,studysub);
+                                            dialog.dismiss();
+                                        }
+
+                                        else{
+                                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 });
 
