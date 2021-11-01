@@ -397,7 +397,7 @@ public class StatsFragment extends Fragment {
                 yValues.add(new PieEntry(dd,"토"));
 
         }
-        switch (yValues.size()){
+        switch (dow.length){
             case 0:
                 pieChart.setVisibility(View.GONE);
                 break;
