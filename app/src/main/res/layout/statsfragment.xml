@@ -20,11 +20,12 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="통계"
             android:textColor="@color/deepgreen"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="0dp"
@@ -34,12 +35,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/leftbutton"
-                android:layout_width="24dp"
+                android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
@@ -50,48 +52,52 @@
                 android:id="@+id/sta_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="0000"
-                android:textColor="@color/green"
-                android:textSize="24sp"
+                android:text="2021"
+                android:textColor="@color/deepgreen"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="년"
                 android:textColor="@color/deepgreen"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/sta_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:gravity="bottom"
-                android:text="00"
-                android:textColor="@color/green"
-                android:textSize="24sp"
+                android:text="10"
+                android:textColor="@color/deepgreen"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_gravity="center"
                 android:layout_marginRight="10dp"
+                android:gravity="center"
                 android:text="월"
                 android:textColor="@color/deepgreen"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/rightbutton"
-                android:layout_width="24dp"
+                android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
@@ -135,7 +141,7 @@
                     android:paddingBottom="5dp"
                     android:text="공부시간 순위"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
 
@@ -372,7 +378,7 @@
             android:paddingBottom="5dp"
             android:text="공부가 가장 잘되는 시간"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
 
         <LinearLayout
@@ -400,20 +406,20 @@
                 android:orientation="vertical"
                 android:padding="15dp">
 
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/calendar_title"
-                    android:gravity="center"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp"
-                    android:text="요일별 공부시간"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/calendar_title"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp"
+            android:text="요일별 공부시간"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/dayofweekstatics"
