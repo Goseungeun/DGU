@@ -135,6 +135,9 @@ public class GraphTable extends Fragment {
             @Override
             public void onClick(View v) {
                 int index=0;
+                if(subjectName.length == 0){
+                    Toast.makeText(getContext(),"입력된 과목이 없습니다.",Toast.LENGTH_SHORT).show();
+                }
                 for(int i=DB.Output_SubgraphCount(semesterName[cur_semester_index])-1 ; (i<ROW) && (index<subjectName.length) ; i++,index++){
                     if(DB.FindAlreadyExistsSubjectName(semesterName[cur_semester_index], finalSubjectName[index])){
                         //이미 존재

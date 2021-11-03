@@ -85,7 +85,7 @@ public class LicenseFragment extends Fragment {
                             licenseDDAY = "";
                             dialog.dismiss();
                         }else{
-                            Toast.makeText(v.getContext(),"정보를 모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(v.getContext(),"정보를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
